@@ -1,0 +1,520 @@
+body {
+    background-color: #050505;
+    color: white;
+    /* Теперь основным шрифтом будет Inter */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Состояние после загрузки */
+body.loaded {
+    opacity: 1;
+}
+
+/* Класс для плавного исчезновения перед переходом */
+.fade-out {
+    opacity: 0 !important;
+}
+
+/* Общие правки для полной ширины */
+.container {
+    max-width: 100%; /* Разрешаем контенту занимать всю ширину */
+    margin: 0;
+    padding: 0;
+}
+
+/* Секция с трейлером */
+.hero-section {
+    position: relative;
+    width: 100vw;       /* Ровно 100% ширины окна просмотра */
+    height: 85vh;       /* Высота чуть меньше экрана для видимости контента снизу */
+    overflow: hidden;
+    margin-bottom: 60px;
+    
+    /* Скругление только снизу: слева и справа */
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    
+    /* Убираем рамки по бокам и сверху, оставляем только если нужно подчеркнуть низ */
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-video-wrapper {
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-video {
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Видео заполнит всё пространство без черных полос */
+}
+
+/* Контент внутри трейлера (текст и кнопка) */
+.hero-content {
+    position: relative;
+    z-index: 999;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Сдвигаем текст вниз */
+    padding: 0 0 80px 80px;    /* Большой отступ слева и снизу */
+    box-sizing: border-box;
+}
+
+.movies-grid {
+    padding: 0 60px; 
+    margin-bottom: 100px;
+}
+
+/* Логотип */
+.main-header {
+    display: flex;
+    justify-content: center;
+}
+
+.main-logo {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    height: 60px;
+    width: auto;
+    z-index: 1999;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.8) 10%, transparent 60%),
+                linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 40%);
+}
+
+
+.movie-title {
+    font-size: 64px;
+    font-weight: 800;
+    margin: 0 0 0 0;
+    letter-spacing: -2px;
+}
+
+.movie-description {
+    font-size: 20px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 35px;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 18px 45px;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 18px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+}
+
+/* Сетка (Зеленые блоки) */
+.section-title {
+    font-size: 32px;
+    margin-bottom: 30px;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding-bottom: 100px;
+}
+
+.movie-card {
+    position: relative;
+    aspect-ratio: 2/3;
+    background: rgba(255,255,255,0.03);
+    border-radius: 30px;
+    overflow: hidden; /* Чтобы картинка не вылезала за скругления */
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.4s ease;
+    display: block; /* Чтобы ссылка работала как блок */
+    z-index: 1999;
+}
+
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Картинка заполнит весь постер */
+    transition: transform 0.6s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255,255,255,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+/* 1. Настройка всей полосы прокрутки */
+::-webkit-scrollbar {
+    width: 8px; /* Ширина полосы */
+    background-color: #050505; /* Цвет дорожки (совпадает с фоном сайта) */
+}
+
+/* 2. Настройка ползунка (бегунка) */
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый */
+    border-radius: 100px; /* Полностью округлый */
+    border: 2px solid #050505; /* Отступ от краев за счет рамки цвета фона */
+    transition: all 0.3s ease;
+}
+
+/* 3. Эффект при наведении на ползунок */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3); /* Становится ярче */
+}
+
+/* Для Firefox (у него меньше настроек, но базово можно изменить) */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) #050505;
+}
+
+/* Стили для подвала (Footer) */
+.site-footer {
+    padding: 60px 0 80px 0;
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-project {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.sdum-accent {
+    color: white;
+    font-weight: 700;
+}
+
+.contact-mail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 12px 25px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-mail:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                0 0 20px rgba(255, 255, 255, 0.05);
+   
+}
+
+.mail-icon {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.4s ease;
+}
+
+.contact-mail:hover .mail-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* Баннер кукі / прыватнасці */
+.cookie-banner {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    max-width: 400px;
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    padding: 20px;
+    z-index: 9999;
+    transform: translateY(150%); /* Спрятан по умолчанию */
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.cookie-banner.show {
+    transform: translateY(0); /* Плавное выплывание */
+}
+
+.cookie-content p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 15px 0;
+}
+
+.cookie-btn {
+    background: white;
+    color: black;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cookie-btn:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+
+
+/* Центрируем футер, если он сбился */
+.site-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    gap: 15px;
+}
+
+/* Фон модального окна */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Контейнер с текстом */
+.modal-container {
+    background: rgba(25, 25, 25, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 650px;
+    max-height: 70vh;
+    border-radius: 35px;
+    padding: 40px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .modal-container {
+    transform: scale(1);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+.modal-scroll-text {
+    overflow-y: auto;
+    max-height: 50vh;
+    padding-right: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Тонкий скроллбайт внутри окна */
+.modal-scroll-text::-webkit-scrollbar {
+    width: 4px;
+}
+.modal-scroll-text::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.legal-premium-btn {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 12px 25px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.legal-premium-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.legal-icon {
+    width: 16px;
+    height: 16px;
+    stroke: rgba(255, 255, 255, 0.4);
+    transition: stroke 0.3s ease;
+}
+
+.legal-premium-btn:hover .legal-icon {
+    stroke: #fff;
+}
+
+.glow-ball {
+    position: absolute; /* Абсолютное позиционирование */
+    width: 600px; /* Ширина шара */
+    height: 600px; /* Высота шара */
+    border-radius: 50%; /* Круглая форма */
+    filter: blur(120px); /* Сильное размытие */
+    opacity: 0.15; /* Прозрачность шара */
+}
+
+/* Первый светящийся шар */
+.ball-1 {
+    background: #3a3a3a; /* Цвет фона шара */
+    top: -100px; /* Отступ сверху */
+    right: -100px; /* Отступ справа */
+    animation: move 20s infinite alternate; /* Анимация движения */
+}
+
+/* Второй светящийся шар */
+.ball-2 {
+    background: #1a1a1a; /* Цвет фона шара */
+    bottom: -100px; /* Отступ снизу */
+    left: -100px; /* Отступ слева */
+    animation: move 25s infinite alternate-reverse; /* Анимация движения в обратную сторону */
+}
+
+/* АНИМАЦИИ */
+/* Анимация мерцания звезд (Новое) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; } /* Минимальная прозрачность */
+    50% { opacity: 0.8; } /* Максимальная прозрачность (звезда загорается) */
+}
+
+/* Анимация движения туманностей */
+@keyframes move {
+    from { transform: translate(0, 0); } /* Начальное положение */
+    to { transform: translate(-100px, 100px); } /* Конечное положение */
+}
+
+/* --- СЛОЙ СО ЗВЕЗДАМИ --- */
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%; /* Увеличиваем размер для плавного движения */
+    
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+    
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    z-index: 1;
+    opacity: 0.4;
+    
+    /* Анимация медленного дрейфа */
+    animation: starsMove 100s linear infinite; 
+}
+
+/* Второй слой звезд — он будет мигать и двигаться в другую сторону */
+body::after {
+    background-size: 300px 300px, 200px 200px, 150px 150px;
+    background-position: 110px 110px, 5px 15px, 220px 20px;
+    
+    /* Совмещаем две анимации: дрейф и мерцание */
+    animation: 
+        starsMoveReverse 120s linear infinite, 
+        twinkle 5s ease-in-out infinite;
+    z-index: 2;
+}
+
+/* --- АНИМАЦИИ --- */
+
+/* Медленное движение звезд в одну сторону */
+@keyframes starsMove {
+    from { transform: translate(0, 0); }
+    to { transform: translate(10%, 10%); }
+}
+
+/* Медленное движение звезд в другую сторону */
+@keyframes starsMoveReverse {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-10%, -10%); }
+}
+
+/* Эффект мерцания (мигания) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.7; }
+}
+
+/* Анимация туманностей (твоя старая анимация) */
+@keyframes move {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-100px, 100px); }
+}
