@@ -1,0 +1,364 @@
+body {
+    background-color: #050505;
+    color: white;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow: hidden;
+    user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out; /* Время перехода 0.6 сек */
+}
+
+/* Состояние после загрузки */
+body.loaded {
+    opacity: 1;
+}
+.video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Самый нижний слой */
+    overflow: hidden;
+}
+
+.video-bg video {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    filter: blur(80px) brightness(0.4); /* Максимальное размытие и затемнение */
+}
+
+/* Дополнительный слой затемнения для лучшей читаемости текста */
+.video-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.788); /* Еще немного черного поверх видео */
+    z-index: -1;
+}
+
+.vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* ellipse — делает градиент овальным под форму экрана.
+       rgba(0,0,0,0.95) — почти полный черный по самым краям.
+       transparent 20% — центр остается чистым, а затемнение начинается раньше.
+    */
+    background: radial-gradient(ellipse at center, transparent 20%, rgba(0, 0, 0, 0.753) 60%, rgba(0, 0, 0, 0.95) 100%);
+    
+    pointer-events: none; /* Чтобы можно было кликать сквозь виньетку */
+    z-index: 2999; /* Слой выше, чем у видео и оверлея */
+}
+
+
+
+/* Убедись, что контент-контейнер прозрачный или полупрозрачный */
+.info-card {
+    background: rgba(20, 20, 20, 0.4) !important; /* Уменьшаем прозрачность карточки */
+    backdrop-filter: blur(20px);
+}
+
+/* Логотип */
+.main-logo {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    height: 60px;
+    width: auto;
+}
+
+.content-container {
+    max-width: 1400px;
+    width: 100%;
+    margin-top: 80px;
+}
+
+.top-section {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+/* Постер и кнопка */
+.poster-container {
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    perspective: 1000px; /* Оставляем здесь для корректной работы 3D у дочерних элементов */
+}
+
+.poster-container img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    transition: transform 0.1s ease-out, box-shadow 0.3s ease; 
+    will-change: transform;
+    transform-style: preserve-3d;
+}
+
+/* Кнопка теперь независима от трансформаций картинки */
+.poster-container .watch-btn {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 15px;
+    position: relative; 
+    z-index: 5; /* Гарантируем, что кнопка всегда сверху, но не шевелится */
+}
+
+:root {
+    --panel-bg: rgba(20, 20, 20, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent-glow: rgba(255, 255, 255, 0.2);
+}
+
+/* Універсальны стыль кнопкі як у плееры */
+.watch-btn, .action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 45px;
+    background: #fff;
+    border: 2px solid var(--glass-border);
+    border-radius: 80px;
+    color: black;
+    font-weight: 700;
+    font-size: 22px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Эфект пры навядзенні (як у тваім shareBtn) */
+.watch-btn:hover, .action-btn:hover {
+
+    transform: scale(1.05);
+    box-shadow: 0 0 25px var(--accent-glow);
+
+}
+
+/* Спецыяльная праўка для кнопкі пад постерам */
+.poster-container .watch-btn {
+    width: 100%; /* Каб была па шырыні постера */
+    box-sizing: border-box;
+    margin-top: 15px;
+}
+
+
+
+/* Инфо-карточка */
+.info-card {
+    flex: 1;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 40px;
+    padding: 40px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 48px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.age-rating {
+    font-size: 18px; /* Крыху кампактней */
+    font-weight: 700; /* Тлусты шрыфт */
+    color: rgba(255, 255, 255, 0.9); /* Амаль белы */
+    margin-top: 10px;
+    /* Эфект матавага шкла */
+    background: rgba(255, 255, 255, 0.1); /* Вельмі лёгкі светлы фон */
+    backdrop-filter: blur(10px); /* Умеранае размыццё */
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* Абводка і закругленне */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая рамка */
+    border-radius: 12px; /* Мягкія куты */
+    
+    /* Водступы і выраўноўванне */
+    padding: 6px 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Мяккае свечанне (як у плееры) */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    
+    /* Для плаўнага з'яўлення, калі дадамо анімацыю */
+    transition: all 0.3s ease; 
+}
+
+/* Інтэрактыў: лёгкае павелічэнне пры навядзенні */
+.age-rating:hover {
+    background: rgba(255, 255, 255, 0.253);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.sub-title {
+    font-size: 24px;
+    color: rgba(255,255,255,0.4);
+    margin: 5px 0 0 0;
+    font-weight: 400;
+}
+
+.rating-group {
+    text-align: right;
+}
+
+.rating-value {
+    font-size: 60px;
+    color: #00ff08;
+    font-weight: 700;
+    line-height: 1;
+    filter: drop-shadow(0 0 8px rgba(176, 255, 209, 0.5));
+}
+
+.duration {
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 5px;
+}
+
+.meta-info {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 25px;
+}
+
+.description {
+    font-size: 18px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 900px;
+}
+
+.description p {
+    margin-bottom: 15px;
+}
+
+/* Трейлер */
+/* Убираем анимации и фиксируем видео внизу страницы */
+.trailer-wrapper {
+    width: 100%;
+    aspect-ratio: 21 / 9; /* Сохраняем широкоформатные пропорции блока */
+    position: relative;
+    /* Убраны transition и fullscreen-mode стили */
+}
+
+/* Контейнер видео без анимаций */
+.trailer-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 40px;
+    overflow: hidden;
+    background: #000;
+    cursor: pointer;
+    position: relative;
+    /* Убраны transition и масштабирование */
+    z-index: 100;
+}
+
+/* Выравнивание самого видео */
+.trailer-container video {
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover автоматически центрирует видео внутри блока, */
+    /* масштабируя его, чтобы заполнить все пространство без полос. */
+    /* Края могут незначительно обрезаться для сохранения пропорций. */
+    object-fit: cover; 
+}
+
+/* Стили для подсказки при наведении остаются */
+.play-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 24px; font-weight: 700;
+    color: white;
+}
+
+.trailer-container:hover .play-overlay { 
+    opacity: 1; 
+}
+
+
+
+.site-footer {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+
+
+#backBtn {
+    text-align: center;
+    width: 160px; 
+    text-decoration: none;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    padding: 24px 56px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 2px solid var(--glass-border);
+    border-radius: 80px;
+    color: white;
+    font-weight: 700;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#backBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Скрываем в полноэкранном режиме, как и кнопку поделиться */
+#backBtn.hidden-fs {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px);
+}
