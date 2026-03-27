@@ -1,9 +1,12 @@
-/* BelSDUM UNIVERSAL ADAPTIVE CSS 
-   Основано на эталоне 2K (2560px). Все размеры переведены в vw.
-*/
+/* ============================================================
+   BelSDUM FINAL ADAPTIVE CSS (2K -> ANY SCREEN)
+   Все дубликаты удалены. Полоска буфера убрана. 
+   Масштаб идеален за счет переменной --px.
+============================================================ */
 
 :root {
-    --u: 1vw; /* Базовая единица: 1% ширины экрана */
+    /* Эта переменная динамически вычисляет размер 1 пикселя относительно 2K монитора */
+    --px: calc(100vw / 2560);
     --panel-bg: rgba(20, 20, 20, 0.5);
     --glass-border: rgba(255, 255, 255, 0.1);
     --accent-glow: rgba(255, 255, 255, 0.2);
@@ -13,230 +16,353 @@
 
 body {
     margin: 0;
+    padding: 0;
     background: #050505;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    font-family: 'Inter', sans-serif;
+    width: 100vw;
+    font-family: 'Inter', -apple-system, sans-serif;
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
-/* --- ФОН СО ЗВЕЗДАМИ И ТУМАННОСТЯМИ --- */
+body.loaded { opacity: 1; }
+
+/* --- 1. ФОН (ЗВЕЗДЫ И ТУМАННОСТИ) --- */
 body::before, body::after {
     content: "";
     position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%;
-    background-image: 
-        radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
-        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
-        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
-    background-size: 550px 550px, 350px 350px, 250px 250px;
+    top: -50%; left: -50%; 
+    width: 200%; height: 200%;
     z-index: -1;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) calc(1 * var(--px)), transparent calc(2 * var(--px))),
+        radial-gradient(white, rgba(255,255,255,.15) calc(1 * var(--px)), transparent calc(2 * var(--px))),
+        radial-gradient(white, rgba(255,255,255,.1) calc(2 * var(--px)), transparent calc(3 * var(--px)));
+    background-size: 
+        calc(550 * var(--px)) calc(550 * var(--px)), 
+        calc(350 * var(--px)) calc(350 * var(--px)), 
+        calc(250 * var(--px)) calc(250 * var(--px));
+    background-position: 0 0, calc(40 * var(--px)) calc(60 * var(--px)), calc(130 * var(--px)) calc(270 * var(--px));
     opacity: 0.4;
     animation: starsMove 100s linear infinite; 
 }
 
 body::after {
-    background-size: 300px 300px, 200px 200px, 150px 150px;
+    background-size: 
+        calc(300 * var(--px)) calc(300 * var(--px)), 
+        calc(200 * var(--px)) calc(200 * var(--px)), 
+        calc(150 * var(--px)) calc(150 * var(--px));
+    background-position: calc(110 * var(--px)) calc(110 * var(--px)), calc(5 * var(--px)) calc(15 * var(--px)), calc(220 * var(--px)) calc(20 * var(--px));
     animation: starsMoveReverse 120s linear infinite, twinkle 5s ease-in-out infinite;
-    z-index: -1;
+    z-index: -2;
 }
 
 .glow-ball {
     position: absolute;
-    width: calc(var(--u) * 25);
-    height: calc(var(--u) * 25);
+    width: calc(600 * var(--px));
+    height: calc(600 * var(--px));
     border-radius: 50%;
-    filter: blur(calc(var(--u) * 5));
+    filter: blur(calc(120 * var(--px)));
     opacity: 0.15;
-    z-index: -1;
 }
-.ball-1 { background: #3a3a3a; top: -5%; right: -5%; animation: move 20s infinite alternate; }
-.ball-2 { background: #1a1a1a; bottom: -5%; left: -5%; animation: move 25s infinite alternate-reverse; }
+.ball-1 { background: #3a3a3a; top: calc(-100 * var(--px)); right: calc(-100 * var(--px)); animation: move 20s infinite alternate; }
+.ball-2 { background: #1a1a1a; bottom: calc(-100 * var(--px)); left: calc(-100 * var(--px)); animation: move 25s infinite alternate-reverse; }
 
-/* --- ЛОГОТИП САЙТА --- */
+
+/* --- 2. ЛОГОТИПЫ --- */
 #Logo {
     position: absolute;
-    top: calc(var(--u) * 2.5);
-    left: calc(var(--u) * 3);
-    width: calc(var(--u) * 7);
+    top: calc(60 * var(--px));
+    left: calc(80 * var(--px));
+    width: calc(180 * var(--px));
     z-index: 100;
 }
 
-/* --- ПЛЕЕР --- */
-.player {
-    position: relative;
-    width: 85vw; 
-    aspect-ratio: 16 / 9;
-    background: #000;
-    border-radius: calc(var(--u) * 1.5);
-    overflow: hidden;
-    box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 5) rgba(0,0,0,0.8);
-}
-
-.player:fullscreen { width: 100vw; height: 100vh; border-radius: 0; }
-video { width: 100%; height: 100%; object-fit: contain; }
-
-/* --- ШАПКА ВИДЕО --- */
-.video-header {
-    position: absolute;
-    top: calc(var(--u) * 2.5);
-    width: 100%;
-    text-align: center;
-    z-index: 10;
-    transition: all 0.4s ease;
-}
-
-.main-title { font-size: calc(var(--u) * 2.2); font-weight: 700; color: white; margin: 0; letter-spacing: 1px; }
-.sub-title { font-size: calc(var(--u) * 1); color: rgba(255, 255, 255, 0.6); margin-top: 5px; }
-
-/* Логотип в углу плеера */
 #playerCornerLogo {
     position: absolute;
-    top: calc(var(--u) * 2.5);
-    right: calc(var(--u) * 3);
-    height: calc(var(--u) * 2.5);
+    top: calc(60 * var(--px));
+    right: calc(60 * var(--px));
+    height: calc(60 * var(--px));
     width: auto;
     opacity: 0.5;
     z-index: 9;
     pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* --- КОНТРОЛЛЕРЫ --- */
+
+/* --- 3. ПЛЕЕР И ВИДЕО --- */
+.player {
+    position: relative;
+    width: calc(2176 * var(--px)); /* Это ровно 85% на 2K */
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: calc(40 * var(--px));
+    overflow: hidden;
+    box-shadow: 0 calc(40 * var(--px)) calc(100 * var(--px)) rgba(0,0,0,0.8);
+}
+
+.player:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+}
+
+video { 
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+/* Шапка (Названия) */
+.video-header {
+    position: absolute;
+    top: calc(60 * var(--px));
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+}
+
+.video-header.hide { opacity: 0; transform: translateY(calc(-20 * var(--px))); }
+.main-title { color: white; font-size: calc(56 * var(--px)); margin: 0; font-weight: 800; letter-spacing: calc(1 * var(--px)); }
+.sub-title { color: rgba(255, 255, 255, 0.6); font-size: calc(24 * var(--px)); margin: calc(10 * var(--px)) 0 0 0; font-weight: 400; }
+
+/* Overlay (Варнинг) */
+#overlayImage {
+    position: absolute;
+    top: calc(60 * var(--px));
+    left: calc(60 * var(--px));
+    width: calc(340 * var(--px));
+    height: auto;
+    z-index: 99;
+    opacity: 0;
+    transform: translateY(calc(30 * var(--px)));
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+#overlayImage.visible { opacity: 1; transform: translateY(0); }
+
+
+/* --- 4. ПАНЕЛЬ УПРАВЛЕНИЯ И КНОПКИ --- */
 .controls {
     position: absolute;
-    bottom: calc(var(--u) * 2);
+    bottom: calc(50 * var(--px));
     left: 50%;
     transform: translateX(-50%);
-    width: 92%;
-    padding: calc(var(--u) * 1.5) calc(var(--u) * 2.5);
+    width: calc(2000 * var(--px));
+    padding: calc(40 * var(--px)) calc(60 * var(--px));
     background: var(--panel-bg);
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(50px);
-    border: 2px solid var(--glass-border);
-    border-radius: calc(var(--u) * 4);
+    backdrop-filter: blur(calc(50 * var(--px)));
+    -webkit-backdrop-filter: blur(calc(50 * var(--px)));
+    border: calc(2 * var(--px)) solid var(--glass-border);
+    border-radius: calc(80 * var(--px));
     display: flex;
     flex-direction: column;
-    gap: calc(var(--u) * 1);
+    gap: calc(30 * var(--px));
+    color: rgb(255, 255, 255);
+    box-sizing: border-box;
     z-index: 10;
-    transition: all 0.4s ease;
+    box-shadow: 0 calc(20 * var(--px)) calc(50 * var(--px)) rgba(0,0,0,0.5);
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.controls.hide { opacity: 0; transform: translateX(-50%) translateY(30px); }
+.controls.hide { opacity: 0; transform: translateX(-50%) translateY(calc(30 * var(--px))); pointer-events: none; }
 
-.top-row { display: flex; align-items: center; justify-content: space-between; }
-.group { display: flex; align-items: center; gap: calc(var(--u) * 1.5); }
+.top-row, .bottom-row { display: flex; align-items: center; }
+.top-row { justify-content: space-between; }
+.group { display: flex; align-items: center; flex: 1; height: calc(70 * var(--px)); }
+.center { justify-content: center; }
+.right { justify-content: flex-end; gap: calc(36 * var(--px)); }
+.left { gap: calc(30 * var(--px)); }
 
-.icon, .play-icon, #volumeBtn { cursor: pointer; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.icon:hover, .play-icon:hover, #volumeBtn:hover { transform: scale(1.1); filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
+/* Иконки */
+.icon, .play-icon, #volumeBtn { cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.icon:hover, .play-icon:hover, #volumeBtn:hover { transform: scale(1.15); filter: drop-shadow(0 0 calc(8 * var(--px)) rgba(255,255,255,0.5)); }
 
-.play-icon, #volumeBtn { width: calc(var(--u) * 3); height: calc(var(--u) * 3); object-fit: contain; }
-.icon { width: calc(var(--u) * 2.2); height: calc(var(--u) * 2.2); }
+.play-icon { width: calc(80 * var(--px)); height: calc(80 * var(--px)); object-fit: contain; }
+#volumeBtn { width: calc(60 * var(--px)); height: calc(60 * var(--px)); object-fit: contain; }
+.icon { width: calc(50 * var(--px)); height: calc(50 * var(--px)); object-fit: contain; }
+.bottom-row span { font-weight: 700; font-size: calc(28 * var(--px)); min-width: calc(100 * var(--px)); color: #D9D9D9; text-align: center; }
 
-/* ПОЛЗУНКИ (БЕЗ СЕРОЙ ПОЛОСКИ) */
+
+/* --- 5. ПОЛЗУНКИ (Без серой полоски) --- */
 input[type="range"] {
     -webkit-appearance: none;
-    background: rgba(255, 255, 255, 0.1) !important; /* Убираем буфер */
-    border-radius: 100px;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1) !important;
     outline: none;
+    cursor: pointer;
+    border-radius: calc(100 * var(--px));
 }
 
-#progress { width: 100%; height: calc(var(--u) * 0.35); }
-#volumeRange { width: calc(var(--u) * 8); height: calc(var(--u) * 0.25); }
+#volumeRange {
+    width: calc(200 * var(--px));
+    height: calc(8 * var(--px));
+    transition: height 0.2s ease, transform 0.2s ease;
+}
+
+#progress {
+    flex: 1;
+    width: 100%;
+    height: calc(10 * var(--px));
+    transition: height 0.2s ease;
+}
 
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: calc(var(--u) * 1);
-    width: calc(var(--u) * 1);
-    background: #fff;
+    height: calc(24 * var(--px));
+    width: calc(24 * var(--px));
+    background: #ffffff;
     border-radius: 50%;
     cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-/* ВРЕМЯ */
-.bottom-row span { font-size: calc(var(--u) * 1.1); font-weight: 700; color: #D9D9D9; min-width: calc(var(--u) * 4); text-align: center; }
+#progress:active::-webkit-slider-thumb { transform: scale(1.2); }
 
-/* --- КНОПКИ СПРАВА И СЛЕВА --- */
+
+/* --- 6. КНОПКИ: ПРОПУСТИТЬ, ПОДЕЛИТЬСЯ, НАЗАД --- */
+#skipBtn, #shareBtn, #backBtn {
+    background: var(--panel-bg);
+    backdrop-filter: blur(calc(30 * var(--px)));
+    -webkit-backdrop-filter: blur(calc(30 * var(--px)));
+    border: calc(2 * var(--px)) solid var(--glass-border);
+    border-radius: calc(80 * var(--px));
+    color: white; font-weight: 700; font-size: calc(28 * var(--px));
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center; text-decoration: none;
+}
+
 #skipBtn {
     position: absolute;
-    bottom: calc(var(--u) * 11);
-    left: 4%;
-    padding: calc(var(--u) * 1) calc(var(--u) * 2.5);
-    background: var(--panel-bg);
-    border: 2px solid var(--glass-border);
-    border-radius: calc(var(--u) * 4);
-    color: white; font-size: calc(var(--u) * 1.2); font-weight: 700;
-    cursor: pointer; z-index: 11; transition: all 0.3s;
+    bottom: calc(250 * var(--px)); left: calc(60 * var(--px));
+    padding: calc(24 * var(--px)) calc(56 * var(--px));
+    z-index: 11; opacity: 0; pointer-events: none; transform: translateY(calc(20 * var(--px)));
 }
+#skipBtn.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+#skipBtn:hover { background: rgba(60, 60, 60, 0.6); transform: scale(1.05); box-shadow: 0 0 calc(20 * var(--px)) var(--accent-glow); }
 
 #shareBtn, #backBtn {
-    position: fixed;
-    right: calc(var(--u) * 1.5);
-    width: calc(var(--u) * 10);
-    padding: calc(var(--u) * 1) 0;
-    background: var(--panel-bg);
-    border: 2px solid var(--glass-border);
-    border-radius: calc(var(--u) * 4);
-    color: white; font-size: calc(var(--u) * 1.2); font-weight: 700;
-    text-align: center; text-decoration: none; z-index: 999; transition: all 0.4s;
+    position: fixed; right: calc(40 * var(--px)); width: calc(280 * var(--px)); padding: calc(24 * var(--px)) 0; z-index: 9999;
+    box-shadow: 0 0 calc(20 * var(--px)) rgba(255, 255, 255, 0.05);
 }
+#shareBtn { bottom: calc(160 * var(--px)); }
+#backBtn { bottom: calc(40 * var(--px)); }
 
-#shareBtn { bottom: calc(var(--u) * 6); }
-#backBtn { bottom: calc(var(--u) * 1.5); }
-#shareBtn.hidden-fs, #backBtn.hidden-fs { opacity: 0; pointer-events: none; }
+#shareBtn:hover, #backBtn:hover {
+    background: rgba(255, 255, 255, 0.15); transform: scale(1.05);
+    box-shadow: 0 0 calc(35 * var(--px)) rgba(255, 255, 255, 0.25); border-color: rgba(255, 255, 255, 0.3);
+}
+#shareBtn.hidden-fs, #backBtn.hidden-fs { opacity: 0; pointer-events: none; transform: translateY(calc(30 * var(--px))); }
 
-/* --- МЕНЮ КАЧЕСТВА --- */
+
+/* --- 7. МЕНЮ КАЧЕСТВА --- */
 .quality-menu {
     position: absolute;
-    bottom: calc(var(--u) * 11);
-    right: 4%;
+    bottom: calc(250 * var(--px)); right: calc(80 * var(--px));
     background: var(--panel-bg);
-    backdrop-filter: blur(40px);
-    border: 2px solid var(--glass-border);
-    border-radius: calc(var(--u) * 1.5);
-    width: calc(var(--u) * 10);
-    padding: calc(var(--u) * 0.5) 0;
-    z-index: 100;
-    transition: all 0.3s;
+    backdrop-filter: blur(calc(40 * var(--px)));
+    -webkit-backdrop-filter: blur(calc(40 * var(--px)));
+    border: calc(2 * var(--px)) solid var(--glass-border);
+    border-radius: calc(30 * var(--px));
+    padding: calc(15 * var(--px)) 0; width: calc(240 * var(--px));
+    display: flex; flex-direction: column; z-index: 100;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 1; transform: translateY(0);
 }
 
-.quality-item { padding: calc(var(--u) * 0.8) calc(var(--u) * 1.2); color: white; font-size: calc(var(--u) * 1); cursor: pointer; }
-.quality-item:hover { background: rgba(255, 255, 255, 0.1); }
-.quality-item.active::after { content: ''; width: 8px; height: 8px; background: #fff; border-radius: 50%; float: right; margin-top: 5px; }
+.quality-menu.hide { opacity: 0; transform: translateY(calc(20 * var(--px))); pointer-events: none; }
+.quality-header {
+    color: rgba(255, 255, 255, 0.5); font-size: calc(14 * var(--px)); font-weight: 700;
+    padding: calc(10 * var(--px)) calc(25 * var(--px)); text-transform: uppercase; letter-spacing: calc(1 * var(--px));
+}
+.quality-item {
+    padding: calc(15 * var(--px)) calc(25 * var(--px)); color: white; font-size: calc(20 * var(--px)); font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+    border-radius: calc(30 * var(--px)); transition: background 0.2s;
+}
+.quality-item:hover { background: rgba(255, 255, 255, 0.062); }
+.quality-item.active::after {
+    content: ''; width: calc(10 * var(--px)); height: calc(10 * var(--px)); background: #fff; border-radius: 50%; box-shadow: 0 0 calc(10 * var(--px)) #fff;
+}
+.badge {
+    font-size: calc(12 * var(--px)); background: rgba(255, 255, 255, 0.2); padding: calc(2 * var(--px)) calc(8 * var(--px));
+    border-radius: calc(6 * var(--px)); margin-left: calc(10 * var(--px));
+}
 
-/* --- ЛОАДЕР "ЧЕРНАЯ ДЫРА" --- */
+
+/* --- 8. МОДАЛКА (ПОДЕЛИТЬСЯ) --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(calc(10 * var(--px)));
+    display: flex; justify-content: center; align-items: center; z-index: 10000;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-content {
+    background: rgba(40, 40, 40, 0.85); backdrop-filter: blur(calc(20 * var(--px)));
+    border: calc(1 * var(--px)) solid rgba(255, 255, 255, 0.1); border-radius: calc(40 * var(--px));
+    padding: calc(40 * var(--px)); width: 90%; max-width: calc(800 * var(--px)); text-align: center;
+    box-shadow: 0 calc(30 * var(--px)) calc(60 * var(--px)) rgba(0,0,0,0.5);
+    transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.modal-overlay.active .modal-content { transform: scale(1); }
+.modal-header { color: white; font-size: calc(38 * var(--px)); font-weight: 700; margin-bottom: calc(25 * var(--px)); }
+.modal-link-box {
+    background: rgba(255, 255, 255, 0.1); padding: calc(25 * var(--px)) calc(40 * var(--px));
+    border-radius: calc(50 * var(--px)); display: inline-block; width: 90%; cursor: pointer;
+}
+#shareLink { color: white; font-size: calc(32 * var(--px)); font-weight: 600; word-break: break-all; cursor: pointer; }
+
+
+/* --- 9. ЛОАДЕР (ЧЕРНАЯ ДЫРА) --- */
 .cosmos-loader {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: calc(var(--u) * 12);
-    height: calc(var(--u) * 12);
-    display: none;
-    justify-content: center;
-    align-items: center;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: calc(300 * var(--px)); height: calc(300 * var(--px));
+    pointer-events: none; display: none; justify-content: center; align-items: center;
+    filter: drop-shadow(0 0 calc(50 * var(--px)) rgba(255, 255, 255, 0.1)); z-index: 100;
 }
-.cosmos-loader:not(.hide) { display: flex; }
+.cosmos-loader:not(.hide) { display: flex; animation: fadeInLoader 0.5s ease forwards; }
 
 .black-hole {
-    width: calc(var(--u) * 3.5); height: calc(var(--u) * 3.5);
-    background: #000; border-radius: 50%;
-    box-shadow: 0 0 calc(var(--u) * 1) white;
-    z-index: 2;
+    position: relative; width: calc(80 * var(--px)); height: calc(80 * var(--px)); background: #000; border-radius: 50%;
+    box-shadow: 0 0 calc(20 * var(--px)) calc(2 * var(--px)) rgba(255, 255, 255, 0.2), inset 0 0 calc(30 * var(--px)) calc(5 * var(--px)) rgba(255, 255, 255, 0.1);
+    z-index: 2; animation: pulseHoleCore 3s infinite ease-in-out;
 }
-
 .orbit-ring {
-    position: absolute;
-    width: calc(var(--u) * 7); height: calc(var(--u) * 7);
-    border-radius: 50%;
-    box-shadow: 0 0 calc(var(--u) * 1.5) #fff;
+    position: absolute; width: calc(180 * var(--px)); height: calc(180 * var(--px)); border-radius: 50%;
+    box-shadow: 0 0 calc(10 * var(--px)) #fff, 0 0 calc(30 * var(--px)) rgba(255,255,255,0.8), 0 0 calc(60 * var(--px)) rgba(255,255,255,0.4);
     background: radial-gradient(circle, transparent 65%, #fff 70%, transparent 75%);
-    animation: rotateAccretionDisk 1s linear infinite;
+    opacity: 0.9; z-index: 1; animation: rotateAccretionDisk 1s linear infinite;
+}
+.cosmos-loader::before {
+    content: ''; position: absolute; width: calc(250 * var(--px)); height: calc(250 * var(--px)); border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    backdrop-filter: blur(calc(3 * var(--px))) saturate(1.5);
+    -webkit-backdrop-filter: blur(calc(3 * var(--px))) saturate(1.5);
+    z-index: 0; animation: lensFlarePulse 4s infinite ease-in-out;
 }
 
-/* --- АНИМАЦИИ --- */
+
+/* --- 10. АНИМАЦИИ --- */
+@keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+@keyframes move { from { transform: translate(0, 0); } to { transform: translate(calc(-100 * var(--px)), calc(100 * var(--px))); } }
 @keyframes starsMove { from { transform: translate(0, 0); } to { transform: translate(10%, 10%); } }
 @keyframes starsMoveReverse { from { transform: translate(0, 0); } to { transform: translate(-10%, -10%); } }
+
 @keyframes rotateAccretionDisk { from { transform: rotate(0deg) scaleY(0.8); } to { transform: rotate(360deg) scaleY(0.8); } }
-@keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.7; } }
-@keyframes move { from { transform: translate(0, 0); } to { transform: translate(-50px, 50px); } }
+@keyframes pulseHoleCore {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 calc(20 * var(--px)) calc(2 * var(--px)) rgba(255, 255, 255, 0.2), inset 0 0 calc(30 * var(--px)) calc(5 * var(--px)) rgba(255, 255, 255, 0.1); }
+    50% { transform: scale(1.05); box-shadow: 0 0 calc(40 * var(--px)) calc(10 * var(--px)) rgba(255, 255, 255, 0.3), inset 0 0 calc(40 * var(--px)) calc(10 * var(--px)) rgba(255, 255, 255, 0.15); }
+}
+@keyframes lensFlarePulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
+@keyframes fadeInLoader { from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
