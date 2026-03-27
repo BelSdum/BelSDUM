@@ -64,24 +64,23 @@ video.muted = true;
 // --- ОБНОВЛЕННАЯ ФУНКЦИЯ ОТРИСОВКИ (СЕРАЯ ПОЛОСКА) ---
 const paint = (el, val, max = 100) => {
   const played = (val / max) * 100;
-  let buffered = 0;
   
-  // Считаем сколько видео загружено (буферизация)
-  if (video.buffered.length > 0 && video.duration > 0) {
-      buffered = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
+  // Если это полоска прогресса ВИДЕО, рисуем буфер
+  if (el.id === 'progress') {
+    let buffered = 0;
+    if (video.buffered.length > 0 && video.duration > 0) {
+        buffered = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
+    }
+    
+    el.style.background = `linear-gradient(to right, 
+        #FFFFFF 0%, #FFFFFF ${played}%, 
+        rgba(255, 255, 255, 0.3) ${played}%, rgba(255, 255, 255, 0.3) ${buffered}%, 
+        rgba(255, 255, 255, 0.05) ${buffered}%, rgba(255, 255, 255, 0.05) 100%)`;
+  } 
+  // Если это громкость, просто белый и прозрачный
+  else {
+    el.style.background = `linear-gradient(to right, #FFF ${played}%, rgba(255,255,255,0.1) ${played}%)`;
   }
-
-  // Градиент: Белый (пройдено) -> Светло-серый (буфер) -> Прозрачный (пусто)
-  el.style.background = `linear-gradient(to right, 
-      #FFFFFF 0%, #FFFFFF ${played}%, 
-      rgba(255, 255, 255, 0.3) ${played}%, rgba(255, 255, 255, 0.3) ${buffered}%, 
-      rgba(255, 255, 255, 0.05) ${buffered}%, rgba(255, 255, 255, 0.05) 100%)`;
-};
-
-const formatTime = (s) => {
-  if (isNaN(s) || s < 0) return "00:00";
-  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
-  return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
 };
 
 // --- ЛОГИКА КОСМИЧЕСКОГО ЛОАДЕРА И ПАУЗЫ ЗВУКА ---
