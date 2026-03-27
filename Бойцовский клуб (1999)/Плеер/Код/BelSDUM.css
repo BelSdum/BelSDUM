@@ -20,6 +20,8 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
+
+
 /* Состояние после загрузки */
 body.loaded {
     opacity: 1;
@@ -685,6 +687,51 @@ input[type=range] {
     border-radius: 10px;
     outline: none;
     cursor: pointer;
+}
+
+.player {
+    position: relative;
+    /* Вместо 1800px используем проценты от ширины экрана */
+    width: 90vw; 
+    max-width: 1600px; /* Ограничиваем на очень больших экранах */
+    aspect-ratio: 16 / 9;
+    border-radius: 2vw; /* Скругление теперь тоже зависит от размера экрана */
+    overflow: hidden;
+    background: #000;
+}
+
+/* Контролы теперь тоже адаптивные */
+.controls {
+    position: absolute;
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 94%;
+    padding: 2% 3%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(40px);
+    border-radius: 30px;
+}
+
+/* Названия фильма (адаптивный шрифт) */
+.main-title {
+    font-size: calc(18px + 1vw); /* Шрифт растет вместе с экраном */
+    font-weight: 900;
+}
+
+.sub-title {
+    font-size: calc(12px + 0.5vw);
+    opacity: 0.5;
+}
+
+/* Ползунок прогресса */
+#progress {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    border-radius: 10px;
+    cursor: pointer;
+    /* Убрали все лишние тени и буферы */
 }
 
 #progress {
