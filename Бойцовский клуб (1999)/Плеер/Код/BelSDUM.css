@@ -1,109 +1,38 @@
-/* ============================================================
-   BelSDUM FINAL ADAPTIVE CSS (2K -> ANY SCREEN)
-   Все дубликаты удалены. Полоска буфера убрана. 
-   Масштаб идеален за счет переменной --px.
-============================================================ */
-
 :root {
-    /* Эта переменная динамически вычисляет размер 1 пикселя относительно 2K монитора */
-    --px: calc(100vw / 2560);
+    --u: 1vw; /* 1% от ширины экрана */
     --panel-bg: rgba(20, 20, 20, 0.5);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --accent-glow: rgba(255, 255, 255, 0.2);
 }
 
 * { box-sizing: border-box; }
 
 body {
     margin: 0;
-    padding: 0;
     background: #050505;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    width: 100vw;
-    font-family: 'Inter', -apple-system, sans-serif;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-body.loaded { opacity: 1; }
-
-/* --- 1. ФОН (ЗВЕЗДЫ И ТУМАННОСТИ) --- */
-body::before, body::after {
-    content: "";
-    position: absolute;
-    top: -50%; left: -50%; 
-    width: 200%; height: 200%;
-    z-index: -1;
-    background-image: 
-        radial-gradient(white, rgba(255,255,255,.2) calc(1 * var(--px)), transparent calc(2 * var(--px))),
-        radial-gradient(white, rgba(255,255,255,.15) calc(1 * var(--px)), transparent calc(2 * var(--px))),
-        radial-gradient(white, rgba(255,255,255,.1) calc(2 * var(--px)), transparent calc(3 * var(--px)));
-    background-size: 
-        calc(550 * var(--px)) calc(550 * var(--px)), 
-        calc(350 * var(--px)) calc(350 * var(--px)), 
-        calc(250 * var(--px)) calc(250 * var(--px));
-    background-position: 0 0, calc(40 * var(--px)) calc(60 * var(--px)), calc(130 * var(--px)) calc(270 * var(--px));
-    opacity: 0.4;
-    animation: starsMove 100s linear infinite; 
-}
-
-body::after {
-    background-size: 
-        calc(300 * var(--px)) calc(300 * var(--px)), 
-        calc(200 * var(--px)) calc(200 * var(--px)), 
-        calc(150 * var(--px)) calc(150 * var(--px));
-    background-position: calc(110 * var(--px)) calc(110 * var(--px)), calc(5 * var(--px)) calc(15 * var(--px)), calc(220 * var(--px)) calc(20 * var(--px));
-    animation: starsMoveReverse 120s linear infinite, twinkle 5s ease-in-out infinite;
-    z-index: -2;
-}
-
-.glow-ball {
-    position: absolute;
-    width: calc(600 * var(--px));
-    height: calc(600 * var(--px));
-    border-radius: 50%;
-    filter: blur(calc(120 * var(--px)));
-    opacity: 0.15;
-}
-.ball-1 { background: #3a3a3a; top: calc(-100 * var(--px)); right: calc(-100 * var(--px)); animation: move 20s infinite alternate; }
-.ball-2 { background: #1a1a1a; bottom: calc(-100 * var(--px)); left: calc(-100 * var(--px)); animation: move 25s infinite alternate-reverse; }
-
-
-/* --- 2. ЛОГОТИПЫ --- */
-#Logo {
-    position: absolute;
-    top: calc(60 * var(--px));
-    left: calc(80 * var(--px));
-    width: calc(180 * var(--px));
-    z-index: 100;
-}
-
-#playerCornerLogo {
-    position: absolute;
-    top: calc(60 * var(--px));
-    right: calc(60 * var(--px));
-    height: calc(60 * var(--px));
-    width: auto;
-    opacity: 0.5;
-    z-index: 9;
-    pointer-events: none;
-    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 
-/* --- 3. ПЛЕЕР И ВИДЕО --- */
+
+/* Состояние после загрузки */
+body.loaded {
+    opacity: 1;
+}
+
+
+
 .player {
     position: relative;
-    width: calc(2176 * var(--px)); /* Это ровно 85% на 2K */
+    width: 85vw; 
     aspect-ratio: 16 / 9;
     background: #000;
-    border-radius: calc(40 * var(--px));
+    border-radius: calc(var(--u) * 1.5);
     overflow: hidden;
-    box-shadow: 0 calc(40 * var(--px)) calc(100 * var(--px)) rgba(0,0,0,0.8);
+    box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 5) rgba(0,0,0,0.8);
 }
 
 .player:fullscreen {
@@ -119,250 +48,784 @@ video {
     object-fit: contain;
 }
 
-/* Шапка (Названия) */
+#overlayImage {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    width: 340px;
+    height: auto;
+    z-index: 99;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+#overlayImage.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#skipBtn {
+    position: absolute;
+    bottom: 250px;
+    left: 4%;
+    padding: 24px 56px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 2px solid var(--glass-border);
+    border-radius: 80px;
+    color: white;
+    font-weight: 700;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 11;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#skipBtn.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#skipBtn:hover {
+    background: rgba(60, 60, 60, 0.6);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.controls {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    padding: 32px 48px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    border: 2px solid var(--glass-border);
+    border-radius: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    z-index: 10;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.controls.hide {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30px);
+    pointer-events: none;
+}
+
+.top-row, .bottom-row { display: flex; align-items: center; }
+.top-row { justify-content: space-between; }
+.group { display: flex; align-items: center; flex: 1; height: 70px; }
+.center { justify-content: center; }
+.right { justify-content: flex-end; gap: 36px; }
+.left { gap: 30px; }
+
+.icon, .play-icon, #volumeBtn {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.icon:hover, .play-icon:hover, #volumeBtn:hover { 
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+}
+
+#volumeBtn, .play-icon { width: 64px; height: 64px; object-fit: contain; }
+.icon { width: 44px; height: 44px; object-fit: contain; }
+
+/* Обновленные ползунки */
+input[type="range"] {
+    -webkit-appearance: none;
+    background: transparent;
+    outline: none;
+    cursor: pointer; /* Мышка меняется на руку */
+}
+
+#volumeRange {
+    width: 200px;
+    height: 25px; /* Чуть тоньше в обычном состоянии */
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: height 0.2s ease, transform 0.2s ease;
+}
+
+
+
+#volumeRange::-webkit-slider-thumb { -webkit-appearance: none; width: 0; }
+
+#progress {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    transition: height 0.2s ease; /* Плавное утолщение */
+}
+
+
+
+#progress::-webkit-slider-runnable-track { height: 100%; background: transparent; }
+
+#progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 24px;
+    width: 24px;
+    background: #ffffff;
+    border-radius: 50%;
+    margin-top: -8px; /* Корректировка центровки */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#progress:active::-webkit-slider-thumb {
+    transform: scale(1.2); /* Thumb немного растет при нажатии */
+    
+}
+
+
+
 .video-header {
     position: absolute;
-    top: calc(60 * var(--px));
+    top: 40px;
     left: 0;
     width: 100%;
     text-align: center;
     z-index: 10;
     transition: opacity 0.4s ease, transform 0.4s ease;
-    pointer-events: none;
+    pointer-events: none; /* Чтобы текст не мешал кликать по видео */
 }
 
-.video-header.hide { opacity: 0; transform: translateY(calc(-20 * var(--px))); }
-.main-title { color: white; font-size: calc(56 * var(--px)); margin: 0; font-weight: 800; letter-spacing: calc(1 * var(--px)); }
-.sub-title { color: rgba(255, 255, 255, 0.6); font-size: calc(24 * var(--px)); margin: calc(10 * var(--px)) 0 0 0; font-weight: 400; }
-
-/* Overlay (Варнинг) */
-#overlayImage {
-    position: absolute;
-    top: calc(60 * var(--px));
-    left: calc(60 * var(--px));
-    width: calc(340 * var(--px));
-    height: auto;
-    z-index: 99;
+.video-header.hide {
     opacity: 0;
-    transform: translateY(calc(30 * var(--px)));
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    pointer-events: none;
+    transform: translateY(-20px);
 }
-#overlayImage.visible { opacity: 1; transform: translateY(0); }
 
+.main-title {
+    color: white;
+    font-size: 42px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
 
-/* --- 4. ПАНЕЛЬ УПРАВЛЕНИЯ И КНОПКИ --- */
-.controls {
-    position: absolute;
-    bottom: calc(50 * var(--px));
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(2000 * var(--px));
-    padding: calc(40 * var(--px)) calc(60 * var(--px));
+.sub-title {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+    margin: 5px 0 0 0;
+    font-weight: 400;
+}
+
+.bottom-row span {
+    font-weight: 700;
+    font-size: 26px;
+    min-width: 95px;
+    color: #D9D9D9;
+    text-align: center;
+}
+
+#shareBtn {
+    text-align: center;
+    width: 160px; 
+    position: fixed;
+    bottom: 120px;
+    right: 20px;
+    padding: 24px 56px;
     background: var(--panel-bg);
-    backdrop-filter: blur(calc(50 * var(--px)));
-    -webkit-backdrop-filter: blur(calc(50 * var(--px)));
-    border: calc(2 * var(--px)) solid var(--glass-border);
-    border-radius: calc(80 * var(--px));
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 2px solid var(--glass-border);
+    border-radius: 80px;
+    color: white;
+    font-weight: 700;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 9999; /* Чтобы была поверх всего */
+    
+    /* Эффект свечения */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Свечение и масштаб при наведении */
+#shareBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Состояние для скрытия в полноэкранном режиме */
+#shareBtn.hidden-fs {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px);
+}
+
+#Logo {
+    position: absolute;
+    top: calc(var(--u) * 2.5);
+    left: calc(var(--u) * 3);
+    width: calc(var(--u) * 6.5);
+    z-index: 100;
+}
+
+.space-stars-back, .space-stars-front {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Затемнение */
+    backdrop-filter: blur(10px);    /* Размытие фона видео */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Контейнер меню */
+.modal-content {
+    background: rgba(40, 40, 40, 0.85); /* Темный полупрозрачный фон */
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 40px;
+    padding: 40px;
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    color: white;
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* Поле со ссылкой */
+.modal-link-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 25px 40px;
+    border-radius: 50px;
+    display: inline-block;
+    width: 90%;
+    cursor: pointer;
+}
+
+#shareLink {
+    color: white;
+    font-size: 32px;
+    font-weight: 600;
+    word-break: break-all;
+    cursor: pointer;
+}
+
+#backBtn {
+    text-align: center;
+    width: 160px; 
+    text-decoration: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 24px 56px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 2px solid var(--glass-border);
+    border-radius: 80px;
+    color: white;
+    font-weight: 700;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#backBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Скрываем в полноэкранном режиме, как и кнопку поделиться */
+#backBtn.hidden-fs {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px);
+}
+
+#playerCornerLogo {
+    position: absolute;
+    top: 60px; /* Отступ сверху, как у заголовка */
+    right: 60px; /* Отступ справа */
+    height: 60px; /* Высота логотипа (подберите нужную) */
+    width: auto; /* Ширина подстроится автоматически */
+    z-index: 9; /* Ниже контроллеров (10), но выше видео */
+    opacity: 0.5; /* Уровень прозрачности (0.0 - полностью прозрачный, 1.0 - нет) */
+    pointer-events: none; /* Чтобы клики проходили сквозь логотип на видео */
+    transition: opacity 0.4s ease, transform 0.4s ease; /* Плавное скрытие */
+}
+
+.glow-ball {
+    position: absolute; /* Абсолютное позиционирование */
+    width: 600px; /* Ширина шара */
+    height: 600px; /* Высота шара */
+    border-radius: 50%; /* Круглая форма */
+    filter: blur(120px); /* Сильное размытие */
+    opacity: 0.15; /* Прозрачность шара */
+}
+
+/* Первый светящийся шар */
+.ball-1 {
+    background: #3a3a3a; /* Цвет фона шара */
+    top: -100px; /* Отступ сверху */
+    right: -100px; /* Отступ справа */
+    animation: move 20s infinite alternate; /* Анимация движения */
+}
+
+/* Второй светящийся шар */
+.ball-2 {
+    background: #1a1a1a; /* Цвет фона шара */
+    bottom: -100px; /* Отступ снизу */
+    left: -100px; /* Отступ слева */
+    animation: move 25s infinite alternate-reverse; /* Анимация движения в обратную сторону */
+}
+
+/* АНИМАЦИИ */
+/* Анимация мерцания звезд (Новое) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; } /* Минимальная прозрачность */
+    50% { opacity: 0.8; } /* Максимальная прозрачность (звезда загорается) */
+}
+
+/* Анимация движения туманностей */
+@keyframes move {
+    from { transform: translate(0, 0); } /* Начальное положение */
+    to { transform: translate(-100px, 100px); } /* Конечное положение */
+}
+
+/* --- СЛОЙ СО ЗВЕЗДАМИ --- */
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%; /* Увеличиваем размер для плавного движения */
+    
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+    
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    z-index: 1;
+    opacity: 0.4;
+    
+    /* Анимация медленного дрейфа */
+    animation: starsMove 100s linear infinite; 
+}
+
+/* Второй слой звезд — он будет мигать и двигаться в другую сторону */
+body::after {
+    background-size: 300px 300px, 200px 200px, 150px 150px;
+    background-position: 110px 110px, 5px 15px, 220px 20px;
+    
+    /* Совмещаем две анимации: дрейф и мерцание */
+    animation: 
+        starsMoveReverse 120s linear infinite, 
+        twinkle 5s ease-in-out infinite;
+    z-index: 2;
+}
+
+/* --- АНИМАЦИИ --- */
+
+/* Медленное движение звезд в одну сторону */
+@keyframes starsMove {
+    from { transform: translate(0, 0); }
+    to { transform: translate(10%, 10%); }
+}
+
+/* Медленное движение звезд в другую сторону */
+@keyframes starsMoveReverse {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-10%, -10%); }
+}
+
+/* Эффект мерцания (мигания) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.7; }
+}
+
+/* Анимация туманностей (твоя старая анимация) */
+@keyframes move {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-100px, 100px); }
+}
+
+/* Контейнер меню качества */
+.quality-menu {
+    position: absolute;
+    bottom: 250px; /* Над панелью управления */
+    right: 4%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 2px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 15px 0;
+    width: 220px;
     display: flex;
     flex-direction: column;
-    gap: calc(30 * var(--px));
-    color: rgb(255, 255, 255);
-    box-sizing: border-box;
-    z-index: 10;
-    box-shadow: 0 calc(20 * var(--px)) calc(50 * var(--px)) rgba(0,0,0,0.5);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 100;
+
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.controls.hide { opacity: 0; transform: translateX(-50%) translateY(calc(30 * var(--px))); pointer-events: none; }
+.quality-menu.hide {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
 
-.top-row, .bottom-row { display: flex; align-items: center; }
-.top-row { justify-content: space-between; }
-.group { display: flex; align-items: center; flex: 1; height: calc(70 * var(--px)); }
-.center { justify-content: center; }
-.right { justify-content: flex-end; gap: calc(36 * var(--px)); }
-.left { gap: calc(30 * var(--px)); }
+.quality-header {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-/* Иконки */
-.icon, .play-icon, #volumeBtn { cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.icon:hover, .play-icon:hover, #volumeBtn:hover { transform: scale(1.15); filter: drop-shadow(0 0 calc(8 * var(--px)) rgba(255,255,255,0.5)); }
+.quality-item {
+    padding: 15px 25px;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 30px;
+    transition: background 0.2s;
+}
 
-.play-icon { width: calc(80 * var(--px)); height: calc(80 * var(--px)); object-fit: contain; }
-#volumeBtn { width: calc(60 * var(--px)); height: calc(60 * var(--px)); object-fit: contain; }
-.icon { width: calc(50 * var(--px)); height: calc(50 * var(--px)); object-fit: contain; }
-.bottom-row span { font-weight: 700; font-size: calc(28 * var(--px)); min-width: calc(100 * var(--px)); color: #D9D9D9; text-align: center; }
+.quality-item:hover {
+    background: rgba(255, 255, 255, 0.062);
+}
 
 
-/* --- 5. ПОЛЗУНКИ (Без серой полоски) --- */
-input[type="range"] {
+
+.quality-item.active::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+}
+
+.badge {
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-left: 10px;
+}
+
+/* --- КОСМИЧЕСКИЙ ЛОАДЕР --- */
+/* --- ЭФФЕКТ КОСМИЧЕСКОЙ ЗАГРУЗКИ --- */
+/* ============================================================
+   ФИНАЛЬНЫЙ КОСМИЧЕСКИЙ ЛОАДЕР "ЧЁРНАЯ ДЫРА" (ОБНОВЛЕННЫЙ)
+============================================================ */
+
+.cosmos-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;  /* Увеличили размер для деталей */
+    height: 300px;
+    pointer-events: none;
+    display: none; /* Скрыт по умолчанию */
+    justify-content: center;
+    align-items: center;
+    /* Эффект искажения пространства вокруг дыры */
+    filter: drop-shadow(0 0 50px rgba(255, 255, 255, 0.1));
+}
+
+/* Класс отображения (управляется JS) */
+.cosmos-loader:not(.hide) {
+    display: flex;
+    animation: fadeInLoader 0.5s ease forwards;
+}
+
+/* 1. ЯДРО ЧЁРНОЙ ДЫРЫ (СИНГУЛЯРНОСТЬ) */
+.black-hole {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background: #000; /* Абсолютная чернота */
+    border-radius: 50%;
+    /* Глубокое внутреннее свечение (горизонт событий) */
+    box-shadow: 
+        0 0 20px 2px rgba(255, 255, 255, 0.2), /* Внешний блик */
+        inset 0 0 30px 5px rgba(255, 255, 255, 0.1); /* Внутренняя глубина */
+    z-index: 2;
+    animation: pulseHoleCore 3s infinite ease-in-out;
+}
+
+/* 2. АККРЕЦИОННЫЙ ДИСК (ВРАЩАЮЩЕЕСЯ КОЛЬЦО МАТЕРИИ) */
+.orbit-ring {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    /* Создаем эффект огненного диска с помощью теней */
+    box-shadow: 
+        0 0 10px #fff,               /* Яркий центр диска */
+        0 0 30px rgba(255,255,255,0.8), /* Основное свечение */
+        0 0 60px rgba(255,255,255,0.4); /* Внешнее рассеивание */
+    
+    /* Делаем кольцо неоднородным, "рваным" */
+    background: radial-gradient(circle, transparent 65%, #fff 70%, transparent 75%);
+    
+    opacity: 0.9;
+    z-index: 1;
+    animation: rotateAccretionDisk 1s linear infinite; /* Очень быстрое вращение */
+}
+
+/* 3. ЭФФЕКТ ГРАВИТАЦИОННОГО ЛИНЗИРОВАНИЯ (ИСКАЖЕНИЕ СВЕТА) */
+/* Мы добавим псевдоэлемент к лоадеру */
+.cosmos-loader::before {
+    content: '';
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    /* Тонкое искажение пространства */
+    backdrop-filter: blur(3px) saturate(1.5);
+    -webkit-backdrop-filter: blur(3px) saturate(1.5);
+    z-index: 0;
+    animation: lensFlarePulse 4s infinite ease-in-out;
+}
+
+/* --- АНИМАЦИИ --- */
+
+/* Быстрое вращение диска */
+@keyframes rotateAccretionDisk {
+    from { transform: rotate(0deg) scaleY(0.8); } /* Немного сплюснут для перспективы */
+    to { transform: rotate(360deg) scaleY(0.8); }
+}
+
+/* Медленная пульсация ядра (дыхание бездны) */
+@keyframes pulseHoleCore {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 20px 2px rgba(255, 255, 255, 0.2), inset 0 0 30px 5px rgba(255, 255, 255, 0.1); }
+    50% { transform: scale(1.05); box-shadow: 0 0 40px 10px rgba(255, 255, 255, 0.3), inset 0 0 40px 10px rgba(255, 255, 255, 0.15); }
+}
+
+/* Пульсация искажения света */
+@keyframes lensFlarePulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+
+/* Плавное появление лоадера */
+@keyframes fadeInLoader {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px; /* Убедись, что высота не 0! */
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+.player {
+    position: relative;
+    /* Вместо 1800px используем проценты от ширины экрана */
+    width: 90vw; 
+    max-width: 1600px; /* Ограничиваем на очень больших экранах */
+    aspect-ratio: 16 / 9;
+    border-radius: 2vw; /* Скругление теперь тоже зависит от размера экрана */
+    overflow: hidden;
+    background: #000;
+}
+
+/* Контролы теперь тоже адаптивные */
+.controls {
+    position: absolute;
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 94%;
+    padding: 2% 3%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(40px);
+    border-radius: 30px;
+}
+
+/* Названия фильма (адаптивный шрифт) */
+.main-title {
+    font-size: calc(18px + 1vw); /* Шрифт растет вместе с экраном */
+    font-weight: 900;
+}
+
+.sub-title {
+    font-size: calc(12px + 0.5vw);
+    opacity: 0.5;
+}
+
+/* Ползунок прогресса */
+#progress {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    border-radius: 10px;
+    cursor: pointer;
+    /* Убрали все лишние тени и буферы */
+}
+
+/* Масштабирование всего контента под экран пользователя */
+/* Убираем серую полоску буфера в CSS */
+input[type=range] {
     -webkit-appearance: none;
     appearance: none;
     background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 100px;
     outline: none;
-    cursor: pointer;
-    border-radius: calc(100 * var(--px));
 }
 
-#volumeRange {
-    width: calc(200 * var(--px));
-    height: calc(8 * var(--px));
-    transition: height 0.2s ease, transform 0.2s ease;
+/* ГЛАВНЫЙ СЕКРЕТ АДАПТИВНОСТИ ПОД 2K */
+/* Мы используем 1vw как базовую единицу. На 2560px это 25.6px. */
+.player {
+    position: relative;
+    width: 85vw; /* Плеер всегда занимает 85% ширины экрана */
+    max-width: 1800px;
+    aspect-ratio: 16 / 9;
+    margin: auto;
+    border-radius: 1.5vw;
+    overflow: hidden;
+}
+
+.controls {
+    position: absolute;
+    bottom: 2vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    padding: 1.5vw 2.5vw;
+    border-radius: 1.2vw;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(2vw);
+}
+
+/* Текст и иконки теперь зависят от ширины экрана */
+.main-title {
+    font-size: 1.8vw; /* На Full HD будет ~34px, на 2K ~46px */
+    font-weight: 800;
+}
+
+.sub-title {
+    font-size: 0.8vw;
+    opacity: 0.6;
+}
+
+.icon {
+    width: 1.2vw;
+    height: auto;
+}
+
+.play-icon {
+    width: 2.8vw;
 }
 
 #progress {
-    flex: 1;
+    height: 0.3vw;
+    margin-top: 1vw;
+}
+
+#volumeRange {
+    width: 6vw;
+    height: 0.2vw;
+}
+
+/* Время */
+#currentTime, #duration {
+    font-size: 0.7vw;
+}
+
+/* Кнопка Пропустить */
+.skip-btn {
+    padding: 0.8vw 1.5vw;
+    font-size: 0.8vw;
+    border-radius: 0.8vw;
+}
+
+/* Кнопки внизу экрана (Назад / Поделиться) */
+.bottom-btns {
+    position: absolute;
+    bottom: 2vw;
+    right: 2vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+}
+
+.bottom-btn {
+    padding: 0.6vw 2vw;
+    font-size: 0.8vw;
+    border-radius: 1vw;
+}
+
+#progress {
     width: 100%;
-    height: calc(10 * var(--px));
-    transition: height 0.2s ease;
+    /* Важно: цвет фона здесь будет заменен через JS (paint) */
 }
 
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: calc(24 * var(--px));
-    width: calc(24 * var(--px));
-    background: #ffffff;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-#progress:active::-webkit-slider-thumb { transform: scale(1.2); }
-
-
-/* --- 6. КНОПКИ: ПРОПУСТИТЬ, ПОДЕЛИТЬСЯ, НАЗАД --- */
-#skipBtn, #shareBtn, #backBtn {
-    background: var(--panel-bg);
-    backdrop-filter: blur(calc(30 * var(--px)));
-    -webkit-backdrop-filter: blur(calc(30 * var(--px)));
-    border: calc(2 * var(--px)) solid var(--glass-border);
-    border-radius: calc(80 * var(--px));
-    color: white; font-weight: 700; font-size: calc(28 * var(--px));
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    text-align: center; text-decoration: none;
-}
-
-#skipBtn {
-    position: absolute;
-    bottom: calc(250 * var(--px)); left: calc(60 * var(--px));
-    padding: calc(24 * var(--px)) calc(56 * var(--px));
-    z-index: 11; opacity: 0; pointer-events: none; transform: translateY(calc(20 * var(--px)));
-}
-#skipBtn.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-#skipBtn:hover { background: rgba(60, 60, 60, 0.6); transform: scale(1.05); box-shadow: 0 0 calc(20 * var(--px)) var(--accent-glow); }
-
-#shareBtn, #backBtn {
-    position: fixed; right: calc(40 * var(--px)); width: calc(280 * var(--px)); padding: calc(24 * var(--px)) 0; z-index: 9999;
-    box-shadow: 0 0 calc(20 * var(--px)) rgba(255, 255, 255, 0.05);
-}
-#shareBtn { bottom: calc(160 * var(--px)); }
-#backBtn { bottom: calc(40 * var(--px)); }
-
-#shareBtn:hover, #backBtn:hover {
-    background: rgba(255, 255, 255, 0.15); transform: scale(1.05);
-    box-shadow: 0 0 calc(35 * var(--px)) rgba(255, 255, 255, 0.25); border-color: rgba(255, 255, 255, 0.3);
-}
-#shareBtn.hidden-fs, #backBtn.hidden-fs { opacity: 0; pointer-events: none; transform: translateY(calc(30 * var(--px))); }
-
-
-/* --- 7. МЕНЮ КАЧЕСТВА --- */
-.quality-menu {
-    position: absolute;
-    bottom: calc(250 * var(--px)); right: calc(80 * var(--px));
-    background: var(--panel-bg);
-    backdrop-filter: blur(calc(40 * var(--px)));
-    -webkit-backdrop-filter: blur(calc(40 * var(--px)));
-    border: calc(2 * var(--px)) solid var(--glass-border);
-    border-radius: calc(30 * var(--px));
-    padding: calc(15 * var(--px)) 0; width: calc(240 * var(--px));
-    display: flex; flex-direction: column; z-index: 100;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    opacity: 1; transform: translateY(0);
-}
-
-.quality-menu.hide { opacity: 0; transform: translateY(calc(20 * var(--px))); pointer-events: none; }
-.quality-header {
-    color: rgba(255, 255, 255, 0.5); font-size: calc(14 * var(--px)); font-weight: 700;
-    padding: calc(10 * var(--px)) calc(25 * var(--px)); text-transform: uppercase; letter-spacing: calc(1 * var(--px));
-}
-.quality-item {
-    padding: calc(15 * var(--px)) calc(25 * var(--px)); color: white; font-size: calc(20 * var(--px)); font-weight: 600;
-    cursor: pointer; display: flex; align-items: center; justify-content: space-between;
-    border-radius: calc(30 * var(--px)); transition: background 0.2s;
-}
-.quality-item:hover { background: rgba(255, 255, 255, 0.062); }
-.quality-item.active::after {
-    content: ''; width: calc(10 * var(--px)); height: calc(10 * var(--px)); background: #fff; border-radius: 50%; box-shadow: 0 0 calc(10 * var(--px)) #fff;
-}
-.badge {
-    font-size: calc(12 * var(--px)); background: rgba(255, 255, 255, 0.2); padding: calc(2 * var(--px)) calc(8 * var(--px));
-    border-radius: calc(6 * var(--px)); margin-left: calc(10 * var(--px));
-}
-
-
-/* --- 8. МОДАЛКА (ПОДЕЛИТЬСЯ) --- */
-.modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(calc(10 * var(--px)));
-    display: flex; justify-content: center; align-items: center; z-index: 10000;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-}
-.modal-overlay.active { opacity: 1; pointer-events: auto; }
-.modal-content {
-    background: rgba(40, 40, 40, 0.85); backdrop-filter: blur(calc(20 * var(--px)));
-    border: calc(1 * var(--px)) solid rgba(255, 255, 255, 0.1); border-radius: calc(40 * var(--px));
-    padding: calc(40 * var(--px)); width: 90%; max-width: calc(800 * var(--px)); text-align: center;
-    box-shadow: 0 calc(30 * var(--px)) calc(60 * var(--px)) rgba(0,0,0,0.5);
-    transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.modal-overlay.active .modal-content { transform: scale(1); }
-.modal-header { color: white; font-size: calc(38 * var(--px)); font-weight: 700; margin-bottom: calc(25 * var(--px)); }
-.modal-link-box {
-    background: rgba(255, 255, 255, 0.1); padding: calc(25 * var(--px)) calc(40 * var(--px));
-    border-radius: calc(50 * var(--px)); display: inline-block; width: 90%; cursor: pointer;
-}
-#shareLink { color: white; font-size: calc(32 * var(--px)); font-weight: 600; word-break: break-all; cursor: pointer; }
-
-
-/* --- 9. ЛОАДЕР (ЧЕРНАЯ ДЫРА) --- */
-.cosmos-loader {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: calc(300 * var(--px)); height: calc(300 * var(--px));
-    pointer-events: none; display: none; justify-content: center; align-items: center;
-    filter: drop-shadow(0 0 calc(50 * var(--px)) rgba(255, 255, 255, 0.1)); z-index: 100;
-}
-.cosmos-loader:not(.hide) { display: flex; animation: fadeInLoader 0.5s ease forwards; }
-
-.black-hole {
-    position: relative; width: calc(80 * var(--px)); height: calc(80 * var(--px)); background: #000; border-radius: 50%;
-    box-shadow: 0 0 calc(20 * var(--px)) calc(2 * var(--px)) rgba(255, 255, 255, 0.2), inset 0 0 calc(30 * var(--px)) calc(5 * var(--px)) rgba(255, 255, 255, 0.1);
-    z-index: 2; animation: pulseHoleCore 3s infinite ease-in-out;
-}
-.orbit-ring {
-    position: absolute; width: calc(180 * var(--px)); height: calc(180 * var(--px)); border-radius: 50%;
-    box-shadow: 0 0 calc(10 * var(--px)) #fff, 0 0 calc(30 * var(--px)) rgba(255,255,255,0.8), 0 0 calc(60 * var(--px)) rgba(255,255,255,0.4);
-    background: radial-gradient(circle, transparent 65%, #fff 70%, transparent 75%);
-    opacity: 0.9; z-index: 1; animation: rotateAccretionDisk 1s linear infinite;
-}
-.cosmos-loader::before {
-    content: ''; position: absolute; width: calc(250 * var(--px)); height: calc(250 * var(--px)); border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-    backdrop-filter: blur(calc(3 * var(--px))) saturate(1.5);
-    -webkit-backdrop-filter: blur(calc(3 * var(--px))) saturate(1.5);
-    z-index: 0; animation: lensFlarePulse 4s infinite ease-in-out;
-}
-
-
-/* --- 10. АНИМАЦИИ --- */
-@keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
-@keyframes move { from { transform: translate(0, 0); } to { transform: translate(calc(-100 * var(--px)), calc(100 * var(--px))); } }
-@keyframes starsMove { from { transform: translate(0, 0); } to { transform: translate(10%, 10%); } }
-@keyframes starsMoveReverse { from { transform: translate(0, 0); } to { transform: translate(-10%, -10%); } }
-
-@keyframes rotateAccretionDisk { from { transform: rotate(0deg) scaleY(0.8); } to { transform: rotate(360deg) scaleY(0.8); } }
-@keyframes pulseHoleCore {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 calc(20 * var(--px)) calc(2 * var(--px)) rgba(255, 255, 255, 0.2), inset 0 0 calc(30 * var(--px)) calc(5 * var(--px)) rgba(255, 255, 255, 0.1); }
-    50% { transform: scale(1.05); box-shadow: 0 0 calc(40 * var(--px)) calc(10 * var(--px)) rgba(255, 255, 255, 0.3), inset 0 0 calc(40 * var(--px)) calc(10 * var(--px)) rgba(255, 255, 255, 0.15); }
-}
-@keyframes lensFlarePulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
-@keyframes fadeInLoader { from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
