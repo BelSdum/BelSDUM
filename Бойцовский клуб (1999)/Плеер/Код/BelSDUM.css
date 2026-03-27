@@ -1,0 +1,575 @@
+:root {
+    --accent-glow: rgba(255, 255, 255, 0.2);
+    --panel-bg: rgba(20, 20, 20, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Состояние после загрузки */
+body.loaded {
+    opacity: 1;
+}
+
+
+
+.player {
+    position: relative;
+    width: 1800px; 
+    max-width: 95vw;
+    aspect-ratio: 16 / 9;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 50px 100px -20px rgba(0,0,0,0.8);
+    background: #000;
+    transition: border-radius 0.3s ease;
+    outline: none;
+    z-index: 999;
+}
+
+.player:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+}
+
+video { 
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+#overlayImage {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    width: 340px;
+    height: auto;
+    z-index: 99;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+#overlayImage.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#skipBtn {
+    position: absolute;
+    bottom: 250px;
+    left: 4%;
+    padding: 24px 56px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 2px solid var(--glass-border);
+    border-radius: 80px;
+    color: white;
+    font-weight: 700;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 11;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#skipBtn.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#skipBtn:hover {
+    background: rgba(60, 60, 60, 0.6);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.controls {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    padding: 32px 48px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    border: 2px solid var(--glass-border);
+    border-radius: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    z-index: 10;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.controls.hide {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30px);
+    pointer-events: none;
+}
+
+.top-row, .bottom-row { display: flex; align-items: center; }
+.top-row { justify-content: space-between; }
+.group { display: flex; align-items: center; flex: 1; height: 70px; }
+.center { justify-content: center; }
+.right { justify-content: flex-end; gap: 36px; }
+.left { gap: 30px; }
+
+.icon, .play-icon, #volumeBtn {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.icon:hover, .play-icon:hover, #volumeBtn:hover { 
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+}
+
+#volumeBtn, .play-icon { width: 64px; height: 64px; object-fit: contain; }
+.icon { width: 44px; height: 44px; object-fit: contain; }
+
+/* Обновленные ползунки */
+input[type="range"] {
+    -webkit-appearance: none;
+    background: transparent;
+    outline: none;
+    cursor: pointer; /* Мышка меняется на руку */
+}
+
+#volumeRange {
+    width: 200px;
+    height: 25px; /* Чуть тоньше в обычном состоянии */
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: height 0.2s ease, transform 0.2s ease;
+}
+
+
+
+#volumeRange::-webkit-slider-thumb { -webkit-appearance: none; width: 0; }
+
+#progress {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    transition: height 0.2s ease; /* Плавное утолщение */
+}
+
+
+
+#progress::-webkit-slider-runnable-track { height: 100%; background: transparent; }
+
+#progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 24px;
+    width: 24px;
+    background: #ffffff;
+    border-radius: 50%;
+    margin-top: -8px; /* Корректировка центровки */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#progress:active::-webkit-slider-thumb {
+    transform: scale(1.2); /* Thumb немного растет при нажатии */
+    
+}
+
+
+
+.video-header {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none; /* Чтобы текст не мешал кликать по видео */
+}
+
+.video-header.hide {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.main-title {
+    color: white;
+    font-size: 42px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.sub-title {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+    margin: 5px 0 0 0;
+    font-weight: 400;
+}
+
+.bottom-row span {
+    font-weight: 700;
+    font-size: 26px;
+    min-width: 95px;
+    color: #D9D9D9;
+    text-align: center;
+}
+
+#shareBtn {
+    text-align: center;
+    width: 160px; 
+    position: fixed;
+    bottom: 120px;
+    right: 20px;
+    padding: 24px 56px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 2px solid var(--glass-border);
+    border-radius: 80px;
+    color: white;
+    font-weight: 700;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 9999; /* Чтобы была поверх всего */
+    
+    /* Эффект свечения */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Свечение и масштаб при наведении */
+#shareBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Состояние для скрытия в полноэкранном режиме */
+#shareBtn.hidden-fs {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px);
+}
+
+#Logo {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    height: 60px;
+    width: auto;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Затемнение */
+    backdrop-filter: blur(10px);    /* Размытие фона видео */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Контейнер меню */
+.modal-content {
+    background: rgba(40, 40, 40, 0.85); /* Темный полупрозрачный фон */
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 40px;
+    padding: 40px;
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    color: white;
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* Поле со ссылкой */
+.modal-link-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 25px 40px;
+    border-radius: 50px;
+    display: inline-block;
+    width: 90%;
+    cursor: pointer;
+}
+
+#shareLink {
+    color: white;
+    font-size: 32px;
+    font-weight: 600;
+    word-break: break-all;
+    cursor: pointer;
+}
+
+#backBtn {
+    text-align: center;
+    width: 160px; 
+    text-decoration: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 24px 56px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 2px solid var(--glass-border);
+    border-radius: 80px;
+    color: white;
+    font-weight: 700;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#backBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Скрываем в полноэкранном режиме, как и кнопку поделиться */
+#backBtn.hidden-fs {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px);
+}
+
+#playerCornerLogo {
+    position: absolute;
+    top: 60px; /* Отступ сверху, как у заголовка */
+    right: 60px; /* Отступ справа */
+    height: 60px; /* Высота логотипа (подберите нужную) */
+    width: auto; /* Ширина подстроится автоматически */
+    z-index: 9; /* Ниже контроллеров (10), но выше видео */
+    opacity: 0.5; /* Уровень прозрачности (0.0 - полностью прозрачный, 1.0 - нет) */
+    pointer-events: none; /* Чтобы клики проходили сквозь логотип на видео */
+    transition: opacity 0.4s ease, transform 0.4s ease; /* Плавное скрытие */
+}
+
+.glow-ball {
+    position: absolute; /* Абсолютное позиционирование */
+    width: 600px; /* Ширина шара */
+    height: 600px; /* Высота шара */
+    border-radius: 50%; /* Круглая форма */
+    filter: blur(120px); /* Сильное размытие */
+    opacity: 0.15; /* Прозрачность шара */
+}
+
+/* Первый светящийся шар */
+.ball-1 {
+    background: #3a3a3a; /* Цвет фона шара */
+    top: -100px; /* Отступ сверху */
+    right: -100px; /* Отступ справа */
+    animation: move 20s infinite alternate; /* Анимация движения */
+}
+
+/* Второй светящийся шар */
+.ball-2 {
+    background: #1a1a1a; /* Цвет фона шара */
+    bottom: -100px; /* Отступ снизу */
+    left: -100px; /* Отступ слева */
+    animation: move 25s infinite alternate-reverse; /* Анимация движения в обратную сторону */
+}
+
+/* АНИМАЦИИ */
+/* Анимация мерцания звезд (Новое) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; } /* Минимальная прозрачность */
+    50% { opacity: 0.8; } /* Максимальная прозрачность (звезда загорается) */
+}
+
+/* Анимация движения туманностей */
+@keyframes move {
+    from { transform: translate(0, 0); } /* Начальное положение */
+    to { transform: translate(-100px, 100px); } /* Конечное положение */
+}
+
+/* --- СЛОЙ СО ЗВЕЗДАМИ --- */
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%; /* Увеличиваем размер для плавного движения */
+    
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+    
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    z-index: 1;
+    opacity: 0.4;
+    
+    /* Анимация медленного дрейфа */
+    animation: starsMove 100s linear infinite; 
+}
+
+/* Второй слой звезд — он будет мигать и двигаться в другую сторону */
+body::after {
+    background-size: 300px 300px, 200px 200px, 150px 150px;
+    background-position: 110px 110px, 5px 15px, 220px 20px;
+    
+    /* Совмещаем две анимации: дрейф и мерцание */
+    animation: 
+        starsMoveReverse 120s linear infinite, 
+        twinkle 5s ease-in-out infinite;
+    z-index: 2;
+}
+
+/* --- АНИМАЦИИ --- */
+
+/* Медленное движение звезд в одну сторону */
+@keyframes starsMove {
+    from { transform: translate(0, 0); }
+    to { transform: translate(10%, 10%); }
+}
+
+/* Медленное движение звезд в другую сторону */
+@keyframes starsMoveReverse {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-10%, -10%); }
+}
+
+/* Эффект мерцания (мигания) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.7; }
+}
+
+/* Анимация туманностей (твоя старая анимация) */
+@keyframes move {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-100px, 100px); }
+}
+
+/* Контейнер меню качества */
+.quality-menu {
+    position: absolute;
+    bottom: 250px; /* Над панелью управления */
+    right: 4%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 2px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 15px 0;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.quality-menu.hide {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.quality-header {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.quality-item {
+    padding: 15px 25px;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 30px;
+    transition: background 0.2s;
+}
+
+.quality-item:hover {
+    background: rgba(255, 255, 255, 0.062);
+}
+
+
+
+.quality-item.active::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+}
+
+.badge {
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-left: 10px;
+}
