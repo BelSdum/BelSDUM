@@ -1,22 +1,24 @@
 :root {
-    --u: 1vw; /* 1% от ширины экрана */
+    --accent-glow: rgba(255, 255, 255, 0.2);
     --panel-bg: rgba(20, 20, 20, 0.5);
     --glass-border: rgba(255, 255, 255, 0.1);
 }
 
-* { box-sizing: border-box; }
-
 body {
-    margin: 0;
     background: #050505;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
-
-
 
 /* Состояние после загрузки */
 body.loaded {
@@ -27,12 +29,16 @@ body.loaded {
 
 .player {
     position: relative;
-    width: 85vw; 
+    width: 1800px; 
+    max-width: 95vw;
     aspect-ratio: 16 / 9;
-    background: #000;
-    border-radius: calc(var(--u) * 1.5);
+    border-radius: 40px;
     overflow: hidden;
-    box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 5) rgba(0,0,0,0.8);
+    box-shadow: 0 50px 100px -20px rgba(0,0,0,0.8);
+    background: #000;
+    transition: border-radius 0.3s ease;
+    outline: none;
+    z-index: 999;
 }
 
 .player:fullscreen {
@@ -279,16 +285,10 @@ input[type="range"] {
 
 #Logo {
     position: absolute;
-    top: calc(var(--u) * 2.5);
-    left: calc(var(--u) * 3);
-    width: calc(var(--u) * 6.5);
-    z-index: 100;
-}
-
-.space-stars-back, .space-stars-front {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -1;
+    top: 40px;
+    left: 60px;
+    height: 60px;
+    width: auto;
 }
 
 .modal-overlay {
@@ -573,7 +573,6 @@ body::after {
     border-radius: 6px;
     margin-left: 10px;
 }
-
 /* --- КОСМИЧЕСКИЙ ЛОАДЕР --- */
 /* --- ЭФФЕКТ КОСМИЧЕСКОЙ ЗАГРУЗКИ --- */
 /* ============================================================
