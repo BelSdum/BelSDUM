@@ -5,7 +5,7 @@ body {
     margin: 0; /* Убираем отступы */
     height: 100vh; /* Высота на весь экран */
     display: flex; /* Флексбокс для центрирования */
-    align-items: center; /* Центрируем по вертикали */
+    align-items: center; 
     justify-content: center; /* Центрируем по горизонтали */
     overflow: hidden; /* Скрываем прокрутку */
     opacity: 0; /* Начальная прозрачность для анимации появления */
