@@ -735,14 +735,95 @@ input[type=range] {
 }
 
 /* Масштабирование всего контента под экран пользователя */
-@media screen and (max-width: 2550px) {
-    body {
-        /* Вычисляем коэффициент: ширина экрана делить на 2560 */
-        zoom: calc(window.innerWidth / 2560); 
-        /* Если браузер не поддерживает zoom (Firefox), используем transform */
-        transform: scale(calc(100vw / 2560));
-        transform-origin: center center;
-    }
+/* Убираем серую полоску буфера в CSS */
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 100px;
+    outline: none;
+}
+
+/* ГЛАВНЫЙ СЕКРЕТ АДАПТИВНОСТИ ПОД 2K */
+/* Мы используем 1vw как базовую единицу. На 2560px это 25.6px. */
+.player {
+    position: relative;
+    width: 85vw; /* Плеер всегда занимает 85% ширины экрана */
+    max-width: 1800px;
+    aspect-ratio: 16 / 9;
+    margin: auto;
+    border-radius: 1.5vw;
+    overflow: hidden;
+}
+
+.controls {
+    position: absolute;
+    bottom: 2vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    padding: 1.5vw 2.5vw;
+    border-radius: 1.2vw;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(2vw);
+}
+
+/* Текст и иконки теперь зависят от ширины экрана */
+.main-title {
+    font-size: 1.8vw; /* На Full HD будет ~34px, на 2K ~46px */
+    font-weight: 800;
+}
+
+.sub-title {
+    font-size: 0.8vw;
+    opacity: 0.6;
+}
+
+.icon {
+    width: 1.2vw;
+    height: auto;
+}
+
+.play-icon {
+    width: 2.8vw;
+}
+
+#progress {
+    height: 0.3vw;
+    margin-top: 1vw;
+}
+
+#volumeRange {
+    width: 6vw;
+    height: 0.2vw;
+}
+
+/* Время */
+#currentTime, #duration {
+    font-size: 0.7vw;
+}
+
+/* Кнопка Пропустить */
+.skip-btn {
+    padding: 0.8vw 1.5vw;
+    font-size: 0.8vw;
+    border-radius: 0.8vw;
+}
+
+/* Кнопки внизу экрана (Назад / Поделиться) */
+.bottom-btns {
+    position: absolute;
+    bottom: 2vw;
+    right: 2vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+}
+
+.bottom-btn {
+    padding: 0.6vw 2vw;
+    font-size: 0.8vw;
+    border-radius: 1vw;
 }
 
 #progress {
