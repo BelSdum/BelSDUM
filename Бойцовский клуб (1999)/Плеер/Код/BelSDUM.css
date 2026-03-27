@@ -574,46 +574,55 @@ body::after {
     margin-left: 10px;
 }
 
-/* --- НОВЫЙ КОД ДЛЯ ИНДИКАТОРА ЗАГРУЗКИ (ДОБАВИТЬ В КОНЕЦ) --- */
-
-.video-loader {
+/* --- КОСМИЧЕСКИЙ ЛОАДЕР --- */
+.cosmos-loader {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
-    z-index: 100; /* Поверх видео, но под контроллерами */
-    pointer-events: none; /* Чтобы не мешал кликам по видео */
-    transition: opacity 0.3s ease;
+    width: 150px;
+    height: 150px;
+    z-index: 100;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
 }
 
-.video-loader.hide {
-    opacity: 0;
-}
+.cosmos-loader.hide { opacity: 0; }
 
-/* Само анимированное колесико (CSS spinner) */
-.video-loader::after {
-    content: "";
-    display: block;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
+.black-hole {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: #000;
     border-radius: 50%;
-    border: 6px solid #fff;
-    /* Три стороны прозрачные, одна белая — создает эффект вращения */
-    border-color: #fff transparent #fff transparent;
-    animation: loader-spin 1.2s linear infinite;
-    /* Эффект свечения в твоем стиле */
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 40px 10px rgba(255, 255, 255, 0.2), inset 0 0 20px #000;
+    animation: pulseCore 2s infinite ease-in-out;
 }
 
-@keyframes loader-spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.orbit-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    animation: rotateRing 1.5s linear infinite;
 }
 
-/* Немного меняем фон прогресс-бара, чтобы была видна полоса буферизации */
+@keyframes pulseCore {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.3); }
+}
+
+@keyframes rotateRing {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* --- ПОЛОСКА БУФЕРИЗАЦИИ (КАК НА СКРИНШОТЕ) --- */
 #progress {
-    background: rgba(255, 255, 255, 0.1) !important; /* Прозрачный серый фон */
+    background: rgba(255, 255, 255, 0.05) !important; /* Общий фон трека */
 }
