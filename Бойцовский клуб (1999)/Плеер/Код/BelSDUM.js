@@ -27,22 +27,20 @@ const settingsBtn = $('settingsBtn'),
       qualityMenu = $('qualityMenu'),
       qualityItems = document.querySelectorAll('.quality-item');
 
-// --- НОВАЯ ПЕРЕМЕННАЯ ЛОАДЕРА ---
+// Элемент лоадера
 const loader = $('videoLoader');
 
-// Логика открытия/закрытия меню качества
+// Логика меню качества (твой код)
 settingsBtn.onclick = (e) => {
     e.stopPropagation(); 
     qualityMenu.classList.toggle('hide');
 };
 
-// Выбор качества
 qualityItems.forEach(item => {
     item.onclick = (e) => {
         e.stopPropagation();
         qualityItems.forEach(el => el.classList.remove('active'));
         item.classList.add('active');
-        console.log("Выбрана якасць: " + item.dataset.quality);
         qualityMenu.classList.add('hide');
     };
 });
@@ -61,51 +59,49 @@ let lastVolume = parseFloat(localStorage.getItem('playerVolume')) || 1;
 
 video.muted = true; 
 
-// --- ОБНОВЛЕННАЯ ФУНКЦИЯ ОТРИСОВКИ (СЕРАЯ ПОЛОСКА) ---
+// --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ОТРИСОВКИ ---
 const paint = (el, val, max = 100) => {
-  const played = (val / max) * 100;
+  const percent = (val / max) * 100;
   
-  // Если это полоска прогресса ВИДЕО, рисуем буфер
+  // ПРОВЕРКА: Если это полоска видео, рисуем с буфером (серой зоной)
   if (el.id === 'progress') {
-    let buffered = 0;
+    let bufferedPercent = 0;
     if (video.buffered.length > 0 && video.duration > 0) {
-        buffered = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
+        // Берем конец последнего загруженного участка
+        bufferedPercent = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
     }
     
     el.style.background = `linear-gradient(to right, 
-        #FFFFFF 0%, #FFFFFF ${played}%, 
-        rgba(255, 255, 255, 0.3) ${played}%, rgba(255, 255, 255, 0.3) ${buffered}%, 
-        rgba(255, 255, 255, 0.05) ${buffered}%, rgba(255, 255, 255, 0.05) 100%)`;
+        #FFFFFF 0%, #FFFFFF ${percent}%, 
+        rgba(255, 255, 255, 0.3) ${percent}%, rgba(255, 255, 255, 0.3) ${bufferedPercent}%, 
+        rgba(255, 255, 255, 0.05) ${bufferedPercent}%, rgba(255, 255, 255, 0.05) 100%)`;
   } 
-  // Если это громкость, просто белый и прозрачный
+  // ПРОВЕРКА: Если это звук, рисуем ОБЫЧНУЮ белую полоску
   else {
-    el.style.background = `linear-gradient(to right, #FFF ${played}%, rgba(255,255,255,0.1) ${played}%)`;
+    el.style.background = `linear-gradient(to right, #FFFFFF ${percent}%, rgba(255, 255, 255, 0.1) ${percent}%)`;
   }
 };
 
-// --- ЛОГИКА КОСМИЧЕСКОГО ЛОАДЕРА И ПАУЗЫ ЗВУКА ---
-if (video) {
-    video.onwaiting = () => {
-        if (loader) loader.classList.remove('hide'); // Показать черную дыру
-        audio.pause(); // Остановить звук, чтобы не убежал
-    };
-    video.onplaying = () => {
-        if (loader) loader.classList.add('hide'); // Скрыть черную дыру
-        if (!video.paused) audio.play(); // Запустить звук
-    };
-    video.oncanplay = () => { if (loader) loader.classList.add('hide'); };
-}
+const formatTime = (s) => {
+  if (isNaN(s) || s < 0) return "00:00";
+  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+  return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+};
+
+// Логика космического лоадера
+video.onwaiting = () => {
+    if (loader) loader.classList.remove('hide');
+    audio.pause();
+};
+video.onplaying = () => {
+    if (loader) loader.classList.add('hide');
+    if (!video.paused) audio.play();
+};
+video.oncanplay = () => { if (loader) loader.classList.add('hide'); };
 
 const togglePlay = () => {
-  if (video.paused) { 
-    video.play(); 
-    audio.play(); 
-    playBtn.src = ICONS.pause; 
-  } else { 
-    video.pause(); 
-    audio.pause(); 
-    playBtn.src = ICONS.play; 
-  }
+  if (video.paused) { video.play(); audio.play(); playBtn.src = ICONS.pause; }
+  else { video.pause(); audio.pause(); playBtn.src = ICONS.play; }
   showUI();
 };
 
@@ -120,18 +116,14 @@ const toggleFS = () => {
 };
 
 const toggleMute = () => {
-  if (audio.volume > 0) { 
-    lastVolume = audio.volume; 
-    audio.volume = 0; 
-  } else { 
-    audio.volume = lastVolume || 1; 
-  }
+  if (audio.volume > 0) { lastVolume = audio.volume; audio.volume = 0; }
+  else { audio.volume = lastVolume || 1; }
   volRange.value = audio.volume;
   updateVolUI();
 };
 
 const updateVolUI = () => {
-  paint(volRange, audio.volume, 1);
+  paint(volRange, audio.volume, 1); // Здесь теперь сработает ветка "else" в paint
   volBtn.src = audio.volume == 0 ? ICONS.volOff : ICONS.volOn;
   localStorage.setItem('playerVolume', audio.volume);
 };
@@ -165,43 +157,34 @@ video.addEventListener('play', () => {
   }, 5000);
 });
 
-// Синхронизация при ручной перемотке
-const syncMedia = () => { 
-    audio.currentTime = video.currentTime; 
-};
+// Синхронизация
+const syncMedia = () => { audio.currentTime = video.currentTime; };
 video.onseeking = () => {
     syncMedia();
-    if (loader) loader.classList.remove('hide'); // Показать лоадер при скачке по времени
+    if (loader) loader.classList.remove('hide');
 };
 video.onseeked = syncMedia;
 
 video.ontimeupdate = () => {
   const cur = video.currentTime;
   const dur = video.duration;
+  progress.value = (cur / dur) * 100 || 0;
   
-  const p = (cur / dur) * 100 || 0;
-  progress.value = p;
-  paint(progress, cur, dur); 
+  paint(progress, cur, dur); // Здесь рисуется серая полоска буфера
   
   curTimeText.innerText = formatTime(cur);
-  
   localStorage.setItem('video_time_' + video.src, cur);
 
-  // Жёсткая синхронизация звука
-  if (Math.abs(audio.currentTime - cur) > 0.25) {
-      audio.currentTime = cur;
-  }
-  
+  if (Math.abs(audio.currentTime - cur) > 0.25) audio.currentTime = cur;
   if (cur >= SKIP_LIMIT) skipBtn.classList.remove('show');
 };
 
-// Событие для обновления полоски буфера, даже когда видео на паузе
+// Обновление буфера при загрузке данных
 video.onprogress = () => paint(progress, video.currentTime, video.duration);
 
 const initMetadata = () => {
   if (video.duration) {
     durText.innerText = formatTime(video.duration);
-    
     const savedTime = localStorage.getItem('video_time_' + video.src);
     if (savedTime) {
         const time = parseFloat(savedTime);
@@ -244,10 +227,7 @@ player.onmousemove = showUI;
 
 document.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase();
-  if (key === ' ' || key === 'k' || key === 'л') { 
-    e.preventDefault(); 
-    togglePlay(); 
-  }
+  if (key === ' ' || key === 'k' || key === 'л') { e.preventDefault(); togglePlay(); }
   if (key === 'f' || key === 'а') { toggleFS(); }
   if (key === 'm' || key === 'ь') { toggleMute(); }
   if (key === 'arrowright') { video.currentTime += 5; showUI(); }
@@ -259,11 +239,7 @@ shareBtn.onclick = () => {
   if (!video.paused) togglePlay();
 };
 
-shareModal.onclick = (e) => {
-  if (e.target === shareModal) {
-      shareModal.classList.remove('active');
-  }
-};
+shareModal.onclick = (e) => { if (e.target === shareModal) shareModal.classList.remove('active'); };
 
 if (shareLink) {
     shareLink.onclick = () => {
@@ -275,21 +251,15 @@ if (shareLink) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-        document.body.classList.add("loaded");
-    }, 100);
-
+    setTimeout(() => { document.body.classList.add("loaded"); }, 100);
     const links = document.querySelectorAll('a');
-
     links.forEach(link => {
         link.addEventListener('click', function(e) {
             if (this.hostname === window.location.hostname && !this.hash && this.target !== "_blank") {
                 e.preventDefault();
                 const destination = this.href;
                 document.body.classList.add("fade-out");
-                setTimeout(() => {
-                    window.location.href = destination;
-                }, 600);
+                setTimeout(() => { window.location.href = destination; }, 600);
             }
         });
     });
