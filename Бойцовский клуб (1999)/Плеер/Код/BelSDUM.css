@@ -573,3 +573,47 @@ body::after {
     border-radius: 6px;
     margin-left: 10px;
 }
+
+/* --- НОВЫЙ КОД ДЛЯ ИНДИКАТОРА ЗАГРУЗКИ (ДОБАВИТЬ В КОНЕЦ) --- */
+
+.video-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    z-index: 100; /* Поверх видео, но под контроллерами */
+    pointer-events: none; /* Чтобы не мешал кликам по видео */
+    transition: opacity 0.3s ease;
+}
+
+.video-loader.hide {
+    opacity: 0;
+}
+
+/* Само анимированное колесико (CSS spinner) */
+.video-loader::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    /* Три стороны прозрачные, одна белая — создает эффект вращения */
+    border-color: #fff transparent #fff transparent;
+    animation: loader-spin 1.2s linear infinite;
+    /* Эффект свечения в твоем стиле */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes loader-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Немного меняем фон прогресс-бара, чтобы была видна полоса буферизации */
+#progress {
+    background: rgba(255, 255, 255, 0.1) !important; /* Прозрачный серый фон */
+}
