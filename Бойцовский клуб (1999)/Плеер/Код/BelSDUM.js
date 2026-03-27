@@ -27,19 +27,16 @@ const settingsBtn = $('settingsBtn'),
       qualityMenu = $('qualityMenu'),
       qualityItems = document.querySelectorAll('.quality-item');
 
-// --- НОВЫЙ ЭЛЕМЕНТ (Loader) ---
+// --- НОВАЯ ПЕРЕМЕННАЯ ЛОАДЕРА ---
 const loader = $('videoLoader');
 
+// Логика открытия/закрытия меню качества
+settingsBtn.onclick = (e) => {
+    e.stopPropagation(); 
+    qualityMenu.classList.toggle('hide');
+};
 
-// (СТАРЫЙ КОД НЕ ТРОГАЕМ) Логика открытия/закрытия меню
-if (settingsBtn) {
-  settingsBtn.onclick = (e) => {
-      e.stopPropagation();
-      qualityMenu.classList.toggle('hide');
-  };
-}
-
-// (СТАРЫЙ КОД НЕ ТРОГАЕМ) Выбор качества
+// Выбор качества
 qualityItems.forEach(item => {
     item.onclick = (e) => {
         e.stopPropagation();
@@ -54,7 +51,6 @@ document.addEventListener('click', () => {
     qualityMenu.classList.add('hide');
 });
 
-
 const shareModal = $('shareModal');
 const shareLink = $('shareLink');
 
@@ -65,34 +61,21 @@ let lastVolume = parseFloat(localStorage.getItem('playerVolume')) || 1;
 
 video.muted = true; 
 
-// Вот эта часть управляет лоадером и остановкой звука
-video.onwaiting = () => {
-    loader.classList.remove('hide'); // Показать черную дыру
-    audio.pause();                   // Остановить звук, чтобы не убежал вперед
-};
-
-video.onplaying = () => {
-    loader.classList.add('hide');    // Скрыть лоадер
-    if (!video.paused) audio.play(); // Запустить звук одновременно с видео
-};
-
-// А это новая логика отрисовки полоски с буфером
+// --- ОБНОВЛЕННАЯ ФУНКЦИЯ ОТРИСОВКИ (СЕРАЯ ПОЛОСКА) ---
 const paint = (el, val, max = 100) => {
   const played = (val / max) * 100;
   let buffered = 0;
-  if (video.buffered.length > 0) {
-      // Берем конечную точку последнего загруженного сегмента
+  
+  // Считаем сколько видео загружено (буферизация)
+  if (video.buffered.length > 0 && video.duration > 0) {
       buffered = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
   }
-  // Рисуем многослойный фон
-  el.style.background = `linear-gradient(to right, #FFF ${played}%, rgba(255,255,255,0.3) ${played}%, rgba(255,255,255,0.3) ${buffered}%, rgba(255,255,255,0.05) ${buffered}%)`;
-};
 
-  // Создаем сложный градиент: Белый (проиграно) -> Серый (загружено) -> Прозрачный (не загружено)
+  // Градиент: Белый (пройдено) -> Светло-серый (буфер) -> Прозрачный (пусто)
   el.style.background = `linear-gradient(to right, 
-      #D9D9D9 0%, #D9D9D9 ${pPlayed}%, 
-      rgba(255,255,255,0.3) ${pPlayed}%, rgba(255,255,255,0.3) ${pBuffered}%, 
-      rgba(255,255,255,0.1) ${pBuffered}%, rgba(255,255,255,0.1) 100%)`;
+      #FFFFFF 0%, #FFFFFF ${played}%, 
+      rgba(255, 255, 255, 0.3) ${played}%, rgba(255, 255, 255, 0.3) ${buffered}%, 
+      rgba(255, 255, 255, 0.05) ${buffered}%, rgba(255, 255, 255, 0.05) 100%)`;
 };
 
 const formatTime = (s) => {
@@ -101,10 +84,22 @@ const formatTime = (s) => {
   return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
 };
 
+// --- ЛОГИКА КОСМИЧЕСКОГО ЛОАДЕРА И ПАУЗЫ ЗВУКА ---
+if (video) {
+    video.onwaiting = () => {
+        if (loader) loader.classList.remove('hide'); // Показать черную дыру
+        audio.pause(); // Остановить звук, чтобы не убежал
+    };
+    video.onplaying = () => {
+        if (loader) loader.classList.add('hide'); // Скрыть черную дыру
+        if (!video.paused) audio.play(); // Запустить звук
+    };
+    video.oncanplay = () => { if (loader) loader.classList.add('hide'); };
+}
 
 const togglePlay = () => {
   if (video.paused) { 
-    video.play().catch(e => console.log("R2 Load Error:", e)); // Добавили отлов ошибки R2
+    video.play(); 
     audio.play(); 
     playBtn.src = ICONS.pause; 
   } else { 
@@ -156,38 +151,11 @@ const showUI = () => {
               header.classList.add('hide');
               skipBtn.classList.remove('show');
               player.style.cursor = 'none';
-              qualityMenu.classList.add('hide'); // Добавили скрытие меню качества
           }
       }, 2500);
   }
 };
 
-// --- НОВЫЕ ОБРАБОТЧИКИ ДЛЯ ЛОАДЕРА И СИНХРОНИЗАЦИИ (ДОБАВЛЕНО) ---
-
-// 1. Видео ждет загрузки (showing loader)
-video.onwaiting = () => {
-    loader.classList.remove('hide');
-    audio.pause(); // Звук ждет видео
-};
-
-// 2. Видео готово играть (hiding loader)
-video.oncanplay = () => {
-    loader.classList.add('hide');
-    if (!video.paused) audio.play(); // Звук догоняет
-};
-
-// 3. Видео играет (на всякий случай скрываем лоадер)
-video.onplaying = () => {
-    loader.classList.add('hide');
-};
-
-// 4. Отслеживаем прогресс буферизации (для полоски)
-video.onprogress = () => {
-    paint(progress, video.currentTime, video.duration);
-};
-
-
-// (СТАРЫЙ КОД НЕ ТРОГАЕМ) Предупреждение
 video.addEventListener('play', () => {
   if (overlay.classList.contains('done')) return;
   clearTimeout(overlayTimer);
@@ -200,11 +168,12 @@ video.addEventListener('play', () => {
 
 // Синхронизация при ручной перемотке
 const syncMedia = () => { 
-    audio.currentTime = video.currentTime;
-    // При перемотке показываем лоадер, пока R2 не отдаст новый кусок
-    if (!video.paused) loader.classList.remove('hide'); 
+    audio.currentTime = video.currentTime; 
 };
-video.onseeking = syncMedia;
+video.onseeking = () => {
+    syncMedia();
+    if (loader) loader.classList.remove('hide'); // Показать лоадер при скачке по времени
+};
 video.onseeked = syncMedia;
 
 video.ontimeupdate = () => {
@@ -213,19 +182,22 @@ video.ontimeupdate = () => {
   
   const p = (cur / dur) * 100 || 0;
   progress.value = p;
-  paint(progress, cur, dur); // Обновленный paint покажет и буфер
+  paint(progress, cur, dur); 
   
   curTimeText.innerText = formatTime(cur);
   
   localStorage.setItem('video_time_' + video.src, cur);
 
-  // умная синхронизация аудио (только если видео не висит на загрузке)
-  if (Math.abs(audio.currentTime - cur) > 0.3 && !loader.classList.contains('visible')) {
+  // Жёсткая синхронизация звука
+  if (Math.abs(audio.currentTime - cur) > 0.25) {
       audio.currentTime = cur;
   }
   
   if (cur >= SKIP_LIMIT) skipBtn.classList.remove('show');
 };
+
+// Событие для обновления полоски буфера, даже когда видео на паузе
+video.onprogress = () => paint(progress, video.currentTime, video.duration);
 
 const initMetadata = () => {
   if (video.duration) {
