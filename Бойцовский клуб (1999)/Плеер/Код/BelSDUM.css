@@ -678,8 +678,16 @@ body::after {
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
-/* --- ПОЛОСКА БУФЕРИЗАЦИИ (КАК НА СКРИНШОТЕ) --- */
-/* Мы не трогаем JS, просто убеждаемся, что фон трека прозрачный */
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px; /* Убедись, что высота не 0! */
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
 #progress {
-    background: rgba(255, 255, 255, 0.05) !important; /* Серый фон трека */
+    width: 100%;
+    /* Важно: цвет фона здесь будет заменен через JS (paint) */
 }
