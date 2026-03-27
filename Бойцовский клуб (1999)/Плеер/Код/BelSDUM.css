@@ -734,6 +734,17 @@ input[type=range] {
     /* Убрали все лишние тени и буферы */
 }
 
+/* Масштабирование всего контента под экран пользователя */
+@media screen and (max-width: 2550px) {
+    body {
+        /* Вычисляем коэффициент: ширина экрана делить на 2560 */
+        zoom: calc(window.innerWidth / 2560); 
+        /* Если браузер не поддерживает zoom (Firefox), используем transform */
+        transform: scale(calc(100vw / 2560));
+        transform-origin: center center;
+    }
+}
+
 #progress {
     width: 100%;
     /* Важно: цвет фона здесь будет заменен через JS (paint) */
