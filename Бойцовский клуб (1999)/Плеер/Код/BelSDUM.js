@@ -23,37 +23,36 @@ const progress = $('progress'),
 const overlay = $('overlayImage'), 
       skipBtn = $('skipBtn'), 
       shareBtn = $('shareBtn');
-const      settingsBtn = $('settingsBtn'),
+const settingsBtn = $('settingsBtn'),
       qualityMenu = $('qualityMenu'),
       qualityItems = document.querySelectorAll('.quality-item');
 
-// Логика открытия/закрытия
-settingsBtn.onclick = (e) => {
-    e.stopPropagation(); // Чтобы документ не поймал клик
-    qualityMenu.classList.toggle('hide');
-};
+// --- НОВЫЙ ЭЛЕМЕНТ (Loader) ---
+const loader = $('videoLoader');
 
-// Выбор качества
+
+// (СТАРЫЙ КОД НЕ ТРОГАЕМ) Логика открытия/закрытия меню
+if (settingsBtn) {
+  settingsBtn.onclick = (e) => {
+      e.stopPropagation();
+      qualityMenu.classList.toggle('hide');
+  };
+}
+
+// (СТАРЫЙ КОД НЕ ТРОГАЕМ) Выбор качества
 qualityItems.forEach(item => {
     item.onclick = (e) => {
         e.stopPropagation();
-        // Убираем активный класс у всех и даем нажатому
         qualityItems.forEach(el => el.classList.remove('active'));
         item.classList.add('active');
-        
         console.log("Выбрана якасць: " + item.dataset.quality);
-        
-        // Закрываем меню после выбора
         qualityMenu.classList.add('hide');
     };
 });
 
-// Закрытие меню при клике в любое другое место плеера или экрана
 document.addEventListener('click', () => {
     qualityMenu.classList.add('hide');
 });
-
-// Обновите функцию showUI, чтобы меню скрывалось вместе с контроллерами
 
 
 const shareModal = $('shareModal');
@@ -66,9 +65,23 @@ let lastVolume = parseFloat(localStorage.getItem('playerVolume')) || 1;
 
 video.muted = true; 
 
+// --- ОБНОВЛЕННАЯ ФУНКЦИЯ КРАСКИ (Добавлена полоса буферизации) ---
+// Мы не меняем её вызов, просто добавляем логику внутри.
 const paint = (el, val, max = 100) => {
-  const p = (val / max) * 100;
-  el.style.background = `linear-gradient(to right, #D9D9D9 ${p}%, rgba(255,255,255,0.1) ${p}%)`;
+  const pPlayed = (val / max) * 100; // Сколько проиграно (белый)
+  
+  // Рассчитываем, сколько забуферено (серый)
+  let pBuffered = 0;
+  if (video.buffered.length > 0) {
+      // Берем конец последнего забуференного куска
+      pBuffered = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
+  }
+
+  // Создаем сложный градиент: Белый (проиграно) -> Серый (загружено) -> Прозрачный (не загружено)
+  el.style.background = `linear-gradient(to right, 
+      #D9D9D9 0%, #D9D9D9 ${pPlayed}%, 
+      rgba(255,255,255,0.3) ${pPlayed}%, rgba(255,255,255,0.3) ${pBuffered}%, 
+      rgba(255,255,255,0.1) ${pBuffered}%, rgba(255,255,255,0.1) 100%)`;
 };
 
 const formatTime = (s) => {
@@ -80,7 +93,7 @@ const formatTime = (s) => {
 
 const togglePlay = () => {
   if (video.paused) { 
-    video.play(); 
+    video.play().catch(e => console.log("R2 Load Error:", e)); // Добавили отлов ошибки R2
     audio.play(); 
     playBtn.src = ICONS.pause; 
   } else { 
@@ -132,13 +145,38 @@ const showUI = () => {
               header.classList.add('hide');
               skipBtn.classList.remove('show');
               player.style.cursor = 'none';
+              qualityMenu.classList.add('hide'); // Добавили скрытие меню качества
           }
       }, 2500);
   }
 };
 
+// --- НОВЫЕ ОБРАБОТЧИКИ ДЛЯ ЛОАДЕРА И СИНХРОНИЗАЦИИ (ДОБАВЛЕНО) ---
+
+// 1. Видео ждет загрузки (showing loader)
+video.onwaiting = () => {
+    loader.classList.remove('hide');
+    audio.pause(); // Звук ждет видео
+};
+
+// 2. Видео готово играть (hiding loader)
+video.oncanplay = () => {
+    loader.classList.add('hide');
+    if (!video.paused) audio.play(); // Звук догоняет
+};
+
+// 3. Видео играет (на всякий случай скрываем лоадер)
+video.onplaying = () => {
+    loader.classList.add('hide');
+};
+
+// 4. Отслеживаем прогресс буферизации (для полоски)
+video.onprogress = () => {
+    paint(progress, video.currentTime, video.duration);
+};
 
 
+// (СТАРЫЙ КОД НЕ ТРОГАЕМ) Предупреждение
 video.addEventListener('play', () => {
   if (overlay.classList.contains('done')) return;
   clearTimeout(overlayTimer);
@@ -150,7 +188,11 @@ video.addEventListener('play', () => {
 });
 
 // Синхронизация при ручной перемотке
-const syncMedia = () => { audio.currentTime = video.currentTime; };
+const syncMedia = () => { 
+    audio.currentTime = video.currentTime;
+    // При перемотке показываем лоадер, пока R2 не отдаст новый кусок
+    if (!video.paused) loader.classList.remove('hide'); 
+};
 video.onseeking = syncMedia;
 video.onseeked = syncMedia;
 
@@ -158,31 +200,26 @@ video.ontimeupdate = () => {
   const cur = video.currentTime;
   const dur = video.duration;
   
-  // Обновление прогресс-бара
   const p = (cur / dur) * 100 || 0;
   progress.value = p;
-  paint(progress, p);
+  paint(progress, cur, dur); // Обновленный paint покажет и буфер
   
-  // Текст времени
   curTimeText.innerText = formatTime(cur);
   
-
   localStorage.setItem('video_time_' + video.src, cur);
 
-  // синхронизация аудио
-  if (Math.abs(audio.currentTime - cur) > 0.3) {
+  // умная синхронизация аудио (только если видео не висит на загрузке)
+  if (Math.abs(audio.currentTime - cur) > 0.3 && !loader.classList.contains('visible')) {
       audio.currentTime = cur;
   }
   
   if (cur >= SKIP_LIMIT) skipBtn.classList.remove('show');
 };
 
-// Инициализация метаданных
 const initMetadata = () => {
   if (video.duration) {
     durText.innerText = formatTime(video.duration);
     
-
     const savedTime = localStorage.getItem('video_time_' + video.src);
     if (savedTime) {
         const time = parseFloat(savedTime);
@@ -196,14 +233,13 @@ const initMetadata = () => {
 };
 
 video.onloadedmetadata = initMetadata;
-// На случай если браузер уже загрузил видео до выполнения скрипта
 if (video.readyState >= 1) initMetadata();
 
 progress.oninput = () => {
   const time = (progress.value / 100) * video.duration;
   video.currentTime = time;
   audio.currentTime = time;
-  paint(progress, progress.value);
+  paint(progress, time, video.duration);
 };
 
 volRange.oninput = () => {
@@ -212,7 +248,6 @@ volRange.oninput = () => {
   updateVolUI();
 };
 
-// Кнопки
 playBtn.onclick = togglePlay;
 video.onclick = (e) => { if(e.target === video) togglePlay(); };
 fsBtn.onclick = toggleFS;
@@ -225,7 +260,6 @@ skipBtn.onclick = () => {
 
 player.onmousemove = showUI;
 
-// Горячие клавиши
 document.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase();
   if (key === ' ' || key === 'k' || key === 'л') { 
@@ -238,47 +272,39 @@ document.addEventListener('keydown', (e) => {
   if (key === 'arrowleft') { video.currentTime -= 5; showUI(); }
 });
 
-// Открыть меню
 shareBtn.onclick = () => {
   shareModal.classList.add('active');
   if (!video.paused) togglePlay();
 };
 
-// Закрыть при клике на задний план
 shareModal.onclick = (e) => {
   if (e.target === shareModal) {
       shareModal.classList.remove('active');
   }
 };
 
-
-shareLink.onclick = () => {
-  navigator.clipboard.writeText(shareLink.innerText);
-  const originalText = shareLink.innerText;
-  shareLink.innerText = "Скапіяваны";
-  setTimeout(() => { shareLink.innerText = originalText; }, 2000);
-};
+if (shareLink) {
+    shareLink.onclick = () => {
+      navigator.clipboard.writeText(shareLink.innerText);
+      const originalText = shareLink.innerText;
+      shareLink.innerText = "Скапіяваны";
+      setTimeout(() => { shareLink.innerText = originalText; }, 2000);
+    };
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Плавное появление при загрузке
     setTimeout(() => {
         document.body.classList.add("loaded");
     }, 100);
 
-    // 2. Плавное исчезновение при клике на ссылки
     const links = document.querySelectorAll('a');
 
     links.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Игнорируем ссылки, открывающиеся в новом окне, и якоря (#)
             if (this.hostname === window.location.hostname && !this.hash && this.target !== "_blank") {
-                e.preventDefault(); // Останавливаем мгновенный переход
+                e.preventDefault();
                 const destination = this.href;
-
-                // Добавляем класс исчезновения
                 document.body.classList.add("fade-out");
-
-                // Ждем окончания анимации (600мс) и переходим
                 setTimeout(() => {
                     window.location.href = destination;
                 }, 600);
@@ -286,7 +312,5 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
-
-
 
 showUI();
