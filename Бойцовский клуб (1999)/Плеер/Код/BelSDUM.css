@@ -584,7 +584,6 @@ body::after {
     transform: translate(-50%, -50%);
     width: 200px;
     height: 200px;
-    z-index: 999; /* Очень высокий приоритет */
     pointer-events: none;
     display: none; /* По умолчанию скрыт */
     justify-content: center;
