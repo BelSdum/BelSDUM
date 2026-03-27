@@ -65,17 +65,28 @@ let lastVolume = parseFloat(localStorage.getItem('playerVolume')) || 1;
 
 video.muted = true; 
 
-// --- ОБНОВЛЕННАЯ ФУНКЦИЯ КРАСКИ (Добавлена полоса буферизации) ---
-// Мы не меняем её вызов, просто добавляем логику внутри.
+// Вот эта часть управляет лоадером и остановкой звука
+video.onwaiting = () => {
+    loader.classList.remove('hide'); // Показать черную дыру
+    audio.pause();                   // Остановить звук, чтобы не убежал вперед
+};
+
+video.onplaying = () => {
+    loader.classList.add('hide');    // Скрыть лоадер
+    if (!video.paused) audio.play(); // Запустить звук одновременно с видео
+};
+
+// А это новая логика отрисовки полоски с буфером
 const paint = (el, val, max = 100) => {
-  const pPlayed = (val / max) * 100; // Сколько проиграно (белый)
-  
-  // Рассчитываем, сколько забуферено (серый)
-  let pBuffered = 0;
+  const played = (val / max) * 100;
+  let buffered = 0;
   if (video.buffered.length > 0) {
-      // Берем конец последнего забуференного куска
-      pBuffered = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
+      // Берем конечную точку последнего загруженного сегмента
+      buffered = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
   }
+  // Рисуем многослойный фон
+  el.style.background = `linear-gradient(to right, #FFF ${played}%, rgba(255,255,255,0.3) ${played}%, rgba(255,255,255,0.3) ${buffered}%, rgba(255,255,255,0.05) ${buffered}%)`;
+};
 
   // Создаем сложный градиент: Белый (проиграно) -> Серый (загружено) -> Прозрачный (не загружено)
   el.style.background = `linear-gradient(to right, 
