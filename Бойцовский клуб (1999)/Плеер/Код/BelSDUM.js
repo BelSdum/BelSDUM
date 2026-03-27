@@ -43,26 +43,6 @@ let lastVolume = parseFloat(localStorage.getItem('playerVolume')) || 1;
 
 video.muted = true; 
 
-// --- ФУНКЦИЯ ОТРИСОВКИ ПОЛОСОК (ВИДЕО И ЗВУК РАЗДЕЛЕНЫ) ---
-const paint = (el, val, max = 100) => {
-  const percent = (val / max) * 100;
-  
-  if (el.id === 'progress') {
-    // Рисуем полоску видео с БУФЕРОМ (серая часть)
-    let buffered = 0;
-    if (video.buffered.length > 0 && video.duration > 0) {
-        buffered = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
-    }
-    el.style.background = `linear-gradient(to right, 
-        #FFFFFF 0%, #FFFFFF ${percent}%, 
-        rgba(255, 255, 255, 0.3) ${percent}%, rgba(255, 255, 255, 0.3) ${buffered}%, 
-        rgba(255, 255, 255, 0.05) ${buffered}%, rgba(255, 255, 255, 0.05) 100%)`;
-  } else {
-    // Рисуем полоску звука ОБЫЧНУЮ (без серого буфера)
-    el.style.background = `linear-gradient(to right, #FFFFFF ${percent}%, rgba(255, 255, 255, 0.1) ${percent}%)`;
-  }
-};
-
 const formatTime = (s) => {
   if (isNaN(s) || s < 0) return "00:00";
   const m = Math.floor(s / 60), sec = Math.floor(s % 60);
