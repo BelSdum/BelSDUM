@@ -319,7 +319,7 @@ input[type="range"] {
     position: absolute;
     top: 20px;
     left: 30px;
-    height: 45px;
+    height: 60px;
     width: auto;
 }
 
@@ -437,9 +437,9 @@ input[type="range"] {
 
 #playerCornerLogo {
     position: absolute;
-    top: 60px; /* Отступ сверху, как у заголовка */
-    right: 60px; /* Отступ справа */
-    height: 60px; /* Высота логотипа (подберите нужную) */
+    top: 20px; /* Отступ сверху, как у заголовка */
+    right: 20px; /* Отступ справа */
+    height: 20px; /* Высота логотипа (подберите нужную) */
     width: auto; /* Ширина подстроится автоматически */
     z-index: 9; /* Ниже контроллеров (10), но выше видео */
     opacity: 0.5; /* Уровень прозрачности (0.0 - полностью прозрачный, 1.0 - нет) */
