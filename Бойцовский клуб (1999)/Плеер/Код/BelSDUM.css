@@ -271,7 +271,7 @@ input[type="range"] {
 
 #shareBtn {
     text-align: center;
-    width: 160px; 
+    width: 80px; 
     position: fixed;
     bottom: 120px;
     right: 20px;
@@ -314,7 +314,7 @@ input[type="range"] {
     position: absolute;
     top: 40px;
     left: 60px;
-    height: 60px;
+    height: 30px;
     width: auto;
 }
 
@@ -386,7 +386,7 @@ input[type="range"] {
 
 #backBtn {
     text-align: center;
-    width: 160px; 
+    width: 80px; 
     text-decoration: none;
     position: fixed;
     bottom: 20px;
