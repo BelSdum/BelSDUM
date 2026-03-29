@@ -31,7 +31,7 @@ body.loaded {
 #mainPlayer {
     position: relative;
     /* Уменьшено на 30% от базового FHD (было 1280px -> стало ~890px) */
-    width: 200px !important; 
+    width: 768px !important; 
     max-width: 90vw;
     aspect-ratio: 16 / 9;
     
