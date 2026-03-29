@@ -586,14 +586,14 @@ body::after {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;  /* Увеличили размер для деталей */
+    width: 300px; 
     height: 300px;
     pointer-events: none;
-    display: none; /* Скрыт по умолчанию */
+    display: none; 
     justify-content: center;
     align-items: center;
-    /* Эффект искажения пространства вокруг дыры */
     filter: drop-shadow(0 0 50px rgba(255, 255, 255, 0.1));
+    z-indez: 12000;
 }
 
 /* Класс отображения (управляется JS) */
