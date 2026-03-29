@@ -114,19 +114,19 @@ body.loaded {
 
 .controls {
     position: absolute;
-    bottom: 50px;
+    bottom: 30px; /* Чуть опустили, чтобы не висела слишком высоко */
     left: 50%;
     transform: translateX(-50%);
     width: 92%;
-    padding: 32px 48px;
+    padding: 20px 30px; /* Уменьшили внутренние отступы */
     background: var(--panel-bg);
     backdrop-filter: blur(50px);
     -webkit-backdrop-filter: blur(50px);
     border: 2px solid var(--glass-border);
-    border-radius: 70px;
+    border-radius: 45px; /* Уменьшили скругление панели */
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 14px; /* Уменьшили расстояние между рядами */
     color: rgb(255, 255, 255);
     box-sizing: border-box;
     z-index: 10;
@@ -142,10 +142,10 @@ body.loaded {
 
 .top-row, .bottom-row { display: flex; align-items: center; }
 .top-row { justify-content: space-between; }
-.group { display: flex; align-items: center; flex: 1; height: 70px; }
+.group { display: flex; align-items: center; flex: 1; height: 42px; } /* Уменьшили высоту группы кнопок */
 .center { justify-content: center; }
-.right { justify-content: flex-end; gap: 36px; }
-.left { gap: 30px; }
+.right { justify-content: flex-end; gap: 22px; }
+.left { gap: 18px; }
 
 .icon, .play-icon, #volumeBtn {
     cursor: pointer;
@@ -157,8 +157,8 @@ body.loaded {
     filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
 }
 
-#volumeBtn, .play-icon { width: 64px; height: 64px; object-fit: contain; }
-.icon { width: 44px; height: 44px; object-fit: contain; }
+#volumeBtn, .play-icon { width: 38px; height: 38px; object-fit: contain; } /* Было 64px */
+.icon { width: 26px; height: 26px; object-fit: contain; } /* Было 44px */
 
 /* Обновленные ползунки */
 input[type="range"] {
@@ -171,7 +171,7 @@ input[type="range"] {
 #volumeRange {
     -webkit-appearance: none; /* Убираем стандартные стили */
     appearance: none;
-    width: 250px; /* <--- ИЗМЕНИ ДЛИНУ ЗДЕСЬ (было 200px) */
+    width: 150px; /* <--- ИЗМЕНИ ДЛИНУ ЗДЕСЬ (было 200px) */
     height: 30px;  /* Толщина полоски */
     border-radius: 100px; /* <--- СКРУГЛЕНИЕ КРАЕВ полоски */
     background: rgba(255, 255, 255, 0.1); /* Фон неактивной части */
@@ -232,7 +232,7 @@ input[type="range"] {
 
 .video-header {
     position: absolute;
-    top: 40px;
+    top: 10px;
     left: 0;
     width: 100%;
     text-align: center;
@@ -248,7 +248,7 @@ input[type="range"] {
 
 .main-title {
     color: white;
-    font-size: 42px;
+    font-size: 20px;
     margin: 0;
     font-weight: 700;
     letter-spacing: 1px;
@@ -256,8 +256,8 @@ input[type="range"] {
 
 .sub-title {
     color: rgba(255, 255, 255, 0.6);
-    font-size: 20px;
-    margin: 5px 0 0 0;
+    font-size: 10px;
+    margin: 3px 0 0 0;
     font-weight: 400;
 }
 
@@ -317,9 +317,9 @@ input[type="range"] {
 
 #Logo {
     position: absolute;
-    top: 40px;
-    left: 60px;
-    height: 30px;
+    top: 20px;
+    left: 30px;
+    height: 45px;
     width: auto;
 }
 
@@ -369,6 +369,7 @@ input[type="range"] {
     font-size: 38px;
     font-weight: 700;
     margin-bottom: 25px;
+    font-size: 17px;
 }
 
 /* Поле со ссылкой */
@@ -717,3 +718,4 @@ body::after {
     from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
+
