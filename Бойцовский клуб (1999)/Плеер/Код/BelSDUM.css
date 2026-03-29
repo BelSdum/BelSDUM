@@ -161,7 +161,7 @@ input[type="range"] {
     cursor: pointer; /* Мышка меняется на руку */
 }
 
-#volumeRange::-webkit-slider-thumb { 
+#volumeRange { 
     -webkit-appearance: none; 
     width: 15px; 
     height: 25px; 
