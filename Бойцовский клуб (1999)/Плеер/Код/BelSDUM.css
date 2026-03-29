@@ -165,8 +165,8 @@ input[type="range"] {
     -webkit-appearance: none; /* Убираем стандартные стили */
     appearance: none;
     width: 250px; /* <--- ИЗМЕНИ ДЛИНУ ЗДЕСЬ (было 200px) */
-    height: 8px;  /* Толщина полоски */
-    border-radius: 4px; /* <--- СКРУГЛЕНИЕ КРАЕВ полоски */
+    height: 50px;  /* Толщина полоски */
+    border-radius: 100%; /* <--- СКРУГЛЕНИЕ КРАЕВ полоски */
     background: rgba(255, 255, 255, 0.1); /* Фон неактивной части */
     outline: none;
     cursor: pointer;
@@ -190,7 +190,7 @@ input[type="range"] {
 }
 
 #volumeRange:hover {
-    background: rgba(255, 255, 255, 0.2); /* Чуть ярче фон при наведении */
+    background: red; /* Чуть ярче фон при наведении */
 }
 
 #progress {
