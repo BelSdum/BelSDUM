@@ -166,7 +166,7 @@ input[type="range"] {
     appearance: none;
     width: 250px; /* <--- ИЗМЕНИ ДЛИНУ ЗДЕСЬ (было 200px) */
     height: 50px;  /* Толщина полоски */
-    border-radius: 100%; /* <--- СКРУГЛЕНИЕ КРАЕВ полоски */
+    border-radius: 100px; /* <--- СКРУГЛЕНИЕ КРАЕВ полоски */
     background: rgba(255, 255, 255, 0.1); /* Фон неактивной части */
     outline: none;
     cursor: pointer;
@@ -190,7 +190,7 @@ input[type="range"] {
 }
 
 #volumeRange:hover {
-    background: red; /* Чуть ярче фон при наведении */
+    background: rgba(255, 255, 255, 0.5); /* Чуть ярче фон при наведении */
 }
 
 #progress {
