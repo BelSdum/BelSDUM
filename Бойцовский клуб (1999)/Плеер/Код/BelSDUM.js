@@ -130,6 +130,7 @@ const showUI = () => {
           if (!controls.matches(':hover') && !skipBtn.matches(':hover')) {
               controls.classList.add('hide');
               header.classList.add('hide');
+              qualityMenu.classList.add('hide');
               skipBtn.classList.remove('show');
               player.style.cursor = 'none';
           }
@@ -223,8 +224,8 @@ document.addEventListener('keydown', (e) => {
   }
   if (key === 'f' || key === 'а') { toggleFS(); }
   if (key === 'm' || key === 'ь') { toggleMute(); }
-  if (key === 'arrowright') { video.currentTime += 5; showUI(); }
-  if (key === 'arrowleft') { video.currentTime -= 5; showUI(); }
+  if (key === 'arrowright') { video.currentTime += 10; showUI(); }
+  if (key === 'arrowleft') { video.currentTime -= 10; showUI(); }
 });
 
 // Открыть меню
@@ -306,13 +307,16 @@ video.ontimeupdate = () => {
   
   // Управление кнопкой пропуска
   if (cur >= SKIP_LIMIT) skipBtn.classList.remove('show');
-
-  // НОВОЕ: Управление предупреждением (показываем с 5 по 25 секунду)
-  if (cur >= 5 && cur <= 25) {
-      overlay.classList.add('visible');
-  } else {
-      overlay.classList.remove('visible');
-  }
 };
+
+video.addEventListener('play', () => {
+  if (overlay.classList.contains('done')) return;
+  clearTimeout(overlayTimer);
+  overlayTimer = setTimeout(() => {
+      overlay.classList.add('visible');
+      overlay.classList.add('done');
+      setTimeout(() => overlay.classList.remove('visible'), 20000);
+  }, 5000);
+});
 
 showUI();
