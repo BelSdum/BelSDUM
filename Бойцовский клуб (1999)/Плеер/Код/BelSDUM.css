@@ -29,10 +29,10 @@ body.loaded {
 
 .player {
     position: relative;
-    width: 1800px; 
-    max-width: 95vw;
+    width: 60%; 
+    max-width: 60%;
     aspect-ratio: 16 / 9;
-    border-radius: 40px;
+    border-radius: 30%;
     overflow: hidden;
     box-shadow: 0 50px 100px -20px rgba(0,0,0,0.8);
     background: #000;
@@ -165,7 +165,7 @@ input[type="range"] {
     -webkit-appearance: none; /* Убираем стандартные стили */
     appearance: none;
     width: 250px; /* <--- ИЗМЕНИ ДЛИНУ ЗДЕСЬ (было 200px) */
-    height: 35px;  /* Толщина полоски */
+    height: 30px;  /* Толщина полоски */
     border-radius: 100px; /* <--- СКРУГЛЕНИЕ КРАЕВ полоски */
     background: rgba(255, 255, 255, 0.1); /* Фон неактивной части */
     outline: none;
