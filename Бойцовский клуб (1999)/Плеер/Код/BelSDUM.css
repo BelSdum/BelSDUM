@@ -161,18 +161,36 @@ input[type="range"] {
     cursor: pointer; /* Мышка меняется на руку */
 }
 
-#volumeRange { 
-    -webkit-appearance: none; 
-    width: 15px; 
-    height: 25px; 
-    background: red; 
-    border-radius: 100px;
+#volumeRange {
+    -webkit-appearance: none; /* Убираем стандартные стили */
+    appearance: none;
+    width: 250px; /* <--- ИЗМЕНИ ДЛИНУ ЗДЕСЬ (было 200px) */
+    height: 8px;  /* Толщина полоски */
+    border-radius: 4px; /* <--- СКРУГЛЕНИЕ КРАЕВ полоски */
+    background: rgba(255, 255, 255, 0.1); /* Фон неактивной части */
+    outline: none;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: all 0.2s ease;
 }
 
-#volumeRange:active::-webkit-slider-thumb {
-    transform: scale(1.1);
+#volumeRange::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+    border: none;
+}
+
+#volumeRange::-moz-range-thumb {
+    width: 0;
+    height: 0;
+    background: transparent;
+    border: none;
+}
+
+#volumeRange:hover {
+    background: rgba(255, 255, 255, 0.2); /* Чуть ярче фон при наведении */
 }
 
 #progress {
