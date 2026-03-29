@@ -31,7 +31,7 @@ body.loaded {
 #mainPlayer {
     position: relative;
     /* Уменьшено на 30% от базового FHD (было 1280px -> стало ~890px) */
-    width: 1280px !important; 
+    width: 896px !important; 
     max-width: 90vw;
     aspect-ratio: 16 / 9;
     
@@ -270,12 +270,21 @@ input[type="range"] {
 }
 
 #shareBtn {
+    display: flex;           /* Включаем флексбокс */
+    justify-content: center;  /* Центрируем по горизонтали */
+    align-items: center;      /* Центрируем по вертикали */
     text-align: center;
-    width: 80px; 
+    
+    /* Убираем жесткую ширину 80px, так как padding 56px уже делает кнопку широкой */
+    /* Либо ставим ширину больше, например 200px */
+    width: auto; 
+    min-width: 240px;        
+    
+    text-decoration: none;
     position: fixed;
-    bottom: 120px;
+    bottom: 90px;
     right: 20px;
-    padding: 24px 56px;
+    padding: 15px 56px;
     background: var(--panel-bg);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
@@ -283,16 +292,12 @@ input[type="range"] {
     border-radius: 80px;
     color: white;
     font-weight: 700;
-    font-size: 28px;
+    font-size: 17px;
     cursor: pointer;
-    z-index: 9999; /* Чтобы была поверх всего */
-    
-    /* Эффект свечения */
+    z-index: 9999;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
-    
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 1;
-    transform: translateY(0);
+    box-sizing: border-box; /* Важно, чтобы padding не раздувал кнопку */
 }
 
 /* Свечение и масштаб при наведении */
@@ -385,13 +390,21 @@ input[type="range"] {
 }
 
 #backBtn {
+    display: flex;           /* Включаем флексбокс */
+    justify-content: center;  /* Центрируем по горизонтали */
+    align-items: center;      /* Центрируем по вертикали */
     text-align: center;
-    width: 80px; 
+    
+    /* Убираем жесткую ширину 80px, так как padding 56px уже делает кнопку широкой */
+    /* Либо ставим ширину больше, например 200px */
+    width: auto; 
+    min-width: 240px;        
+    
     text-decoration: none;
     position: fixed;
     bottom: 20px;
     right: 20px;
-    padding: 24px 56px;
+    padding: 15px 56px;
     background: var(--panel-bg);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
@@ -399,11 +412,12 @@ input[type="range"] {
     border-radius: 80px;
     color: white;
     font-weight: 700;
-    font-size: 28px;
+    font-size: 20px;
     cursor: pointer;
     z-index: 9999;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box; /* Важно, чтобы padding не раздувал кнопку */
 }
 
 #backBtn:hover {
@@ -703,5 +717,3 @@ body::after {
     from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
-
-
