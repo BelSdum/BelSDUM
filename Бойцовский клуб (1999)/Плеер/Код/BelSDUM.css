@@ -161,17 +161,19 @@ input[type="range"] {
     cursor: pointer; /* Мышка меняется на руку */
 }
 
-#volumeRange {
-    width: 200px;
-    height: 25px; /* Чуть тоньше в обычном состоянии */
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    transition: height 0.2s ease, transform 0.2s ease;
+#volumeRange::-webkit-slider-thumb { 
+    -webkit-appearance: none; 
+    width: 15px; 
+    height: 25px; 
+    background: #ffffff; 
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-
-
-#volumeRange::-webkit-slider-thumb { -webkit-appearance: none; width: 0; }
+#volumeRange:active::-webkit-slider-thumb {
+    transform: scale(1.1);
+}
 
 #progress {
     flex: 1;
