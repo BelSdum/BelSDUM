@@ -7,20 +7,11 @@ const ICONS = {
   fsExit: '../Картинки/Union 2.png'
 };
 
-// Ссылки на видео (если файл один - укажи одну ссылку везде)
-const videoSources = {
-  '1080p': 'https://pub-e265e68b5cd54b969a844c74b92b4fd3.r2.dev/Fight.Club.1999.REPACK.1080p.BluRay.x264.AAC5.1-YTS.MX.mkv.mkv',
-  '720p': 'https://pub-e265e68b5cd54b969a844c74b92b4fd3.r2.dev/Fight.Club.1999.REPACK.1080p.BluRay.x264.AAC5.1-YTS.MX.mkv.mkv',
-  '480p': 'https://pub-e265e68b5cd54b969a844c74b92b4fd3.r2.dev/Fight.Club.1999.REPACK.1080p.BluRay.x264.AAC5.1-YTS.MX.mkv.mkv'
-};
-
 const $ = (id) => document.getElementById(id);
 const video = $('video'), 
       audio = $('externalAudio'), 
       player = $('mainPlayer'), 
-      controls = $('controlsPanel'),
-      loader = $('videoLoader'); // Космический лоадер из HTML
-
+      controls = $('controlsPanel');
 const header = $('videoHeader'), 
       playBtn = $('playBtn'), 
       volBtn = $('volumeBtn'), 
@@ -32,9 +23,41 @@ const progress = $('progress'),
 const overlay = $('overlayImage'), 
       skipBtn = $('skipBtn'), 
       shareBtn = $('shareBtn');
-const settingsBtn = $('settingsBtn'),
+const      settingsBtn = $('settingsBtn'),
       qualityMenu = $('qualityMenu'),
       qualityItems = document.querySelectorAll('.quality-item');
+
+// Логика открытия/закрытия
+settingsBtn.onclick = (e) => {
+    e.stopPropagation(); // Чтобы документ не поймал клик
+    qualityMenu.classList.toggle('hide');
+};
+
+// Выбор качества
+qualityItems.forEach(item => {
+    item.onclick = (e) => {
+        e.stopPropagation();
+        // Убираем активный класс у всех и даем нажатому
+        qualityItems.forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+        
+        console.log("Выбрана якасць: " + item.dataset.quality);
+        
+        // Закрываем меню после выбора
+        qualityMenu.classList.add('hide');
+    };
+});
+
+// Закрытие меню при клике в любое другое место плеера или экрана
+document.addEventListener('click', () => {
+    qualityMenu.classList.add('hide');
+});
+
+// Обновите функцию showUI, чтобы меню скрывалось вместе с контроллерами
+
+
+const shareModal = $('shareModal');
+const shareLink = $('shareLink');
 
 let idleTimer, overlayTimer;
 const SKIP_LIMIT = 123;
@@ -43,50 +66,26 @@ let lastVolume = parseFloat(localStorage.getItem('playerVolume')) || 1;
 
 video.muted = true; 
 
+const paint = (el, val, max = 100) => {
+  const p = (val / max) * 100;
+  el.style.background = `linear-gradient(to right, #D9D9D9 ${p}%, rgba(255,255,255,0.1) ${p}%)`;
+};
+
 const formatTime = (s) => {
   if (isNaN(s) || s < 0) return "00:00";
   const m = Math.floor(s / 60), sec = Math.floor(s % 60);
   return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
 };
 
-// --- ЛОГИКА ВЫБОРА КАЧЕСТВА ---
-qualityItems.forEach(item => {
-    item.onclick = (e) => {
-        e.stopPropagation();
-        const quality = item.dataset.quality;
-        const newSrc = videoSources[quality];
-
-        if (newSrc && video.getAttribute('src') !== newSrc) {
-            const currentTime = video.currentTime;
-            const isPaused = video.paused;
-
-            qualityItems.forEach(el => el.classList.remove('active'));
-            item.classList.add('active');
-
-            video.src = newSrc;
-            video.currentTime = currentTime; // Сохраняем момент фильма
-            
-            if (!isPaused) {
-                video.play();
-                audio.play();
-            }
-        }
-        qualityMenu.classList.add('hide');
-    };
-});
-
-// Открытие меню
-settingsBtn.onclick = (e) => {
-    e.stopPropagation();
-    qualityMenu.classList.toggle('hide');
-};
 
 const togglePlay = () => {
   if (video.paused) { 
-    video.play(); audio.play(); 
+    video.play(); 
+    audio.play(); 
     playBtn.src = ICONS.pause; 
   } else { 
-    video.pause(); audio.pause(); 
+    video.pause(); 
+    audio.pause(); 
     playBtn.src = ICONS.play; 
   }
   showUI();
@@ -103,8 +102,12 @@ const toggleFS = () => {
 };
 
 const toggleMute = () => {
-  if (audio.volume > 0) { lastVolume = audio.volume; audio.volume = 0; }
-  else { audio.volume = lastVolume || 1; }
+  if (audio.volume > 0) { 
+    lastVolume = audio.volume; 
+    audio.volume = 0; 
+  } else { 
+    audio.volume = lastVolume || 1; 
+  }
   volRange.value = audio.volume;
   updateVolUI();
 };
@@ -129,45 +132,62 @@ const showUI = () => {
               header.classList.add('hide');
               skipBtn.classList.remove('show');
               player.style.cursor = 'none';
-              qualityMenu.classList.add('hide');
           }
       }, 2500);
   }
 };
 
-// Синхронизация и Лоадер
-video.onwaiting = () => { 
-    if (loader) loader.classList.remove('hide'); 
-    audio.pause(); 
-};
-video.onplaying = () => { 
-    if (loader) loader.classList.add('hide'); 
-    if (!video.paused) audio.play(); 
-};
+
+
+video.addEventListener('play', () => {
+  if (overlay.classList.contains('done')) return;
+  clearTimeout(overlayTimer);
+  overlayTimer = setTimeout(() => {
+      overlay.classList.add('visible');
+      overlay.classList.add('done');
+      setTimeout(() => overlay.classList.remove('visible'), 20000);
+  }, 5000);
+});
+
+// Синхронизация при ручной перемотке
+const syncMedia = () => { audio.currentTime = video.currentTime; };
+video.onseeking = syncMedia;
+video.onseeked = syncMedia;
 
 video.ontimeupdate = () => {
   const cur = video.currentTime;
   const dur = video.duration;
-  progress.value = (cur / dur) * 100 || 0;
-  paint(progress, cur, dur);
+  
+  // Обновление прогресс-бара
+  const p = (cur / dur) * 100 || 0;
+  progress.value = p;
+  paint(progress, p);
+  
+  // Текст времени
   curTimeText.innerText = formatTime(cur);
   
+
   localStorage.setItem('video_time_' + video.src, cur);
 
-  // Жесткая синхронизация звука
-  if (Math.abs(audio.currentTime - cur) > 0.25) audio.currentTime = cur;
+  // синхронизация аудио
+  if (Math.abs(audio.currentTime - cur) > 0.3) {
+      audio.currentTime = cur;
+  }
+  
   if (cur >= SKIP_LIMIT) skipBtn.classList.remove('show');
 };
 
-video.onprogress = () => paint(progress, video.currentTime, video.duration);
-
+// Инициализация метаданных
 const initMetadata = () => {
   if (video.duration) {
     durText.innerText = formatTime(video.duration);
+    
+
     const savedTime = localStorage.getItem('video_time_' + video.src);
     if (savedTime) {
-        video.currentTime = parseFloat(savedTime);
-        audio.currentTime = parseFloat(savedTime);
+        const time = parseFloat(savedTime);
+        video.currentTime = time;
+        audio.currentTime = time;
     }
   }
   audio.volume = lastVolume;
@@ -176,13 +196,14 @@ const initMetadata = () => {
 };
 
 video.onloadedmetadata = initMetadata;
+// На случай если браузер уже загрузил видео до выполнения скрипта
 if (video.readyState >= 1) initMetadata();
 
 progress.oninput = () => {
   const time = (progress.value / 100) * video.duration;
   video.currentTime = time;
   audio.currentTime = time;
-  paint(progress, time, video.duration);
+  paint(progress, progress.value);
 };
 
 volRange.oninput = () => {
@@ -191,6 +212,7 @@ volRange.oninput = () => {
   updateVolUI();
 };
 
+// Кнопки
 playBtn.onclick = togglePlay;
 video.onclick = (e) => { if(e.target === video) togglePlay(); };
 fsBtn.onclick = toggleFS;
@@ -198,33 +220,73 @@ volBtn.onclick = toggleMute;
 skipBtn.onclick = () => { 
     video.currentTime = SKIP_TARGET; 
     audio.currentTime = SKIP_TARGET;
+    skipBtn.classList.remove('show'); 
 };
 
 player.onmousemove = showUI;
-document.addEventListener('click', () => qualityMenu.classList.add('hide'));
 
+// Горячие клавиши
 document.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase();
-  if (key === ' ' || key === 'k' || key === 'л') { e.preventDefault(); togglePlay(); }
+  if (key === ' ' || key === 'k' || key === 'л') { 
+    e.preventDefault(); 
+    togglePlay(); 
+  }
   if (key === 'f' || key === 'а') { toggleFS(); }
   if (key === 'm' || key === 'ь') { toggleMute(); }
+  if (key === 'arrowright') { video.currentTime += 5; showUI(); }
+  if (key === 'arrowleft') { video.currentTime -= 5; showUI(); }
 });
 
-const shareModal = $('shareModal');
-const shareLink = $('shareLink');
-shareBtn.onclick = () => { shareModal.classList.add('active'); if (!video.paused) togglePlay(); };
-shareModal.onclick = (e) => { if (e.target === shareModal) shareModal.classList.remove('active'); };
+// Открыть меню
+shareBtn.onclick = () => {
+  shareModal.classList.add('active');
+  if (!video.paused) togglePlay();
+};
 
-if (shareLink) {
-    shareLink.onclick = () => {
-      navigator.clipboard.writeText(shareLink.innerText);
-      shareLink.innerText = "Скапіяваны";
-      setTimeout(() => { shareLink.innerText = "https://belsdum.com/watch/fight-club"; }, 2000);
-    };
-}
+// Закрыть при клике на задний план
+shareModal.onclick = (e) => {
+  if (e.target === shareModal) {
+      shareModal.classList.remove('active');
+  }
+};
+
+
+shareLink.onclick = () => {
+  navigator.clipboard.writeText(shareLink.innerText);
+  const originalText = shareLink.innerText;
+  shareLink.innerText = "Скапіяваны";
+  setTimeout(() => { shareLink.innerText = originalText; }, 2000);
+};
 
 document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => { document.body.classList.add("loaded"); }, 100);
+    // 1. Плавное появление при загрузке
+    setTimeout(() => {
+        document.body.classList.add("loaded");
+    }, 100);
+
+    // 2. Плавное исчезновение при клике на ссылки
+    const links = document.querySelectorAll('a');
+
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Игнорируем ссылки, открывающиеся в новом окне, и якоря (#)
+            if (this.hostname === window.location.hostname && !this.hash && this.target !== "_blank") {
+                e.preventDefault(); // Останавливаем мгновенный переход
+                const destination = this.href;
+
+                // Добавляем класс исчезновения
+                document.body.classList.add("fade-out");
+
+                // Ждем окончания анимации (600мс) и переходим
+                setTimeout(() => {
+                    window.location.href = destination;
+                }, 600);
+            }
+        });
+    });
 });
+
+
 
 showUI();
