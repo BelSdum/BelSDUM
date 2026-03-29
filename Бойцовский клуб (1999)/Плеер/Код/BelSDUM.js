@@ -137,18 +137,6 @@ const showUI = () => {
   }
 };
 
-
-
-video.addEventListener('play', () => {
-  if (overlay.classList.contains('done')) return;
-  clearTimeout(overlayTimer);
-  overlayTimer = setTimeout(() => {
-      overlay.classList.add('visible');
-      overlay.classList.add('done');
-      setTimeout(() => overlay.classList.remove('visible'), 20000);
-  }, 5000);
-});
-
 // Синхронизация при ручной перемотке
 const syncMedia = () => { audio.currentTime = video.currentTime; };
 video.onseeking = syncMedia;
@@ -217,12 +205,13 @@ playBtn.onclick = togglePlay;
 video.onclick = (e) => { if(e.target === video) togglePlay(); };
 fsBtn.onclick = toggleFS;
 volBtn.onclick = toggleMute;
+
 skipBtn.onclick = () => { 
-    video.currentTime = SKIP_TARGET; 
-    audio.currentTime = SKIP_TARGET;
+    const safeTarget = SKIP_TARGET + 0.5; 
+    video.currentTime = safeTarget; 
+    audio.currentTime = safeTarget;
     skipBtn.classList.remove('show'); 
 };
-
 player.onmousemove = showUI;
 
 // Горячие клавиши
@@ -287,6 +276,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+const loader = $('videoLoader');
 
+// Показываем лоадер при буферизации или перемотке
+video.addEventListener('waiting', () => loader.classList.remove('hide'));
+video.addEventListener('seeking', () => loader.classList.remove('hide'));
+
+// Скрываем, когда видео готово к воспроизведению
+video.addEventListener('playing', () => loader.classList.add('hide'));
+video.addEventListener('canplay', () => loader.classList.add('hide'));
+
+video.ontimeupdate = () => {
+  const cur = video.currentTime;
+  const dur = video.duration;
+  
+  // Обновление прогресс-бара
+  const p = (cur / dur) * 100 || 0;
+  progress.value = p;
+  paint(progress, p);
+  
+  // Текст времени
+  curTimeText.innerText = formatTime(cur);
+  localStorage.setItem('video_time_' + video.src, cur);
+
+  // Синхронизация аудио
+  if (Math.abs(audio.currentTime - cur) > 0.3) {
+      audio.currentTime = cur;
+  }
+  
+  // Управление кнопкой пропуска
+  if (cur >= SKIP_LIMIT) skipBtn.classList.remove('show');
+
+  // НОВОЕ: Управление предупреждением (показываем с 5 по 25 секунду)
+  if (cur >= 5 && cur <= 25) {
+      overlay.classList.add('visible');
+  } else {
+      overlay.classList.remove('visible');
+  }
+};
 
 showUI();
