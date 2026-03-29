@@ -165,8 +165,8 @@ input[type="range"] {
     -webkit-appearance: none; 
     width: 15px; 
     height: 25px; 
-    background: #ffffff; 
-    border-radius: 10px;
+    background: red; 
+    border-radius: 100px;
     cursor: pointer;
     transition: transform 0.2s ease;
 }
