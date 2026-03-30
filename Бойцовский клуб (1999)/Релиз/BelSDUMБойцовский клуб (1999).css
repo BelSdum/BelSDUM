@@ -9,49 +9,16 @@ body {
     align-items: center;
     min-height: 100vh;
     box-sizing: border-box;
-    overflow: hidden;
     user-select: none;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out; /* Время перехода 0.6 сек */
+    transition: opacity 0.3s ease-in-out;
 }
 
 /* Состояние после загрузки */
 body.loaded {
     opacity: 1;
 }
-.video-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2; /* Самый нижний слой */
-    overflow: hidden;
-}
 
-.video-bg video {
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
-    filter: blur(80px) brightness(0.4); /* Максимальное размытие и затемнение */
-}
-
-/* Дополнительный слой затемнения для лучшей читаемости текста */
-.video-bg-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.788); /* Еще немного черного поверх видео */
-    z-index: -1;
-}
 
 .vignette {
     position: absolute;
@@ -59,10 +26,6 @@ body.loaded {
     left: 0;
     width: 100%;
     height: 100%;
-    /* ellipse — делает градиент овальным под форму экрана.
-       rgba(0,0,0,0.95) — почти полный черный по самым краям.
-       transparent 20% — центр остается чистым, а затемнение начинается раньше.
-    */
     background: radial-gradient(ellipse at center, transparent 20%, rgba(0, 0, 0, 0.753) 60%, rgba(0, 0, 0, 0.95) 100%);
     
     pointer-events: none; /* Чтобы можно было кликать сквозь виньетку */
@@ -77,12 +40,11 @@ body.loaded {
     backdrop-filter: blur(20px);
 }
 
-/* Логотип */
 .main-logo {
     position: absolute;
-    top: 40px;
-    left: 60px;
-    height: 60px;
+    top: 20px;
+    left: 30px;
+    height: 45px;
     width: auto;
 }
 
@@ -104,12 +66,12 @@ body.loaded {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    perspective: 1000px; /* Оставляем здесь для корректной работы 3D у дочерних элементов */
+    perspective: 1000px;
 }
 
 .poster-container img {
     width: 100%;
-    border-radius: 20px;
+    border-radius: 44px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     transition: transform 0.1s ease-out, box-shadow 0.3s ease; 
     will-change: transform;
@@ -122,7 +84,7 @@ body.loaded {
     box-sizing: border-box;
     margin-top: 15px;
     position: relative; 
-    z-index: 5; /* Гарантируем, что кнопка всегда сверху, но не шевелится */
+    z-index: 5;
 }
 
 :root {
@@ -131,7 +93,6 @@ body.loaded {
     --accent-glow: rgba(255, 255, 255, 0.2);
 }
 
-/* Універсальны стыль кнопкі як у плееры */
 .watch-btn, .action-btn {
     display: inline-flex;
     align-items: center;
@@ -149,7 +110,6 @@ body.loaded {
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-/* Эфект пры навядзенні (як у тваім shareBtn) */
 .watch-btn:hover, .action-btn:hover {
 
     transform: scale(1.05);
@@ -157,9 +117,8 @@ body.loaded {
 
 }
 
-/* Спецыяльная праўка для кнопкі пад постерам */
 .poster-container .watch-btn {
-    width: 100%; /* Каб была па шырыні постера */
+    width: 100%; 
     box-sizing: border-box;
     margin-top: 15px;
 }
@@ -172,7 +131,7 @@ body.loaded {
     background: rgba(20, 20, 20, 0.6);
     backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 40px;
+    border-radius: 44px;
     padding: 40px;
 }
 
@@ -203,7 +162,7 @@ h1 {
     
     /* Абводка і закругленне */
     border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая рамка */
-    border-radius: 12px; /* Мягкія куты */
+    border-radius: 44px; /* Мягкія куты */
     
     /* Водступы і выраўноўванне */
     padding: 6px 16px;
@@ -267,20 +226,19 @@ h1 {
     margin-bottom: 15px;
 }
 
-/* Трейлер */
-/* Убираем анимации и фиксируем видео внизу страницы */
+
 .trailer-wrapper {
     width: 100%;
-    aspect-ratio: 21 / 9; /* Сохраняем широкоформатные пропорции блока */
+    aspect-ratio: 21 / 9;
     position: relative;
-    /* Убраны transition и fullscreen-mode стили */
+    margin-bottom: 80px;
 }
 
 /* Контейнер видео без анимаций */
 .trailer-container {
     width: 100%;
     height: 100%;
-    border-radius: 40px;
+    border-radius: 44px;
     overflow: hidden;
     background: #000;
     cursor: pointer;
@@ -347,6 +305,7 @@ h1 {
     z-index: 9999;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 40px;
 }
 
 #backBtn:hover {
@@ -361,4 +320,41 @@ h1 {
     opacity: 0;
     pointer-events: none;
     transform: translateY(30px);
+}
+
+::-webkit-scrollbar {
+    width: 8px; /* Ширина полосы */
+    background-color: #050505; /* Цвет дорожки (совпадает с фоном сайта) */
+}
+
+/* 2. Настройка ползунка (бегунка) */
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый */
+    border-radius: 100px; /* Полностью округлый */
+    border: 2px solid #050505; /* Отступ от краев за счет рамки цвета фона */
+    transition: all 0.3s ease;
+}
+
+/* 3. Эффект при наведении на ползунок */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3); /* Становится ярче */
+}
+
+/* Для Firefox (у него меньше настроек, но базово можно изменить) */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) #050505;
+}
+
+.ambient-light {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-99%, -99%);
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    filter: blur(150px) opacity(0.6);
 }
