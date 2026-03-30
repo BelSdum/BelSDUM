@@ -7,21 +7,14 @@
     <link rel="stylesheet" href="BelSDUMБойцовский клуб (1999).css">
 </head>
 <body>
-
-    <div class="video-bg">
-        <video autoplay muted loop playsinline>
-            <source src="Бойцовский клуб (1999)\Релиз\trailer.mp4" type="video/mp4">
-        </video>
-        <div class="video-bg-overlay"></div>
-    </div>
-
-    <img src="/Бойцовский клуб (1999)\Релиз\Logo.png" alt="Logo" class="main-logo" draggable="false">
+    
+    <img src="Релиз\Logo.png" alt="Logo" class="main-logo" draggable="false">
 
     <div class="content-container">
         <div class="top-section">
             <div class="poster-container">
-                <img src="/Бойцовский клуб (1999)\Релиз\poster.jpg" alt="Постер" draggable="false">
-                <a href="/Бойцовский клуб (1999)\Плеер\Код\BelSDUM.HTML" class="watch-btn">Глядзець</a>
+                <img src="poster.jpg" alt="Постер" draggable="false">
+                <a href="../Бойцовский клуб (1999)\Плеер\Код\BelSDUM.HTML" class="watch-btn">Глядзець</a>
             </div>
 
             <div class="info-card">
@@ -46,9 +39,10 @@
         </div>
 
         <div class="trailer-wrapper" id="trailerWrapper">
+            <canvas id="ambientCanvas" class="ambient-light"></canvas>
             <div class="trailer-container" id="trailerBox">
                 <video id="previewVideo" autoplay muted loop playsinline>
-                    <source src="Бойцовский клуб (1999)\Релиз\trailer.mp4" type="video/mp4">
+                    <source src="https://pub-e265e68b5cd54b969a844c74b92b4fd3.r2.dev/FCtrailer.mp4" type="video/mp4">
                 </video>
                 
                 <div class="play-overlay">Націсніце, каб уключыць гук</div>
@@ -58,12 +52,9 @@
                 </a>
             </div>
         </div>
-    <a id="backBtn" href="/index.html">Назад</a>
+    <a id="backBtn" href="../index.html">Назад</a>
         
-        <script src="BelSDUMБойцовский клуб (1999).js"></script>
-
-
-    
+    <script src="BelSDUMБойцовский клуб (1999).js"></script>
 
 </body>
 </html>
