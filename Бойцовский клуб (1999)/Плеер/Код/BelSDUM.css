@@ -6,6 +6,7 @@
 
 /* Добавь это к картинкам и кнопкам */
 #overlayImage, 
+#Logo, 
 .icon, 
 .play-icon, 
 #skipBtn, 
@@ -326,20 +327,16 @@ input[type="range"] {
 }
 
 #shareBtn {
-    display: flex;           /* Включаем флексбокс */
-    justify-content: center;  /* Центрируем по горизонтали */
-    align-items: center;      /* Центрируем по вертикали */
-    text-align: center;
-    
-    /* Убираем жесткую ширину 80px, так как padding 56px уже делает кнопку широкой */
-    /* Либо ставим ширину больше, например 200px */
-    width: auto; 
-    min-width: 150px;        
-    
+    display: flex;      
+    justify-content: center;  
+    align-items: center;      
+    text-align: center; 
+    width: 95px;
+    height: 95px;
     text-decoration: none;
     position: fixed;
-    bottom: 90px;
-    right: 20px;
+    bottom: 20px;
+    right: 320px;
     padding: 15px;
     background: var(--panel-bg);
     backdrop-filter: blur(30px);
@@ -354,9 +351,15 @@ input[type="range"] {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-sizing: border-box;
+    border-radius: 100PX;
 }
 
-/* Свечение и масштаб при наведении */
+.shareImg{
+    width: 60px;
+}
+
+
+
 #shareBtn:hover {
     background: rgba(255, 255, 255, 0.15);
     transform: scale(1.05);
@@ -446,17 +449,13 @@ input[type="range"] {
 }
 
 #backBtn {
-    display: flex;     
-    justify-content: center; 
-    align-items: center;     
     text-align: center;
-    width: auto; 
-    min-width: 150px;        
+    width: 160px; 
     text-decoration: none;
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 15px;
+    bottom: 25px;
+    right: 25px;
+    padding: 24px 56px;
     background: var(--panel-bg);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
@@ -464,12 +463,12 @@ input[type="range"] {
     border-radius: 80px;
     color: white;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 28px;
     cursor: pointer;
     z-index: 9999;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-sizing: border-box; /* Важно, чтобы padding не раздувал кнопку */
+    height: 40px;
 }
 
 #backBtn:hover {
@@ -779,17 +778,4 @@ body::after {
     .ambient-light {
         filter: blur(150px) opacity(0.6);
     }
-}
-
-/* Убираем стандартные рамки и свечение для ссылок-картинок */
-a img {
-    border: none;
-    outline: none;
-    -webkit-tap-highlight-color: transparent; /* Убирает синюю вспышку на iPhone */
-}
-
-/* Эффект легкого нажатия (как в iOS) */
-a:active img {
-    transform: scale(0.96);
-    transition: transform 0.1s ease;
 }
