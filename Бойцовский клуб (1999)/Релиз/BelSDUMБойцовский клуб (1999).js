@@ -70,3 +70,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+const ambientCanvas = document.getElementById('ambientCanvas');
+const ctx = ambientCanvas.getContext('2d', { alpha: false });
+
+function updateAmbientLight() {
+    // Если видео на паузе, мы всё равно хотим один раз отрисовать кадр (для старта)
+    // Но если оно играет, запускаем цикл анимации
+    ctx.drawImage(video, 0, 0, ambientCanvas.width, ambientCanvas.height);
+    
+    if (!video.paused && !video.ended) {
+        requestAnimationFrame(updateAmbientLight);
+    }
+}
+
+// 1. Настройка размеров и первая отрисовка, когда видео готово
+video.addEventListener('loadeddata', () => {
+    ambientCanvas.width = 160; 
+    ambientCanvas.height = 90;
+    updateAmbientLight(); // Рисуем первый кадр сразу
+});
+
+// 2. Запуск цикла при нажатии Play
+video.addEventListener('play', () => {
+    updateAmbientLight();
+});
+
+// 3. Чтобы при ручной перемотке (seek) подсветка тоже менялась сразу:
+video.addEventListener('seeked', () => {
+    updateAmbientLight();
+});
+
