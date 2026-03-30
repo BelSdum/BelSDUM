@@ -782,3 +782,15 @@ body::after {
     }
 }
 
+/* Убираем стандартные рамки и свечение для ссылок-картинок */
+a img {
+    border: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent; /* Убирает синюю вспышку на iPhone */
+}
+
+/* Эффект легкого нажатия (как в iOS) */
+a:active img {
+    transform: scale(0.96);
+    transition: transform 0.1s ease;
+}
