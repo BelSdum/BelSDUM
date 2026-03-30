@@ -23,8 +23,9 @@ const progress = $('progress'),
 const overlay = $('overlayImage'), 
       skipBtn = $('skipBtn'), 
       shareBtn = $('shareBtn');
-const      settingsBtn = $('settingsBtn'),
+const settingsBtn = $('settingsBtn'),
       qualityMenu = $('qualityMenu'),
+      FSqualityMenu = $('fullscreenBtn')
       qualityItems = document.querySelectorAll('.quality-item');
 
 // Логика открытия/закрытия
@@ -95,6 +96,7 @@ const toggleFS = () => {
   if (!document.fullscreenElement) {
     player.requestFullscreen().catch(e => console.log(e));
     fsBtn.src = ICONS.fsExit;
+
   } else {
     document.exitFullscreen();
     fsBtn.src = ICONS.fsEnter;
@@ -280,12 +282,30 @@ document.addEventListener("DOMContentLoaded", () => {
 const loader = $('videoLoader');
 
 // Показываем лоадер при буферизации или перемотке
-video.addEventListener('waiting', () => loader.classList.remove('hide'));
-video.addEventListener('seeking', () => loader.classList.remove('hide'));
+// Показываем лоадер и ставим аудио на паузу при буферизации или перемотке
+video.addEventListener('waiting', () => {
+    loader.classList.remove('hide');
+    audio.pause(); // Останавливаем звук, пока видео грузится
+});
+video.addEventListener('seeking', () => {
+    loader.classList.remove('hide');
+    audio.pause(); // Останавливаем звук при перемотке
+});
 
-// Скрываем, когда видео готово к воспроизведению
-video.addEventListener('playing', () => loader.classList.add('hide'));
-video.addEventListener('canplay', () => loader.classList.add('hide'));
+// Скрываем лоадер и продолжаем звук, когда видео готово к воспроизведению
+video.addEventListener('playing', () => {
+    loader.classList.add('hide');
+    audio.currentTime = video.currentTime; // Финальная синхронизация перед стартом
+    audio.play(); // Запускаем звук только вместе с видео
+});
+video.addEventListener('canplay', () => {
+    loader.classList.add('hide');
+});
+
+// Дополнительная страховка: если видео встало на паузу по любой причине, аудио тоже должно молчать
+video.addEventListener('pause', () => {
+    audio.pause();
+});
 
 video.ontimeupdate = () => {
   const cur = video.currentTime;
@@ -319,4 +339,34 @@ video.addEventListener('play', () => {
   }, 5000);
 });
 
-showUI();
+const ambientCanvas = document.getElementById('ambientCanvas');
+const ctx = ambientCanvas.getContext('2d', { alpha: false });
+
+function updateAmbientLight() {
+    // Если видео на паузе, мы всё равно хотим один раз отрисовать кадр (для старта)
+    // Но если оно играет, запускаем цикл анимации
+    ctx.drawImage(video, 0, 0, ambientCanvas.width, ambientCanvas.height);
+    
+    if (!video.paused && !video.ended) {
+        requestAnimationFrame(updateAmbientLight);
+    }
+}
+
+// 1. Настройка размеров и первая отрисовка, когда видео готово
+video.addEventListener('loadeddata', () => {
+    ambientCanvas.width = 160; 
+    ambientCanvas.height = 90;
+    updateAmbientLight(); // Рисуем первый кадр сразу
+});
+
+// 2. Запуск цикла при нажатии Play
+video.addEventListener('play', () => {
+    updateAmbientLight();
+});
+
+// 3. Чтобы при ручной перемотке (seek) подсветка тоже менялась сразу:
+video.addEventListener('seeked', () => {
+    updateAmbientLight();
+});
+
+
