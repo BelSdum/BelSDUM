@@ -1,3 +1,32 @@
+* {
+    /* Убирает синюю рамку/подсветку при нажатии в мобильных браузерах */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* Добавь это к картинкам и кнопкам */
+#overlayImage, 
+#Logo, 
+.icon, 
+.play-icon, 
+#skipBtn, 
+#shareBtn, 
+#backBtn {
+    /* Запрещает вызов контекстного меню (сохранение картинки) */
+    -webkit-touch-callout: none;
+    /* Запрещает выделение */
+    -webkit-user-select: none;
+    user-select: none;
+    /* Убирает перетаскивание картинки пальцем */
+    -webkit-user-drag: none;
+}
+
+button:focus, 
+div:focus, 
+img:focus {
+    outline: none !important;
+}
+
 :root {
     --accent-glow: rgba(255, 255, 255, 0.2);
     --panel-bg: rgba(20, 20, 20, 0.5);
@@ -30,31 +59,25 @@ body.loaded {
 /* Используем ID для максимального приоритета */
 #mainPlayer {
     position: relative;
-    /* Уменьшено на 30% от базового FHD (было 1280px -> стало ~890px) */
     width: 896px !important; 
     max-width: 90vw;
     aspect-ratio: 16 / 9;
-    
     background: #000;
-    border-radius: 20px;
     overflow: hidden;
     margin: 0 auto;
-    
-    /* Тень под размер плеера */
     box-shadow: 0 0px 50px rgba(34, 34, 34, 0.288);
     z-index: 10;
     display: flex;
     flex-direction: column;
+    border-radius: 44px; 
 }
 
-/* Видео внутри должно заполнять контейнер */
 #video {
     width: 100% !important;
     height: 100% !important;
     object-fit: contain;
 }
 
-/* Чтобы в полноэкранном режиме плеер всё равно был на весь экран */
 #mainPlayer:fullscreen {
     width: 100vw !important;
     max-width: none !important;
@@ -64,19 +87,41 @@ body.loaded {
 #overlayImage {
     position: absolute;
     top: 20px;
-    left: 20px;
+    left: 35px;
     width: 200px;
     height: auto;
     z-index: 100000000;
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: opacity 0.8s ;
     pointer-events: none;
+}
+
+#mainPlayer:fullscreen #overlayImage {
+    transform: scale(1.5);
+    top: 40px;
+    left: 100px;
 }
 
 #overlayImage.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+#playerCornerLogo {
+    position: absolute;
+    top: 20px; 
+    right: 35px;
+    height: 30px; 
+    width: auto; 
+    z-index: 9; 
+    opacity: 0.5; 
+    pointer-events: none; 
+}
+
+#mainPlayer:fullscreen #playerCornerLogo {
+    transform: scale(1.5);
+    top: 40px;
+    right: 100px;
 }
 
 #skipBtn {
@@ -88,7 +133,7 @@ body.loaded {
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
     border: 2px solid var(--glass-border);
-    border-radius: 80px;
+    border-radius: 44px;
     color: white;
     font-weight: 700;
     font-size: 28px;
@@ -114,19 +159,19 @@ body.loaded {
 
 .controls {
     position: absolute;
-    bottom: 30px; /* Чуть опустили, чтобы не висела слишком высоко */
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     width: 92%;
-    padding: 20px 30px; /* Уменьшили внутренние отступы */
+    padding: 20px 30px; 
     background: var(--panel-bg);
     backdrop-filter: blur(50px);
     -webkit-backdrop-filter: blur(50px);
     border: 2px solid var(--glass-border);
-    border-radius: 45px; /* Уменьшили скругление панели */
+    border-radius: 44px;
     display: flex;
     flex-direction: column;
-    gap: 14px; /* Уменьшили расстояние между рядами */
+    gap: 14px;
     color: rgb(255, 255, 255);
     box-sizing: border-box;
     z-index: 10;
@@ -142,7 +187,7 @@ body.loaded {
 
 .top-row, .bottom-row { display: flex; align-items: center; }
 .top-row { justify-content: space-between; }
-.group { display: flex; align-items: center; flex: 1; height: 42px; } /* Уменьшили высоту группы кнопок */
+.group { display: flex; align-items: center; flex: 1; height: 42px; } 
 .center { justify-content: center; }
 .right { justify-content: flex-end; gap: 22px; }
 .left { gap: 18px; }
@@ -181,7 +226,7 @@ input[type="range"] {
     background: rgba(255, 255, 255, 0.1); /* Фон неактивной части */
     outline: none;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #volumeRange::-webkit-slider-thumb {
@@ -201,13 +246,14 @@ input[type="range"] {
 }
 
 #volumeRange:hover {
-    background: rgba(255, 255, 255, 0.5); /* Чуть ярче фон при наведении */
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+    scale: 1.05;
 }
 
 #progress {
     flex: 1;
     height: 8px;
-    border-radius: 4px;
+    border-radius: 44px;
     background: rgba(255, 255, 255);
     transition: height 0.2s ease; /* Плавное утолщение */
 }
@@ -232,8 +278,6 @@ input[type="range"] {
     
 }
 
-
-
 .video-header {
     position: absolute;
     top: 10px;
@@ -241,8 +285,17 @@ input[type="range"] {
     width: 100%;
     text-align: center;
     z-index: 10;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    pointer-events: none; /* Чтобы текст не мешал кликать по видео */
+    transition: 
+        opacity 0.4s cubic-bezier(0.2, 0, 0.2, 1),
+        filter 0.4s ease,
+        letter-spacing 1s cubic-bezier(0, 0, 0.2, 1),
+        transform 0.4s cubic-bezier(0, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+#mainPlayer:fullscreen .video-header {
+    top: 25px;
+    transform: translateY(0) scale(1.7);
 }
 
 .video-header.hide {
@@ -293,7 +346,7 @@ input[type="range"] {
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
     border: 2px solid var(--glass-border);
-    border-radius: 80px;
+    border-radius: 44px;
     color: white;
     font-weight: 700;
     font-size: 20px;
@@ -301,7 +354,7 @@ input[type="range"] {
     z-index: 9999;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-sizing: border-box; /* Важно, чтобы padding не раздувал кнопку */
+    box-sizing: border-box;
 }
 
 /* Свечение и масштаб при наведении */
@@ -354,7 +407,7 @@ input[type="range"] {
     background: rgba(40, 40, 40, 0.85); /* Темный полупрозрачный фон */
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 40px;
+    border-radius: 44px;
     padding: 40px;
     width: 90%;
     max-width: 800px;
@@ -379,7 +432,7 @@ input[type="range"] {
 .modal-link-box {
     background: rgba(255, 255, 255, 0.1);
     padding: 25px 40px;
-    border-radius: 50px;
+    border-radius: 44px;
     display: inline-block;
     width: 90%;
     cursor: pointer;
@@ -434,17 +487,6 @@ input[type="range"] {
     transform: translateY(30px);
 }
 
-#playerCornerLogo {
-    position: absolute;
-    top: 20px; /* Отступ сверху, как у заголовка */
-    right: 20px; /* Отступ справа */
-    height: 30px; /* Высота логотипа (подберите нужную) */
-    width: auto; /* Ширина подстроится автоматически */
-    z-index: 9; /* Ниже контроллеров (10), но выше видео */
-    opacity: 0.5; /* Уровень прозрачности (0.0 - полностью прозрачный, 1.0 - нет) */
-    pointer-events: none; /* Чтобы клики проходили сквозь логотип на видео */
-    transition: opacity 0.4s ease, transform 0.4s ease; /* Плавное скрытие */
-}
 
 .glow-ball {
     position: absolute; /* Абсолютное позиционирование */
@@ -552,7 +594,7 @@ body::after {
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
     border: 2px solid var(--glass-border);
-    border-radius: 30px;
+    border-radius: 44px;
     padding: 15px 0;
     width: 220px;
     display: flex;
@@ -589,11 +631,12 @@ body::after {
     align-items: center;
     justify-content: space-between;
     border-radius: 30px;
-    transition: background 0.2s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .quality-item:hover {
-    background: rgba(255, 255, 255, 0.062);
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+    scale: 1.15;
 }
 
 
@@ -717,3 +760,25 @@ body::after {
     from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
+
+/* Контейнер для эффекта свечения */
+.ambient-light {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Строго под плеером */
+    filter: blur(100px) opacity(0.5); /* Сильное размытие и прозрачность */
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+/* На Full HD мониторах можно сделать свечение чуть ярче */
+@media (min-width: 1920px) {
+    .ambient-light {
+        filter: blur(150px) opacity(0.6);
+    }
+}
+
