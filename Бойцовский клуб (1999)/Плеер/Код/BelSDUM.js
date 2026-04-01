@@ -369,5 +369,3 @@ video.addEventListener('seeked', () => {
     updateAmbientLight();
 });
 
-
-
