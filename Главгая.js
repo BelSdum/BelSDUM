@@ -1,3 +1,14 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const stub = document.getElementById('mobile-stub');
+
+    if (isMobile) {
+        stub.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Запрещаем крутить сайт на фоне
+    }
+});
+
+
 const movies = [
     {
         title: "Байцоўскі клуб",
