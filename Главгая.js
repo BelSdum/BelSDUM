@@ -1,3 +1,19 @@
+<script>
+  (function() {
+    // Список ключевых слов мобильных устройств
+    const mobileDevices = [/Android/i, /webOS/i, /iPhone/i, /iPad/i, /iPod/i, /BlackBerry/i, /Windows Phone/i];
+    
+    // Проверка, соответствует ли устройство пользователя списку
+    const isMobile = mobileDevices.some((device) => navigator.userAgent.match(device));
+
+    if (isMobile) {
+      // Укажите адрес страницы для мобильных пользователей
+      window.location.href = "https://m.your-site.com/mobile-page.html";
+    }
+  })();
+</script>
+
+
 // 1. Список твоих фильмов
 const movies = [
     {
