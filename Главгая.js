@@ -8,7 +8,7 @@
 
     if (isMobile) {
       // Укажите адрес страницы для мобильных пользователей
-      window.location.href = "https://m.your-site.com/mobile-page.html";
+      window.location.href = "https://google.com";
     }
   })();
 </script>
