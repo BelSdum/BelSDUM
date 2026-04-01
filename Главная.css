@@ -599,49 +599,87 @@ body::after {
 }
 
 
-/* --- СТИЛИ ДЛЯ КОНТЕНТА (Текст и Лого) --- */
-
-.stub-content {
-    position: relative;
-    z-index: 10; /* Поверх звёзд */
-    max-width: 500px;
-    text-align: center;
+/* Основной фон заглушки */
+#mobile-stub {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #050505; /* Глубокий черный */
+    z-index: 100000;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-.stub-logo img {
-    width: 80px;
-    margin-bottom: 30px;
-    filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
+#mobile-stub.active {
+    display: flex;
+}
+
+/* Общие стили для слоев звезд */
+.star-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 200%; height: 200%; /* Больше экрана для анимации движения */
+    pointer-events: none;
+}
+
+/* Первый слой: мелкие звезды */
+.layer-1 {
+    background-image: 
+        radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 50px 100px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 150px 150px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 250px 50px, rgba(255,255,255,0.5), rgba(0,0,0,0));
+    background-size: 300px 300px; /* Повторение узора */
+    opacity: 0.3;
+    animation: starsRotate 150s linear infinite;
+}
+
+/* Второй слой: звезды покрупнее + мерцание */
+.layer-2 {
+    background-image: 
+        radial-gradient(2px 2px at 80px 40px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 190px 250px, #fff, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 10px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0));
+    background-size: 400px 400px;
+    opacity: 0.5;
+    animation: starsRotateReverse 100s linear infinite, twinkle 4s ease-in-out infinite;
+}
+
+/* --- АНИМАЦИИ --- */
+
+@keyframes starsRotate {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-20%, -20%); }
+}
+
+@keyframes starsRotateReverse {
+    from { transform: translate(-10%, -10%); }
+    to { transform: translate(0, 0); }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+/* Контент поверх звезд */
+.stub-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
 }
 
 .stub-content h1 {
-    font-size: 2.2rem;
-    font-weight: 800;
-    margin-bottom: 20px;
+    font-size: 2rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    background: linear-gradient(180deg, #fff 0%, #666 100%);
+    letter-spacing: 3px;
+    background: linear-gradient(to bottom, #fff, #555);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px rgba(255,255,255,0.2);
-}
-
-.stub-content p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #ccc;
-    margin-bottom: 15px;
-}
-
-.temp-note {
-    font-weight: 600;
-    color: #fff !important;
-}
-
-.stub-footer {
-    margin-top: 40px;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    color: #444;
+    margin-bottom: 20px;
 }
