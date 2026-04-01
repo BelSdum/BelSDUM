@@ -1,20 +1,3 @@
-<script>
-  (function() {
-    // Список ключевых слов мобильных устройств
-    const mobileDevices = [/Android/i, /webOS/i, /iPhone/i, /iPad/i, /iPod/i, /BlackBerry/i, /Windows Phone/i];
-    
-    // Проверка, соответствует ли устройство пользователя списку
-    const isMobile = mobileDevices.some((device) => navigator.userAgent.match(device));
-
-    if (isMobile) {
-      // Укажите адрес страницы для мобильных пользователей
-      window.location.href = "https://belsdum.by/%D0%91%D0%BE%D0%B9%D1%86%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BA%D0%BB%D1%83%D0%B1%20(1999)/%D0%9F%D0%BB%D0%B5%D0%B5%D1%80/%D0%9A%D0%BE%D0%B4/BelSDUM.HTML";
-    }
-  })();
-</script>
-
-
-// 1. Список твоих фильмов
 const movies = [
     {
         title: "Байцоўскі клуб",
