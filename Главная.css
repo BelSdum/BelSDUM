@@ -460,153 +460,13 @@ body.loaded {
     to { transform: translate(-100px, 100px); } /* Конечное положение */
 }
 
-/* --- СЛОЙ СО ЗВЕЗДАМИ --- */
-body::before,
-body::after {
-    content: "";
-    position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%; /* Увеличиваем размер для плавного движения */
-    
-    background-image: 
-        radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
-        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
-        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
-    
-    background-size: 550px 550px, 350px 350px, 250px 250px;
-    background-position: 0 0, 40px 60px, 130px 270px;
-    z-index: 1;
-    opacity: 0.4;
-    
-    /* Анимация медленного дрейфа */
-    animation: starsMove 100s linear infinite; 
-}
-
-/* Второй слой звезд — он будет мигать и двигаться в другую сторону */
-body::after {
-    background-size: 300px 300px, 200px 200px, 150px 150px;
-    background-position: 110px 110px, 5px 15px, 220px 20px;
-    
-    /* Совмещаем две анимации: дрейф и мерцание */
-    animation: 
-        starsMoveReverse 120s linear infinite, 
-        twinkle 5s ease-in-out infinite;
-    z-index: 2;
-}
-
-/* --- АНИМАЦИИ --- */
-
-/* Медленное движение звезд в одну сторону */
-@keyframes starsMove {
-    from { transform: translate(0, 0); }
-    to { transform: translate(10%, 10%); }
-}
-
-/* Медленное движение звезд в другую сторону */
-@keyframes starsMoveReverse {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-10%, -10%); }
-}
-
-/* Эффект мерцания (мигания) */
-@keyframes twinkle {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 0.7; }
-}
-
-/* Анимация туманностей (твоя старая анимация) */
-@keyframes move {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-100px, 100px); }
-}
-
-#mobile-stub {
-    display: none; /* Скрыто на ПК */
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    /* Глубокий черный фон с небольшим свечением в центре */
-    background: #050505;
-    background-image: radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
-    z-index: 100000;
-    color: white;
-    font-family: 'Inter', sans-serif;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    box-sizing: border-box;
-    overflow: hidden; /* Важно, чтобы звёзды не вылезали */
-}
-
-#mobile-stub.active {
-    display: flex; /* Показываем только через JS */
-}
-
-/* --- СЛОИ СО ЗВЁЗДАМИ (Как в плеере) --- */
-
-#mobile-stub::before,
-#mobile-stub::after {
-    content: "";
-    position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%; /* Увеличиваем размер для плавного движения */
-    
-    /* Рисуем звёзды с помощью radial-gradient */
-    background-image: 
-        radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
-        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
-        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
-    
-    /* Размеры и позиции звёзд */
-    background-size: 550px 550px, 350px 350px, 250px 250px;
-    background-position: 0 0, 40px 60px, 130px 270px;
-    
-    z-index: 1; /* Под текстом */
-    opacity: 0.4; /* Делаем их не слишком яркими */
-    
-    /* Анимация медленного дрейфа */
-    animation: starsMoveStub 100s linear infinite; 
-}
-
-/* Второй слой звёзд — он будет мигать и двигаться в другую сторону */
-#mobile-stub::after {
-    background-size: 300px 300px, 200px 200px, 150px 150px;
-    background-position: 110px 110px, 5px 15px, 220px 20px;
-    
-    /* Совмещаем две анимации: дрейф и мерцание */
-    animation: 
-        starsMoveReverseStub 120s linear infinite, 
-        twinkleStub 5s ease-in-out infinite;
-    z-index: 2; /* Трохи вышэй за першы слой */
-}
-
-/* --- АНИМАЦИИ --- */
-
-/* Медленное движение звёзд в одну сторону */
-@keyframes starsMoveStub {
-    from { transform: translate(0, 0); }
-    to { transform: translate(10%, 10%); }
-}
-
-/* Медленное движение звёзд в другую сторону */
-@keyframes starsMoveReverseStub {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-10%, -10%); }
-}
-
-/* Эффект мерцания (мигания) */
-@keyframes twinkleStub {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 0.7; }
-}
-
-
-/* Основной фон заглушки */
 #mobile-stub {
     display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    background: #050505; /* Глубокий черный */
-    z-index: 100000;
+    background: radial-gradient(circle at center, #111 0%, #050505 100%);
+    z-index: 999999;
     color: white;
     font-family: 'Inter', sans-serif;
     justify-content: center;
@@ -614,74 +474,98 @@ body::after {
     overflow: hidden;
 }
 
-#mobile-stub.active {
-    display: flex;
-}
+#mobile-stub.active { display: flex; }
 
-/* Общие стили для слоев звезд */
-.star-layer {
+/* Контейнер для звезд */
+.stars-container {
     position: absolute;
     top: 0; left: 0;
-    width: 200%; height: 200%; /* Больше экрана для анимации движения */
+    width: 100%; height: 100%;
     pointer-events: none;
 }
 
-/* Первый слой: мелкие звезды */
-.layer-1 {
-    background-image: 
-        radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 50px 100px, #fff, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 150px 150px, #fff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 250px 50px, rgba(255,255,255,0.5), rgba(0,0,0,0));
-    background-size: 300px 300px; /* Повторение узора */
+.stars-layer {
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+}
+
+/* 1. Маленькие далекие звезды */
+.small-stars {
+    background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat;
+    background-size: 500px 500px;
     opacity: 0.3;
-    animation: starsRotate 150s linear infinite;
-    z-index: 1000001;
+    animation: moveStars 120s linear infinite;
 }
 
-/* Второй слой: звезды покрупнее + мерцание */
-.layer-2 {
-    background-image: 
-        radial-gradient(2px 2px at 80px 40px, #fff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 190px 250px, #fff, rgba(0,0,0,0)),
-        radial-gradient(3px 3px at 10px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0));
-    background-size: 400px 400px;
-    opacity: 0.5;
-    animation: starsRotateReverse 100s linear infinite, twinkle 4s ease-in-out infinite;
-    z-index: 1000002;
+/* 2. Средние звезды */
+.medium-stars {
+    background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/twinkling.png') repeat;
+    background-size: 800px 800px;
+    opacity: 0.2;
+    animation: moveStarsReverse 80s linear infinite;
 }
 
-/* --- АНИМАЦИИ --- */
+/* 3. Мерцание (эффект туманности) */
+.twinkling-stars {
+    background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/twinkling.png') repeat;
+    background-size: 1000px 1000px;
+    animation: twinkleEffect 4s ease-in-out infinite;
+    opacity: 0.4;
+}
 
-@keyframes starsRotate {
+/* Анимации */
+@keyframes moveStars {
     from { transform: translate(0, 0); }
-    to { transform: translate(-20%, -20%); }
+    to { transform: translate(10%, 10%); }
 }
 
-@keyframes starsRotateReverse {
-    from { transform: translate(-10%, -10%); }
-    to { transform: translate(0, 0); }
+@keyframes moveStarsReverse {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-5%, -5%); }
 }
 
-@keyframes twinkle {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.8; }
+@keyframes twinkleEffect {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.5; }
 }
 
-/* Контент поверх звезд */
+/* Оформление текста */
 .stub-content {
     position: relative;
     z-index: 10;
     text-align: center;
+    max-width: 450px;
     padding: 20px;
 }
 
 .stub-content h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    background: linear-gradient(to bottom, #fff, #555);
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    background: linear-gradient(to bottom, #fff 30%, #666 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 20px;
+}
+
+.stub-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #aaa;
+    margin-bottom: 15px;
+}
+
+.highlight {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.stub-footer {
+    margin-top: 50px;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    color: #333;
+    text-transform: uppercase;
 }
