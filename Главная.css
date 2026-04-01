@@ -518,3 +518,59 @@ body::after {
     from { transform: translate(0, 0); }
     to { transform: translate(-100px, 100px); }
 }
+
+#mobile-stub {
+    display: none; /* По умолчанию скрыто */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #050505;
+    z-index: 10000; /* Поверх всего */
+    color: white;
+    font-family: 'Inter', sans-serif;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#mobile-stub.active {
+    display: flex; /* Показываем только на мобилках */
+}
+
+.stub-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #fff, #555);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stub-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.stub-logo img {
+    width: 80px;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
+}
+
+/* Эффект свечения на фоне */
+.stub-decoration {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
