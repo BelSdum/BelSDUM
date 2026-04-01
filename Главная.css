@@ -519,32 +519,48 @@ body::after {
     to { transform: translate(-100px, 100px); }
 }
 
+/* Стили для космической заглушки */
 #mobile-stub {
-    display: none;
+    display: none; /* Скрыто на ПК */
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: #050505;
-    z-index: 10000; /* Поверх всего */
+    background-image: radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
+    z-index: 100000;
     color: white;
     font-family: 'Inter', sans-serif;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    padding: 20px;
+    padding: 40px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 #mobile-stub.active {
-    display: flex; /* Показываем только на мобилках */
+    display: flex; /* Показываем только через JS */
+}
+
+.stub-content {
+    position: relative;
+    z-index: 2;
+    max-width: 500px;
+    text-align: center;
+}
+
+.stub-logo img {
+    width: 80px;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
 }
 
 .stub-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(45deg, #fff, #555);
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, #fff 0%, #666 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -552,25 +568,35 @@ body::after {
 .stub-content p {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.7);
-    max-width: 300px;
-    margin: 0 auto;
+    color: #ccc;
+    margin-bottom: 15px;
 }
 
-.stub-logo img {
-    width: 80px;
-    margin-bottom: 2rem;
-    filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
+.temp-note {
+    font-weight: 600;
+    color: #fff !important;
 }
 
-/* Эффект свечения на фоне */
-.stub-decoration {
+.stub-footer {
+    margin-top: 40px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #444;
+}
+
+/* Эффект туманности на фоне */
+.stub-bg-effect {
     position: absolute;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    filter: blur(50px);
+    animation: moveLight 10s infinite alternate;
 }
+
+@keyframes moveLight {
+    from { transform: translate(-50%, -50%); }
+    to { transform: translate(20%, 20%); }
+}
+
