@@ -636,6 +636,7 @@ body::after {
     background-size: 300px 300px; /* Повторение узора */
     opacity: 0.3;
     animation: starsRotate 150s linear infinite;
+    z-index: 1000001;
 }
 
 /* Второй слой: звезды покрупнее + мерцание */
@@ -647,6 +648,7 @@ body::after {
     background-size: 400px 400px;
     opacity: 0.5;
     animation: starsRotateReverse 100s linear infinite, twinkle 4s ease-in-out infinite;
+    z-index: 1000002;
 }
 
 /* --- АНИМАЦИИ --- */
