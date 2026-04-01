@@ -4,6 +4,13 @@
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
+html {
+        --zero-vw: 0vw;
+        font-size: calc(.694444vw - 1.666592px);
+        -webkit-marquee-increment: var(--zero-vw);
+    }
+
+
 /* Добавь это к картинкам и кнопкам */
 #overlayImage, 
 #Logo, 
@@ -56,13 +63,16 @@ body.loaded {
 
 
 
-/* Используем ID для максимального приоритета */
 #mainPlayer {
     position: relative;
-    width: auto;
-    height: 80%; 
-    max-width: 90vw;
-    aspect-ratio: 16 / 9;
+    /* Вместо процентов задаем ширину и высоту в rem */
+    /* При стандартном корне 16px, 80rem — это 1280px */
+    width: 80rem; 
+    height: 45rem; /* Соотношение 16:9 (80 / 16 * 9 = 45) */
+    
+    /* Убираем max-width в процентах, чтобы он не сжимался */
+    max-width: none; 
+    
     background: #000;
     overflow: hidden;
     margin: 0 auto;
@@ -70,7 +80,7 @@ body.loaded {
     z-index: 10;
     display: flex;
     flex-direction: column;
-    border-radius: 44px; 
+    border-radius: 4rem;
 }
 
 #video {
@@ -112,73 +122,16 @@ body.loaded {
     pointer-events: none; 
 }
 
-#skipBtn {
-    left: -0.5%;
-    position: absolute;
-    bottom: 110%;
-    padding: 2% 5%;
-    background: var(--panel-bg);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 2px solid var(--glass-border);
-    border-radius: 10000px;
-    color: white;
-    font-weight: 700;
-    font-size: 28px;
-    cursor: pointer;
-    z-index: 11;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(20px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
-}
 
-#skipBtn.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
 
-#skipBtn:hover {
-    background: rgba(60, 60, 60, 0.6);
-    transform: scale(1.05);
-    box-shadow: 0 0 20px var(--accent-glow);
-}
 
-.controls {
-    position: absolute;
-    bottom: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    padding: 1.5% 1.2%; 
-    background: var(--panel-bg);
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(50px);
-    border: 2px solid var(--glass-border);
-    border-radius: 65px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    color: rgb(255, 255, 255);
-    box-sizing: border-box;
-    z-index: 10;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-}
 
-.controls.hide {
-    opacity: 0;
-    transform: translateX(-50%) translateY(30px);
-    pointer-events: none;
-}
 
-.top-row, .bottom-row { display: flex; align-items: center; }
+.top-row, .bottom-row { display: flex; align-items: center; height: 3rem; }
 .top-row { justify-content: space-between; }
-.group { display: flex; align-items: center; flex: 1; height: 42px; padding-right: 0.5%; } 
-.center { justify-content: center; }
-.right { justify-content: flex-end; gap: 22px; padding-right: 2%; }
-.left { gap: 18px; }
+.group { display: flex; align-items: center; flex: 1; height: 2rem; } 
+.right { justify-content: flex-end; gap: 1.5rem; padding-right: 0.1rem; }
+
 
 .icon, .play-icon, #volumeBtn {
     cursor: pointer;
@@ -190,7 +143,7 @@ body.loaded {
     filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
 }
 
-.play-icon { width: spx; height: 110%; object-fit: contain; } /* Было 64px */
+.play-icon { width: spx; height: 110%; object-fit: contain;} /* Было 64px */
 .icon { width: spx; height: 100%; object-fit: contain; } 
 
 
@@ -198,52 +151,15 @@ input[type="range"] {
     -webkit-appearance: none;
     background: transparent;
     outline: none;
-    cursor: pointer; /* Мышка меняется на руку */
-}
-
-#volumeBtn{
-    padding-left: 6%;
-}
-
-#volumeRange {
-    -webkit-appearance: none; 
-    appearance: none;
-    width: 60%;
-    height: 80%;  
-    border-radius: 1000px; 
-    background: rgba(255, 255, 255, 0.1);
-    outline: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer; 
 }
 
 
-
-#volumeRange::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 0;
-    height: 0;
-    background: transparent;
-    border: none;
-}
-
-#volumeRange::-moz-range-thumb {
-    width: 0;
-    height: 0;
-    background: transparent;
-    border: none;
-}
-
-#volumeRange:hover {
-    filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
-    scale: 1.05;
-}
 
 #progress {
     flex: 1;
-    height: 8px;
-    border-radius: 44px;
+    height: 0.5rem;
+    border-radius: 100000rem;
     background: rgba(255, 255, 255);
     transition: height 0.2s ease;
 }
@@ -254,11 +170,11 @@ input[type="range"] {
 
 #progress::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 24px;
-    width: 24px;
+    height: 1.5rem;
+    width: 1.5rem;
     background: #ffffff;
-    border-radius: 50%;
-    margin-top: -8px; 
+    border-radius: 10000rem;
+    margin-top: -0.5rem; 
     cursor: pointer;
     transition: transform 0.2s ease;
 }
@@ -270,9 +186,8 @@ input[type="range"] {
 
 .video-header {
     position: absolute;
-    top: 2%;
-    left: 0;
     width: 100%;
+    height: 5rem;
     text-align: center;
     z-index: 10;
     transition: 
@@ -284,7 +199,7 @@ input[type="range"] {
 }
 
 #mainPlayer:fullscreen .video-header {
-    top: 2%;
+    top: 2rem;
     transform: translateY(0) scale(1.7);
 }
 
@@ -295,26 +210,34 @@ input[type="range"] {
 
 .main-title {
     color: white;
-    font-size: 250%;
-    margin: 0;
-    letter-spacing: 1%;
+    font-size: 2rem; 
+    font-weight: 700;
 }
 
 .sub-title {
+    position: absolute;
+    width: 100%;
+    bottom: -1.2rem;
     color: rgba(255, 255, 255, 0.6);
-    font-size: 100%;
-    margin: 0.3%;
-    font-weight: 400;
+    font-size: 1rem;
+    font-weight: 200;
+}
+
+.bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 3rem; 
+    margin-top: 0.5rem;
 }
 
 .bottom-row span {
     font-weight: 700;
-    font-size: 200%;
-    min-width: 95px;
+    font-size: 1.5rem !important;
+    min-width: 5rem;            
     color: #D9D9D9;
     text-align: center;
-    padding-left: 2%;
-    padding-right: 2%;
 }
 
 #shareBtn {
@@ -330,7 +253,7 @@ input[type="range"] {
     background: var(--panel-bg);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
-    border: 2px solid var(--glass-border);
+    border: 0.1rem solid var(--glass-border);
     border-radius: 44px;
     color: white;
     cursor: pointer;
@@ -378,8 +301,8 @@ input[type="range"] {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* Затемнение */
-    backdrop-filter: blur(10px);    /* Размытие фона видео */
+    background: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(10px);    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -395,43 +318,41 @@ input[type="range"] {
 }
 
 .modal-content {
+    position: absolute;
     background: rgba(40, 40, 40, 0.85); /* Темный полупрозрачный фон */
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 44px;
-    padding: 40px;
-    width: 90%;
-    max-width: 800px;
+    border: 0.1rem solid rgba(255, 255, 255, 0.1);
+    border-radius: 5rem;
+    padding: 2rem;
+    width: 55rem;
+    height: 23rem;
     text-align: center;
+    justify-content: center;
     box-shadow: 0 30px 60px rgba(0,0,0,0.5);
     transform: scale(0.9);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.modal-overlay.active .modal-content {
-    transform: scale(1);
-}
 
 .modal-header {
+    padding-bottom: 1rem;
     color: white;
-    font-size: 40px;
+    font-size: 4rem;
     font-weight: 700;
-    margin-bottom: 25px;
 }
 
-/* Поле со ссылкой */
 .modal-link-box {
     background: rgba(255, 255, 255, 0.1);
-    padding: 25px 40px;
-    border-radius: 44px;
+    padding: 2rem 3rem;
+    border-radius: 5rem;
     display: inline-block;
-    width: 90%;
+    width: 50rem;
     cursor: pointer;
 }
 
 #shareLink {
     color: white;
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 600;
     word-break: break-all;
     cursor: pointer;
@@ -446,11 +367,9 @@ input[type="range"] {
     background: var(--panel-bg);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
-    border: 2px solid var(--glass-border);
-    border-radius: 80px;
+    border: 0.1rem solid var(--glass-border);
+    border-radius: 800000px;
     color: white;
-    font-weight: 700;
-    font-size: 240%;
     cursor: pointer;
     z-index: 9999;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
@@ -459,6 +378,8 @@ input[type="range"] {
     display: flex;
     justify-content: center; 
     align-items: center;
+    font-size: 2rem; 
+    font-weight: 700;
 }
 
 #backBtn:hover {
@@ -576,22 +497,25 @@ body::after {
 /* Контейнер меню качества */
 .quality-menu {
     position: absolute;
-    bottom: 170px; /* Над панелью управления */
-    right: 4%;
+    bottom: 11rem;
+    right: 10rem;
     background: var(--panel-bg);
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
-    border: 2px solid var(--glass-border);
-    border-radius: 44px;
-    padding: 15px 0;
-    width: 220px;
+    border: 0.1rem solid var(--glass-border);
+    border-radius: 4rem;
+    width: 15rem;
+    height: 16rem;
     display: flex;
     flex-direction: column;
     z-index: 100;
-
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     opacity: 1;
     transform: translateY(0);
+}
+
+#mainPlayer:fullscreen .quality-menu {
+    right: 50rem;
 }
 
 .quality-menu.hide {
@@ -602,23 +526,23 @@ body::after {
 
 .quality-header {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 14px;
+    font-size: 1.5rem;
     font-weight: 700;
-    padding: 10px 25px;
+    padding: 2rem 2rem 0.1rem 2rem;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .quality-item {
-    padding: 15px 25px;
+    padding: 0.5rem 2rem;
     color: white;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 1.5rem;
+    font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 30px;
+    border-radius: 30000px;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -631,19 +555,19 @@ body::after {
 
 .quality-item.active::after {
     content: '';
-    width: 10px;
-    height: 10px;
+    width: 1rem;
+    height: 1rem;
     background: #fff;
-    border-radius: 50%;
+    border-radius: 1000rem;
     box-shadow: 0 0 10px #fff;
 }
 
 .badge {
-    font-size: 12px;
+    font-size: 1rem;
     background: rgba(255, 255, 255, 0.2);
-    padding: 2px 8px;
-    border-radius: 6px;
-    margin-left: 10px;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4rem;
+    margin-left: 1rem;
 }
 /* --- КОСМИЧЕСКИЙ ЛОАДЕР --- */
 /* --- ЭФФЕКТ КОСМИЧЕСКОЙ ЗАГРУЗКИ --- */
@@ -656,10 +580,10 @@ body::after {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px; 
-    height: 300px;
+    width: 20rem; 
+    height: 10rem;
     pointer-events: none;
-    display: none; 
+    display: none;
     justify-content: center;
     align-items: center;
     filter: drop-shadow(0 0 50px rgba(255, 255, 255, 0.1));
@@ -675,11 +599,10 @@ body::after {
 /* 1. ЯДРО ЧЁРНОЙ ДЫРЫ (СИНГУЛЯРНОСТЬ) */
 .black-hole {
     position: relative;
-    width: 80px;
-    height: 80px;
-    background: #000; /* Абсолютная чернота */
+    width: 7rem;
+    height: 7rem;
+    background: #000; 
     border-radius: 50%;
-    /* Глубокое внутреннее свечение (горизонт событий) */
     box-shadow: 
         0 0 20px 2px rgba(255, 255, 255, 0.2), /* Внешний блик */
         inset 0 0 30px 5px rgba(255, 255, 255, 0.1); /* Внутренняя глубина */
@@ -690,8 +613,8 @@ body::after {
 /* 2. АККРЕЦИОННЫЙ ДИСК (ВРАЩАЮЩЕЕСЯ КОЛЬЦО МАТЕРИИ) */
 .orbit-ring {
     position: absolute;
-    width: 180px;
-    height: 180px;
+    width: 18rem;
+    height: 18rem;
     border-radius: 50%;
     /* Создаем эффект огненного диска с помощью теней */
     box-shadow: 
@@ -707,27 +630,9 @@ body::after {
     animation: rotateAccretionDisk 1s linear infinite; /* Очень быстрое вращение */
 }
 
-/* 3. ЭФФЕКТ ГРАВИТАЦИОННОГО ЛИНЗИРОВАНИЯ (ИСКАЖЕНИЕ СВЕТА) */
-/* Мы добавим псевдоэлемент к лоадеру */
-.cosmos-loader::before {
-    content: '';
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-    /* Тонкое искажение пространства */
-    backdrop-filter: blur(3px) saturate(1.5);
-    -webkit-backdrop-filter: blur(3px) saturate(1.5);
-    z-index: 0;
-    animation: lensFlarePulse 4s infinite ease-in-out;
-}
-
-/* --- АНИМАЦИИ --- */
-
 /* Быстрое вращение диска */
 @keyframes rotateAccretionDisk {
-    from { transform: rotate(0deg) scaleY(0.8); } /* Немного сплюснут для перспективы */
+    from { transform: rotate(0deg) scaleY(0.8); }
     to { transform: rotate(360deg) scaleY(0.8); }
 }
 
@@ -740,7 +645,7 @@ body::after {
 /* Пульсация искажения света */
 @keyframes lensFlarePulse {
     0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 1; }
 }
 
 /* Плавное появление лоадера */
@@ -757,16 +662,140 @@ body::after {
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    z-index: -1; /* Строго под плеером */
-    filter: blur(100px) opacity(0.5); /* Сильное размытие и прозрачность */
+    z-index: -1;
+    filter: blur(10rem) opacity(0.5); 
     pointer-events: none;
     transition: opacity 0.5s ease;
 }
 
-/* На Full HD мониторах можно сделать свечение чуть ярче */
-@media (min-width: 1920px) {
-    .ambient-light {
-        filter: blur(150px) opacity(0.6);
-    }
+
+.controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60rem;           
+    height: 8rem;       
+    background: var(--panel-bg);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    border: 0.1rem solid var(--glass-border);
+    border-radius: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    box-sizing: border-box;
+    z-index: 10;
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+.controls.hide {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30px);
+    pointer-events: none;
+}
+
+.play-icon { 
+    width: 3rem !important; 
+    height: 3rem !important; 
+    object-fit: contain; 
+}
+
+.right { 
+
+    width: 3rem !important; 
+    height: 3rem !important; 
+    object-fit: contain; 
+    z-index: 2;
+}
+
+.left {
+    width: 3rem !important; 
+    height: 3rem !important; 
+    object-fit: contain; 
+    padding-left: 0.5rem
+}
+
+
+#volumeRange {
+    position: absolute;
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 10rem;
+    height: 2.5rem;  
+    border-radius: 1000px; 
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    left: 8rem;
+}
+
+
+
+#volumeRange::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+    border: none;
+}
+
+#volumeRange::-moz-range-thumb {
+    width: 0;
+    height: 0;
+    background: transparent;
+    border: none;
+}
+
+#volumeRange:hover {
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+    scale: 1.05;
+}
+
+#skipBtn {
+    position: absolute;
+    bottom: 8.5rem;         
+    left: -0.2rem;      
+    padding: 1rem 2rem;
+    border-radius: 100rem;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 2rem;  
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 0 20px rgba(36, 36, 36, 0.925);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--panel-bg);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 0.1rem solid var(--glass-border);
+    box-sizing: border-box;
+    opacity: 0; 
+    pointer-events: none;
+    transform: translateY(10px);
+    background: #1a1a1ae1;
+}
+
+#skipBtn.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#skipBtn:hover {
+    background: rgba(60, 60, 60, 0.6);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+
+.center{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
