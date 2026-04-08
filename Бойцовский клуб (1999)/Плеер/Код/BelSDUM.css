@@ -497,8 +497,8 @@ body::after {
 /* Контейнер меню качества */
 .quality-menu {
     position: absolute;
-    bottom: 11rem;
-    right: 10rem;
+    bottom: 9rem;
+    right: 0.1rem;
     background: var(--panel-bg);
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
@@ -777,7 +777,6 @@ body::after {
     opacity: 0; 
     pointer-events: none;
     transform: translateY(10px);
-    background: #1a1a1ae1;
 }
 
 #skipBtn.show {
