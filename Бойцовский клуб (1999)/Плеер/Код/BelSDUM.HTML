@@ -9,12 +9,23 @@
 </head>
 <body>
 
+
+
+<div class="apple-lang-container">
+    <button id="langSwitchBtn" class="apple-switch cyr-active">
+        <div class="switch-pill"></div>
+        <span class="lang-label cyr">КІР</span>
+        <span class="lang-label lat">LAT</span>
+    </button>
+</div>
+
 <img id="Logo" src="../Картинки\Logo.png" alt="Overlay" draggable="false">
 <canvas id="ambientCanvas" class="ambient-light"></canvas>
 <div class="space-stars-back"></div>
 <div class="space-stars-front"></div>
 
 <div class="player" id="mainPlayer" tabindex="0">
+  
   <div class="video-header" id="videoHeader">
     <h1 class="main-title">Байцоўскі клуб</h1>
     <h2 class="sub-title">Fight Club</h2>
@@ -34,15 +45,23 @@
   <img id="overlayImage" src="../Картинки\warning.png" alt="Overlay">
   
 
+  <div class="controls hide" id="controlsPanel">
   
- 
-  <div class="controls" id="controlsPanel">
+  <div id="preview-container" class="preview-box">
+  <div class="nebula-loader">
+    <div class="star-pulse"></div>
+  </div>
+
+  <video id="preview-video" muted preload="auto"></video>
+  <span id="preview-time">00:00</span>
+</div>
+    
     <div id="skipBtn">Прапусціць</div>
       <div class="quality-menu hide" id="qualityMenu">
-      <div class="quality-header">Alpha V1</div>
+      <div class="quality-header">Alpha 0.11</div>
       <div class="quality-item active" data-quality="1080p">1080p <span class="badge">FHD</span></div>
-      <div class="quality-item" data-quality="720p">- <span class="badge">-</span></div>
-      <div class="quality-item" data-quality="480p">-</div>
+      <div class="quality-item" data-quality="720p"> <span class="badge"></span></div>
+      <div class="quality-item" data-quality="480p"></div>
     </div>
     <div class="top-row">
       <div class="group left">
@@ -75,12 +94,16 @@
   <div class="modal-content">
     <div class="modal-header">Падзяліцца</div>
     <div class="modal-link-box">
-      <span id="shareLink">https://belsdum.by/%D0%91%D0%BE%D0%B9%D1%86%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BA%D0%BB%D1%83%D0%B1%20(1999)/%D0%9F%D0%BB%D0%B5%D0%B5%D1%80/%D0%9A%D0%BE%D0%B4/BelSDUM.HTML</span>
+    <span id="shareLink">https://belsdum.by/%D0%91%D0%BE%D0%B9%D1%86%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BA%D0%BB%D1%83%D0%B1%20(1999)/%D0%9F%D0%BB%D0%B5%D0%B5%D1%80/%D0%9A%D0%BE%D0%B4/BelSDUM.HTML</span>
     </div>
   </div>
 </div>
 
+
+
 <script src="BelSDUM.js"></script>
+
+
 
 </body>
 </html>
