@@ -79,6 +79,7 @@ const formatTime = (s) => {
 };
 
 
+
 const togglePlay = () => {
   if (video.paused) { 
     video.play(); 
@@ -247,7 +248,7 @@ shareModal.onclick = (e) => {
 shareLink.onclick = () => {
   navigator.clipboard.writeText(shareLink.innerText);
   const originalText = shareLink.innerText;
-  shareLink.innerText = "Скапіяваны";
+  shareLink.innerText = "✔";
   setTimeout(() => { shareLink.innerText = originalText; }, 2000);
 };
 
@@ -367,5 +368,164 @@ video.addEventListener('play', () => {
 // 3. Чтобы при ручной перемотке (seek) подсветка тоже менялась сразу:
 video.addEventListener('seeked', () => {
     updateAmbientLight();
+});
+
+// ==========================================
+// ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА (КИРИЛЛИЦА / ЛАТИНИЦА)
+// ==========================================
+
+const langBtn = document.getElementById('langSwitchBtn');
+
+const translations = {
+    cyr: {
+        pageTitle: "BelSDUM | Байцоўскі клуб",
+        title: "Байцоўскі клуб",
+        skip: "Прапусціць",
+        back: "Назад",
+        shareTitle: "Падзяліцца"
+    },
+    lat: {
+        pageTitle: "BelSDUM | Bajcoŭski kłub",
+        title: "Bajcoŭski kłub",
+        skip: "Prapuścić",
+        back: "Nazad",
+        shareTitle: "Padzialicca"
+    }
+};
+
+// Функция обновления текста на странице
+function updateLanguage(mode) {
+    // 1. Вкладка браузера
+    document.title = translations[mode].pageTitle;
+
+    // 2. Главный заголовок фильма
+    const mainTitle = document.querySelector('.main-title');
+    if (mainTitle) mainTitle.innerText = translations[mode].title;
+    
+    // 3. Кнопка "Прапусціць"
+    const skip = document.getElementById('skipBtn');
+    if (skip) skip.innerText = translations[mode].skip;
+
+    // 4. Кнопка "Назад"
+    const backBtn = document.getElementById('backBtn');
+    if (backBtn) backBtn.innerText = translations[mode].back;
+
+    const modalheader = document.querySelector('modalheader');
+    if (modalheader) modalheader.innerText = translations[mode].modalheader;
+
+    const shareHeader = document.querySelector('#shareModal .modal-header'); 
+    if (shareHeader) {
+        shareHeader.innerText = translations[mode].shareTitle;
+    }
+    
+
+  const shareTitle = document.querySelector('.modal-header'); 
+
+  if (shareTitle) {
+    // Проверяем, что это именно окно "Поделиться", а не "Пользовательское соглашение"
+    // Если текст заголовка совпадает с одним из вариантов "Поделиться"
+    const currentText = shareTitle.innerText.trim();
+    if (currentText === translations.cyr.shareTitle || currentText === translations.lat.shareTitle || currentText === "Падзяліцца") {
+        shareTitle.innerText = translations[mode].shareTitle;
+    }
+}
+}
+
+if (langBtn) {
+    // Реакция на клик по кнопке
+    langBtn.addEventListener('click', () => {
+        const isLat = langBtn.classList.toggle('lat-active');
+        langBtn.classList.toggle('cyr-active', !isLat);
+        const mode = isLat ? 'lat' : 'cyr';
+        
+        updateLanguage(mode);
+        localStorage.setItem('selectedLang', mode);
+    });
+
+    // Проверка при загрузке страницы (чтобы язык не сбрасывался при обновлении)
+    window.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('selectedLang') === 'lat') {
+            langBtn.classList.remove('cyr-active');
+            langBtn.classList.add('lat-active');
+            updateLanguage('lat');
+        }
+    });
+}
+
+const previewContainer = document.getElementById('preview-container');
+const previewVideo = document.getElementById('preview-video');
+const previewTime = document.getElementById('preview-time');
+const progressBar = document.getElementById('progress');
+const controlsPanel = document.getElementById('controlsPanel'); // Дадалі панэль кіравання
+
+// Загружаем відэа для прэв'ю
+previewVideo.preload = "auto";
+previewVideo.src = video.src;
+
+progressBar.addEventListener('mousemove', (e) => {
+    previewContainer.style.display = 'flex';
+    previewContainer.style.opacity = '1';
+
+    // 1. Бяром геаметрыю прагрэс-бара і самой панэлі
+    const barRect = progressBar.getBoundingClientRect();
+    const controlsRect = controlsPanel.getBoundingClientRect();
+
+    // 2. Лічым час для відэа (толькі ўнутры прагрэс-бара)
+    let xInsideBar = e.clientX - barRect.left;
+    let pos = Math.max(0, Math.min(xInsideBar / barRect.width, 1));
+    const time = pos * video.duration;
+
+    // 3. Лічым пазіцыю прэв'ю адносна ПАНЭЛІ controlsPanel
+    let mouseXInControls = e.clientX - controlsRect.left;
+    let previewWidth = previewContainer.offsetWidth;
+    
+    // Цэнтруем акенца строга над мышкай
+    let previewX = mouseXInControls - (previewWidth / 2);
+
+    // 4. ЖОСТКАЕ АБМЕЖАВАННЕ: каб не вылазіла за controlsPanel
+    const minX = 0; // Левы край панэлі
+    const maxX = controlsRect.width - previewWidth; // Правы край панэлі
+    previewX = Math.max(minX, Math.min(previewX, maxX));
+
+    // Ужываем каардынаты
+    previewContainer.style.left = `${previewX}px`;
+
+    // 5. Абнаўляем кадр і час
+    if (isFinite(time)) {
+        previewVideo.currentTime = time;
+        const mins = Math.floor(time / 60);
+        const secs = Math.floor(time % 60);
+        previewTime.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+});
+
+progressBar.addEventListener('mouseleave', () => {
+    previewContainer.style.opacity = '0';
+    setTimeout(() => {
+        if (previewContainer.style.opacity === '0') {
+            previewContainer.style.display = 'none';
+        }
+    }, 150); // Хуткае і плыўнае знікненне
+});
+
+// Когда видео начинает искать новый кадр — показываем загрузку
+previewVideo.addEventListener('seeking', () => {
+    previewContainer.classList.remove('loaded');
+});
+
+// Когда кадр успешно загружен — скрываем загрузку
+previewVideo.addEventListener('seeked', () => {
+    previewContainer.classList.add('loaded');
+});
+
+// Добавь это в обработчик mousemove прогресс-бара, 
+// чтобы при первом наведении тоже была проверка
+progressBar.addEventListener('mousemove', (e) => {
+    // ... твой старый код позиционирования ...
+    
+    // Если кадр уже готов (видео не в состоянии поиска)
+    if (previewVideo.readyState >= 3) {
+        previewContainer.classList.add('loaded');
+    }
 });
 
