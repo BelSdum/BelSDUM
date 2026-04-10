@@ -12,7 +12,7 @@ html {
 
 
 /* Добавь это к картинкам и кнопкам */
-#overlayImage, 
+#overlayImage,  
 #Logo, 
 .icon, 
 .play-icon, 
@@ -515,7 +515,7 @@ body::after {
 }
 
 #mainPlayer:fullscreen .quality-menu {
-    right: 50rem;
+    right: 0rem;
 }
 
 .quality-menu.hide {
@@ -668,6 +668,18 @@ body::after {
     transition: opacity 0.5s ease;
 }
 
+#ambientCanvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.2); /* Чуть больше плеера */
+    width: 110%;
+    height: 110%;
+    filter: blur(8rem) brightness(0.6); /* Глубокое мягкое размытие */
+    opacity: 0.4;
+    z-index: -1;
+}
+
 
 .controls {
     position: absolute;
@@ -798,3 +810,162 @@ body::after {
     align-items: center;
     height: 100%;
 }
+
+.apple-lang-container {
+    position: fixed;
+    top: 3rem;
+    right: 3rem;
+    z-index: 10000;
+}
+
+.apple-switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 14rem;
+    height: 3.5rem;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 2rem;
+    padding: 0.4rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+}
+
+
+.switch-pill {
+    position: absolute;
+    width: calc(50% - 0.4rem);
+    height: calc(100% - 0.8rem);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1.6rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 1;
+}
+
+/* Текст */
+.lang-label {
+    flex: 1;
+    z-index: 2;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.4s ease;
+    text-align: center;
+}
+
+/* Состояния переключателя */
+.apple-switch.cyr-active .lang-label.cyr { color: #000; }
+.apple-switch.lat-active .lang-label.lat { color: #000; }
+
+.apple-switch.lat-active .switch-pill {
+    transform: translateX(100%);
+}
+
+/* Эффект при нажатии */
+.apple-switch:active {
+    transform: scale(0.96);
+}
+
+.apple-switch:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.preview-box {
+    position: absolute;
+    bottom: 4rem; 
+    left: 0;
+    width: 14rem;
+    height: 8rem;
+    background: rgba(20, 20, 20, 0.4);
+    backdrop-filter: blur(150px);
+    -webkit-backdrop-filter: blur(150px);
+    border: 0.1rem solid rgba(255, 255, 255, 0.15);
+    border-radius: 2rem;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    pointer-events: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
+    will-change: left, opacity;
+}
+
+#preview-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#preview-time {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(32, 32, 32, 0.6);
+    border: 0.1rem solid rgba(255, 255, 255, 0.15);
+    padding: 0.2rem 0.8rem;
+    border-radius: 5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.nebula-loader {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5); /* Затемнение фона кадра */
+    z-index: 10;
+    transition: opacity 0.3s ease;
+}
+
+/* Пульсирующая звезда */
+.star-pulse {
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 
+        0 0 10px 2px rgba(255, 255, 255, 0.8),
+        0 0 30px 10px rgba(58, 58, 58, 0.3), /* Голубоватое свечение туманности */
+        0 0 60px 20px rgba(32, 32, 32, 0.1);
+    animation: pulsar 3s ease-in-out infinite;
+}
+
+@keyframes pulsar {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+        box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.4), 0 0 30px 10px rgba(139, 139, 139, 0.2);
+    }
+    50% {
+        transform: scale(2.5);
+        opacity: 1;
+        box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.8), 0 0 50px 20px rgba(129, 129, 129, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+        box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.4), 0 0 30px 10px rgba(49, 49, 49, 0.2);
+    }
+}
+
+
+.preview-box.loaded .nebula-loader {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
