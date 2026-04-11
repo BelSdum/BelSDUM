@@ -7,6 +7,28 @@ const ICONS = {
   fsExit: '../Картинки/Union 2.png'
 };
 
+
+const preloadImages = (obj) => {
+    // Вытаскиваем все пути к картинкам из твоего объекта ICONS
+    const urls = Object.values(obj);
+    
+    // Добавляем сюда пути к логотипу и другим статичным картинкам, 
+    // если их нет в объекте ICONS
+    urls.push('../Картинки/Logo.png');
+    urls.push('../Картинки/SOUND OFF.png');
+    urls.push('../Картинки/Pause.png');
+
+    urls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+        // Консоль для проверки (потом можно удалить)
+        img.onload = () => console.log(`[Preload] Done: ${url}`);
+    });
+};
+
+// Запускаем сразу при загрузке скрипта
+preloadImages(ICONS);
+
 const $ = (id) => document.getElementById(id);
 const video = $('video'), 
       audio = $('externalAudio'), 
