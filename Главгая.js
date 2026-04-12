@@ -19,8 +19,6 @@ const movies = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-    const cookieNotice = document.getElementById('cookieNotice');
-    const closeBtn = document.getElementById('closeCookie');
     };
     // 1. Плавное появление при загрузке
     setTimeout(() => {
@@ -71,7 +69,7 @@ function renderMovies() {
     });
 
     // 4. Добавляем пустые заглушки "Хутка", если фильмов мало (например, до 6 штук)
-    const minCards = 7;
+    const minCards = 14;
     if (shuffled.length < minCards) {
         for (let i = shuffled.length; i < minCards; i++) {
             const placeholder = document.createElement('div');
