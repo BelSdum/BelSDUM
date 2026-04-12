@@ -262,51 +262,6 @@ body.loaded {
     transform: scale(1.1) rotate(-5deg);
 }
 
-/* Баннер кукі / прыватнасці */
-.cookie-banner {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    max-width: 400px;
-    background: rgba(30, 30, 30, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    padding: 20px;
-    z-index: 9999
-    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
-
-.cookie-banner.show {
-    transform: translateY(0); /* Плавное выплывание */
-}
-
-.cookie-content p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 14px;
-    line-height: 1.5;
-    margin: 0 0 15px 0;
-}
-
-.cookie-btn {
-    background: white;
-    color: black;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.cookie-btn:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.9);
-}
-
 
 
 /* Центрируем футер, если он сбился */
