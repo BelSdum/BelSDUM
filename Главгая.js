@@ -1,38 +1,25 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const stub = document.getElementById('mobile-stub');
-
-    if (isMobile) {
-        stub.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Запрещаем крутить сайт на фоне
-    }
-});
-
-
 const movies = [
     {
         title: "Байцоўскі клуб",
-        poster: "../Бойцовский клуб (1999)/Релиз/poster.jpg",
+        poster: "C:/Users/danii/OneDrive/Документы/САЙТ/Бойцовский клуб (1999)/Релиз/poster.jpg",
         link: "../Бойцовский клуб (1999)/Релиз/BelSDUMБойцовский клуб (1999).HTML"
     }
-    // Добавляй сюда новые фильмы по аналогии
+    
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-    };
-    // 1. Плавное появление при загрузке
+
     setTimeout(() => {
         document.body.classList.add("loaded");
     }, 100);
 
-    // 2. Плавное исчезновение при клике на ссылки
     const links = document.querySelectorAll('a');
 
     links.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Игнорируем ссылки, открывающиеся в новом окне, и якоря (#)
+
             if (this.hostname === window.location.hostname && !this.hash && this.target !== "_blank") {
-                e.preventDefault(); // Останавливаем мгновенный переход
+                e.preventDefault(); 
                 const destination = this.href;
 
                 // Добавляем класс исчезновения
@@ -48,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function renderMovies() {
+
     const grid = document.getElementById('movieGrid');
     
     // 2. Перемешиваем список (алгоритм Фишера-Йетса)
@@ -100,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 });
 
-
 // Запускаем при загрузке
 window.onload = renderMovies;
+
+
