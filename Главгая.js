@@ -22,13 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cookieNotice = document.getElementById('cookieNotice');
     const closeBtn = document.getElementById('closeCookie');
 
-    // Проверяем, закрывал ли пользователь баннер ранее
-    if (!localStorage.getItem('cookieAccepted')) {
-        setTimeout(() => {
-            cookieNotice.classList.add('show');
-        }, 2000);
-    }
-
+    
     closeBtn.onclick = () => {
         cookieNotice.classList.remove('show');
         // Запоминаем выбор пользователя
