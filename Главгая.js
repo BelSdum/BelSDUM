@@ -21,12 +21,6 @@ const movies = [
 document.addEventListener("DOMContentLoaded", () => {
     const cookieNotice = document.getElementById('cookieNotice');
     const closeBtn = document.getElementById('closeCookie');
-
-    
-    closeBtn.onclick = () => {
-        cookieNotice.classList.remove('show');
-        // Запоминаем выбор пользователя
-        localStorage.setItem('cookieAccepted', 'true');
     };
     // 1. Плавное появление при загрузке
     setTimeout(() => {
