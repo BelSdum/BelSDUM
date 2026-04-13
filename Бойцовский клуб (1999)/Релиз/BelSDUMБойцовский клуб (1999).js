@@ -84,35 +84,34 @@ function updateAmbientLight() {
     }
 }
 
-// 1. Настройка размеров и первая отрисовка, когда видео готово
+
 video.addEventListener('loadeddata', () => {
     ambientCanvas.width = 160; 
     ambientCanvas.height = 90;
-    updateAmbientLight(); // Рисуем первый кадр сразу
+    updateAmbientLight(); 
 });
 
-// 2. Запуск цикла при нажатии Play
+
 video.addEventListener('play', () => {
     updateAmbientLight();
 });
 
-// 3. Чтобы при ручной перемотке (seek) подсветка тоже менялась сразу:
+:
 video.addEventListener('seeked', () => {
     updateAmbientLight();
 });
 
+
+
 shareBtn.onclick = () => {
   shareModal.classList.add('active');
-  if (!video.paused) togglePlay();
 };
 
-// Закрыть при клике на задний план
 shareModal.onclick = (e) => {
   if (e.target === shareModal) {
       shareModal.classList.remove('active');
   }
 };
-
 
 shareLink.onclick = () => {
   navigator.clipboard.writeText(shareLink.innerText);
