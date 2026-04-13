@@ -7,7 +7,6 @@ const overlayText = container.querySelector('.play-overlay');
 const posterContainer = document.querySelector('.poster-container');
 const posterImg = posterContainer.querySelector('img');
 
-// 3D эффект только для изображения
 posterImg.addEventListener('mousemove', (e) => {
     const rect = posterImg.getBoundingClientRect();
     
@@ -99,7 +98,7 @@ video.addEventListener('play', () => {
     updateAmbientLight();
 });
 
-:
+
 video.addEventListener('seeked', () => {
     updateAmbientLight();
 });
