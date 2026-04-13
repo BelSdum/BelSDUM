@@ -1,10 +1,10 @@
 const movies = [
     {
         title: "Байцоўскі клуб",
-        poster: "Бойцовский клуб (1999)/Релиз/poster.jpg",
-        link: "Бойцовский клуб (1999)/Релиз/BelSDUMБойцовский клуб (1999).HTML"
+        description: "Супрацоўнік страхавой кампаніі пакутуе хранічнай бессанню і адчайна спрабуе вырвацца з пакутліва сумнай жыцця. Аднойчы ў чарговай камандзіроўцы ён сустракае нейкага Тайлера Дэрдена-харызматычнага гандляра мылам з перакручанай філасофіяй. Тайлер упэўнены, што самаўдасканаленне — доля слабых, а адзінае, дзеля чаго варта жыць, — самаразбурэнне.", 
+        poster: "C:/Users/danii/OneDrive/Документы/САЙТ/Бойцовский клуб (1999)/Релиз/poster.jpg",
+        link: "../Бойцовский клуб (1999)/Релиз/BelSDUMБойцовский клуб (1999).HTML"
     }
-    
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,10 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.preventDefault(); 
                 const destination = this.href;
 
-                // Добавляем класс исчезновения
                 document.body.classList.add("fade-out");
 
-                // Ждем окончания анимации (600мс) и переходим
                 setTimeout(() => {
                     window.location.href = destination;
                 }, 600);
@@ -35,13 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function renderMovies() {
-
     const grid = document.getElementById('movieGrid');
-    
-    // 2. Перемешиваем список (алгоритм Фишера-Йетса)
     const shuffled = [...movies].sort(() => Math.random() - 0.5);
-
-    // 3. Очищаем сетку и вставляем перемешанные фильмы
     grid.innerHTML = "";
     
     shuffled.forEach(movie => {
@@ -49,14 +42,19 @@ function renderMovies() {
         card.href = movie.link;
         card.className = 'movie-card';
         
+        // Добавляем обертку для инфо-блока
         card.innerHTML = `
             <img src="${movie.poster}" alt="${movie.title}" draggable="false">
+            <div class="movie-info">
+                <h3 class="info-title">${movie.title}</h3>
+                <p class="info-desc">${movie.description}</p>
+            </div>
         `;
         
         grid.appendChild(card);
     });
 
-    // 4. Добавляем пустые заглушки "Хутка", если фильмов мало (например, до 6 штук)
+    // Отрисовка заглушек (оставляем без изменений)
     const minCards = 14;
     if (shuffled.length < minCards) {
         for (let i = shuffled.length; i < minCards; i++) {
@@ -92,3 +90,51 @@ document.addEventListener("DOMContentLoaded", () => {
 window.onload = renderMovies;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const searchModal = document.getElementById('searchModal');
+    const openSearchBtn = document.getElementById('openSearch');
+    const searchInput = document.getElementById('searchInput');
+    const resultsGrid = document.getElementById('searchResults');
+
+    openSearchBtn.onclick = () => {
+        searchModal.classList.add('active');
+        setTimeout(() => searchInput.focus(), 100);
+    };
+
+    searchModal.onclick = (e) => {
+    if (e.target.id === 'searchModal' || e.target.classList.contains('search-overlay')) {
+        searchModal.classList.remove('active');
+        }
+    };
+
+    searchInput.oninput = (e) => {
+        const query = e.target.value.toLowerCase();
+        resultsGrid.innerHTML = "";
+
+        if (query.length < 1) return;
+
+        const filtered = movies.filter(m => m.title.toLowerCase().includes(query));
+
+        filtered.forEach(movie => {
+            const card = document.createElement('a');
+            card.href = movie.link;
+            card.className = 'search-result-card';
+            card.innerHTML = `
+                <img src="${movie.poster}" class="result-poster">
+            `;
+            resultsGrid.appendChild(card);
+        });
+    };
+});
