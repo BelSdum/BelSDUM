@@ -1,9 +1,11 @@
+const shareBtn = document.getElementById('shareBtn');
+const shareModal = document.getElementById('shareModal');
+const shareLink = document.getElementById('shareLink');
 const container = document.getElementById('trailerBox');
 const video = document.getElementById('previewVideo');
 const overlayText = container.querySelector('.play-overlay');
 const posterContainer = document.querySelector('.poster-container');
 const posterImg = posterContainer.querySelector('img');
-const shareBtn = $('shareBtn');
 
 // 3D эффект только для изображения
 posterImg.addEventListener('mousemove', (e) => {
