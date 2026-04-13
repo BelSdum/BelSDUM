@@ -101,3 +101,22 @@ video.addEventListener('seeked', () => {
     updateAmbientLight();
 });
 
+shareBtn.onclick = () => {
+  shareModal.classList.add('active');
+  if (!video.paused) togglePlay();
+};
+
+// Закрыть при клике на задний план
+shareModal.onclick = (e) => {
+  if (e.target === shareModal) {
+      shareModal.classList.remove('active');
+  }
+};
+
+
+shareLink.onclick = () => {
+  navigator.clipboard.writeText(shareLink.innerText);
+  const originalText = shareLink.innerText;
+  shareLink.innerText = "✔";
+  setTimeout(() => { shareLink.innerText = originalText; }, 2000);
+};
