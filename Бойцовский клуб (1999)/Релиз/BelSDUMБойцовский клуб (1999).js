@@ -46,12 +46,12 @@ container.onclick = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Плавное появление при загрузке
+
     setTimeout(() => {
         document.body.classList.add("loaded");
     }, 100);
 
-    // 2. Плавное исчезновение при клике на ссылки
+
     const links = document.querySelectorAll('a');
 
     links.forEach(link => {
@@ -61,10 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.preventDefault(); // Останавливаем мгновенный переход
                 const destination = this.href;
 
-                // Добавляем класс исчезновения
                 document.body.classList.add("fade-out");
 
-                // Ждем окончания анимации (600мс) и переходим
                 setTimeout(() => {
                     window.location.href = destination;
                 }, 600);
@@ -97,6 +95,15 @@ video.addEventListener('loadeddata', () => {
 video.addEventListener('play', () => {
     updateAmbientLight();
 });
+
+
+
+
+
+
+
+
+
 
 
 video.addEventListener('seeked', () => {
