@@ -32,6 +32,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+
+
+
+
+
+
+
+
+
 function renderMovies() {
     const grid = document.getElementById('movieGrid');
     const shuffled = [...movies].sort(() => Math.random() - 0.5);
@@ -66,6 +76,15 @@ function renderMovies() {
     }
 }
 
+
+
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById('legalModal');
     const openBtn = document.getElementById('openLegal');
@@ -88,15 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Запускаем при загрузке
 window.onload = renderMovies;
-
-
-
-
-
-
-
-
-
 
 
 
