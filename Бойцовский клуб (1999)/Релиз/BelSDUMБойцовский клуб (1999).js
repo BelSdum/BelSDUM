@@ -104,7 +104,8 @@ video.addEventListener('seeked', () => {
 
 
 shareBtn.onclick = () => {
-  shareModal.classList.add('active');
+    shareModal.classList.add('active');
+    print('hello world');
 };
 
 shareModal.onclick = (e) => {
