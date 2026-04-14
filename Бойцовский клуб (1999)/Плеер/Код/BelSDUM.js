@@ -471,3 +471,39 @@ progressBar.addEventListener('mousemove', (e) => {
     }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const movieId = "Байцоўскі клуб";
+
+function saveProgress() {
+    if (video.currentTime > 5) {
+        const data = JSON.parse(localStorage.getItem('continueWatching') || '{}');
+        
+        data[movieId] = {
+            time: video.currentTime,
+            duration: video.duration,
+            // Сохраняем полный путь к текущей странице плеера
+            path: window.location.href 
+        };
+        
+        localStorage.setItem('continueWatching', JSON.stringify(data));
+    }
+}
+
+// Сохраняем при каждом обновлении времени
+video.addEventListener('timeupdate', saveProgress);
