@@ -137,7 +137,21 @@ body.loaded {
 .movie-description {
     font-size: 1.5rem;
     color: rgba(255,255,255,0.5);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+}
+
+.age-rating {
+    font-size: 1rem; 
+    font-weight: 700; 
+    color: rgba(255,255,255,0.5); 
+    margin-top: 1rem;
+    border: 0.15rem solid rgb(255,255,255,0.5);
+    border-radius: 1000rem;
+    padding: 0.4rem 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
 }
 
 .btn-primary {
@@ -149,7 +163,7 @@ body.loaded {
     border: 2px solid var(--glass-border);
     border-radius: 10000rem;
     color: black;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 2rem;
     text-decoration: none;
     cursor: pointer;
@@ -169,6 +183,7 @@ body.loaded {
     margin-bottom: 3rem;
     font-weight: 700;
     opacity: 0.9;
+    margin-top: 1rem;
 }
 
 .grid-container {
@@ -226,7 +241,7 @@ body.loaded {
 
 * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) #050505;
+    scrollbar-color: rgba(255, 255, 255, 0.1) #00000000;
 }
 
 /* Стили для подвала (Footer) */
@@ -508,12 +523,14 @@ body::after {
 
 /* Контейнер для информации внутри карточки */
 .movie-info {
+    align-items: center;
+    justify-content: center;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9); 
+    background: rgba(80, 80, 80, 0.4); 
     display: flex;
     flex-direction: column;
     padding: 2rem;
@@ -556,12 +573,6 @@ body::after {
 
 
 
-
-
-
-
-
-/* Кнопка поиска в стиле Apple */
 .search-trigger-btn {
     position: absolute;
     top: 2rem;
@@ -618,6 +629,7 @@ body::after {
     width: 50rem;
     transform: translateY(20px);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 99999999999999999999999999999;
 }
 
 .search-overlay.active .search-container {
@@ -684,4 +696,78 @@ body::after {
 .result-poster:hover {
     transform: translateY(-1.1rem);
     border-color: rgba(255,255,255,0.3);
+}
+
+
+
+
+
+
+
+
+
+.movie-container {
+    border: 1px solid rgba(255,255,255,0.05);
+    border-color: rgba(255, 255, 255, 0);
+    position: relative;
+    width: 25rem;
+    aspect-ratio: 16 / 9;
+    border-radius: 4rem;
+    background-color: var(--apple-bg);
+    overflow: hidden; 
+    box-shadow: 0 0 1.5rem rgba(255, 255, 255, 0.3);
+    transition: 
+        transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), 
+        box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    left: 4rem;
+    top: -2rem;
+
+}
+
+.movie-container:hover {
+    box-shadow: 0 0 3rem rgba(255, 255, 255, 0.4);
+}
+
+.poster-frame {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 2;
+}
+
+.click-shield {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: block;
+}
+
+.progress-container {
+    position: absolute;
+    bottom: 1rem;
+    left: 3rem;
+    right: 3rem;
+    height: 0.3rem;
+    background: #47474781;
+    backdrop-filter: blur(5px);
+    border-radius: 1rem;
+    overflow: hidden;
+    z-index: 3;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #ffffff; 
+    border-radius: 1000rem;
+    box-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.5);
+}
+
+.h2Pr{
+    position: relative;
+    left: 4rem;
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    font-weight: 700;
+    opacity: 0.9;
 }
