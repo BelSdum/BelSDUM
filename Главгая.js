@@ -137,26 +137,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function renderContinueWatching() {
     const container = document.getElementById('continue-watching-container');
-    if (!container) {
-        console.error("Ошибка: Не найден контейнер с id='continue-watching-container'");
-        return;
-    }
+    const section = document.getElementById('continue-watching-section'); // Ссылка на всю секцию
+    
+    if (!container || !section) return;
 
     const rawData = localStorage.getItem('continueWatching');
-    console.log("Данные из памяти:", rawData); // Посмотри в консоль (F12)
 
+    // Проверяем: если данных нет или объект пустой
     if (!rawData || rawData === '{}') {
-        container.innerHTML = '<p style="color:gray;">Тут пока ничего нет. Посмотрите видео!</p>';
+        section.style.display = 'none'; // Полностью скрываем секцию
         return;
     }
 
     const savedData = JSON.parse(rawData);
+    const ids = Object.keys(savedData);
+
+    // Дополнительная проверка на наличие валидных записей
+    if (ids.length === 0) {
+        section.style.display = 'none';
+        return;
+    }
+
+    // Если данные есть — показываем секцию
+    section.style.display = 'block';
     container.innerHTML = '';
 
-    Object.keys(savedData).forEach(id => {
+    ids.forEach(id => {
         const item = savedData[id];
-        
-        // Проверка: есть ли у записи путь и длительность, чтобы код не упал
         if (!item.path || !item.duration) return; 
 
         const progressPercent = (item.time / item.duration) * 100;
@@ -164,20 +171,18 @@ function renderContinueWatching() {
         const card = document.createElement('div');
         card.className = 'continue-card-wrapper';
         card.innerHTML = `
-        <div class="movie-container">
-        <div class="poster-frame" style="background-image: url('poster/${id}.jpg');">
-            <div class="progress-container">
-                <div class="progress-bar" style="width: ${progressPercent}%"></div>
+            <div class="movie-container">
+                <div class="poster-frame" style="background-image: url('poster/${id}.jpg');">
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                    </div>
+                </div>
+                <a href="${item.path}" class="click-shield"></a>
             </div>
-        </div>
-
-        <a href="${item.path}" class="click-shield"></a>
-        </div>
         `;
         container.appendChild(card);
     });
 }
-
 
 
 renderContinueWatching();
