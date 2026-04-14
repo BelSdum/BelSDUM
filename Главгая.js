@@ -142,23 +142,9 @@ function renderContinueWatching() {
     if (!container || !section) return;
 
     const rawData = localStorage.getItem('continueWatching');
-
-    // Проверяем: если данных нет или объект пустой
-    if (!rawData || rawData === '{}') {
-        section.style.display = 'none'; // Полностью скрываем секцию
-        return;
-    }
-
     const savedData = JSON.parse(rawData);
     const ids = Object.keys(savedData);
 
-    // Дополнительная проверка на наличие валидных записей
-    if (ids.length === 0) {
-        section.style.display = 'none';
-        return;
-    }
-
-    // Если данные есть — показываем секцию
     section.style.display = 'block';
     container.innerHTML = '';
 
