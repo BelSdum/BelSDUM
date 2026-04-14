@@ -1,7 +1,6 @@
 const movies = [
     {
         title: "Байцоўскі клуб",
-        description: "Супрацоўнік страхавой кампаніі пакутуе хранічнай бессанню і адчайна спрабуе вырвацца з пакутліва сумнай жыцця. Аднойчы ў чарговай камандзіроўцы ён сустракае нейкага Тайлера Дэрдена-харызматычнага гандляра мылам з перакручанай філасофіяй. Тайлер упэўнены, што самаўдасканаленне — доля слабых, а адзінае, дзеля чаго варта жыць, — самаразбурэнне.", 
         poster: "Бойцовский клуб (1999)/Релиз/poster.jpg",
         link: "Бойцовский клуб (1999)/Релиз/BelSDUMБойцовский клуб (1999).HTML"
     }
@@ -51,14 +50,9 @@ function renderMovies() {
         const card = document.createElement('a');
         card.href = movie.link;
         card.className = 'movie-card';
-        
-        // Добавляем обертку для инфо-блока
         card.innerHTML = `
             <img src="${movie.poster}" alt="${movie.title}" draggable="false">
-            <div class="movie-info">
-                <h3 class="info-title">${movie.title}</h3>
-                <p class="info-desc">${movie.description}</p>
-            </div>
+            <div class="movie-info"></div>
         `;
         
         grid.appendChild(card);
@@ -75,15 +69,6 @@ function renderMovies() {
         }
     }
 }
-
-
-
-
-
-
-
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById('legalModal');
@@ -105,11 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 });
 
-// Запускаем при загрузке
+
 window.onload = renderMovies;
-
-
-
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -148,3 +130,54 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 });
+
+
+
+
+
+function renderContinueWatching() {
+    const container = document.getElementById('continue-watching-container');
+    if (!container) {
+        console.error("Ошибка: Не найден контейнер с id='continue-watching-container'");
+        return;
+    }
+
+    const rawData = localStorage.getItem('continueWatching');
+    console.log("Данные из памяти:", rawData); // Посмотри в консоль (F12)
+
+    if (!rawData || rawData === '{}') {
+        container.innerHTML = '<p style="color:gray;">Тут пока ничего нет. Посмотрите видео!</p>';
+        return;
+    }
+
+    const savedData = JSON.parse(rawData);
+    container.innerHTML = '';
+
+    Object.keys(savedData).forEach(id => {
+        const item = savedData[id];
+        
+        // Проверка: есть ли у записи путь и длительность, чтобы код не упал
+        if (!item.path || !item.duration) return; 
+
+        const progressPercent = (item.time / item.duration) * 100;
+
+        const card = document.createElement('div');
+        card.className = 'continue-card-wrapper';
+        card.innerHTML = `
+        <div class="movie-container">
+        <div class="poster-frame" style="background-image: url('poster/${id}.jpg');">
+            <div class="progress-container">
+                <div class="progress-bar" style="width: ${progressPercent}%"></div>
+            </div>
+        </div>
+
+        <a href="${item.path}" class="click-shield"></a>
+        </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+
+
+renderContinueWatching();
