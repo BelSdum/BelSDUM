@@ -56,20 +56,7 @@ settingsBtn.onclick = (e) => {
     qualityMenu.classList.toggle('hide');
 };
 
-// Выбор качества
-qualityItems.forEach(item => {
-    item.onclick = (e) => {
-        e.stopPropagation();
-        // Убираем активный класс у всех и даем нажатому
-        qualityItems.forEach(el => el.classList.remove('active'));
-        item.classList.add('active');
-        
-        console.log("Выбрана якасць: " + item.dataset.quality);
-        
-        // Закрываем меню после выбора
-        qualityMenu.classList.add('hide');
-    };
-});
+
 
 // Закрытие меню при клике в любое другое место плеера или экрана
 document.addEventListener('click', () => {
