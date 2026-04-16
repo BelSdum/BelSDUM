@@ -471,7 +471,48 @@ progressBar.addEventListener('mousemove', (e) => {
     }
 });
 
+// Выбор качества
+qualityItems.forEach(item => {
+    item.onclick = (e) => {
+        e.stopPropagation();
+        
+        const newSrc = item.dataset.src;
+        const currentQuality = item.dataset.quality;
 
+        // Если ссылка пустая или это то же самое видео — ничего не делаем
+        if (!newSrc || newSrc === video.src) {
+            qualityMenu.classList.add('hide');
+            return;
+        }
+
+        // 1. Запоминаем текущее время и состояние (играло или нет)
+        const currentTime = video.currentTime;
+        const isPaused = video.paused;
+
+        // 2. Визуальное переключение активного пункта
+        qualityItems.forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+
+        // 3. Меняем источник
+        video.src = newSrc;
+        // previewVideo.src = newSrc; // Если хочешь, чтобы превью тоже обновилось
+
+        // 4. Возвращаем видео на нужный момент после загрузки метаданных
+        video.onloadedmetadata = () => {
+            video.currentTime = currentTime;
+            if (!isPaused) {
+                video.play();
+                audio.play();
+            }
+            // Удаляем временный обработчик, чтобы он не срабатывал постоянно
+            video.onloadedmetadata = initMetadata; 
+        };
+        
+        // Закрываем меню
+        qualityMenu.classList.add('hide');
+        showUI();
+    };
+});
 
 
 
