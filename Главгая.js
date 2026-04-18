@@ -58,7 +58,6 @@ function renderMovies() {
         grid.appendChild(card);
     });
 
-    // Отрисовка заглушек (оставляем без изменений)
     const minCards = 14;
     if (shuffled.length < minCards) {
         for (let i = shuffled.length; i < minCards; i++) {
@@ -74,18 +73,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById('legalModal');
     const openBtn = document.getElementById('openLegal');
 
-    // Открыть окно
+
     openBtn.onclick = () => {
         modal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Запрещаем скролл сайта под окном
+        document.body.style.overflow = 'hidden'; 
     };
 
-    // Закрыть при клике на фон
+
     modal.onclick = (e) => {
-        // Если клик был именно по оверлею, а не по контейнеру с текстом
+
         if (e.target === modal) {
             modal.classList.remove('active');
-            document.body.style.overflow = ''; // Возвращаем скролл
+            document.body.style.overflow = ''; 
         }
     };
 });
@@ -137,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function renderContinueWatching() {
     const container = document.getElementById('continue-watching-container');
-    const section = document.getElementById('continue-watching-section'); // Ссылка на всю секцию
+    const section = document.getElementById('continue-watching-section'); 
     
     if (!container || !section) return;
 
