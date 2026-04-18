@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     links.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Игнорируем ссылки, открывающиеся в новом окне, и якоря (#)
+           
             if (this.hostname === window.location.hostname && !this.hash && this.target !== "_blank") {
-                e.preventDefault(); // Останавливаем мгновенный переход
+                e.preventDefault(); 
                 const destination = this.href;
 
                 document.body.classList.add("fade-out");
@@ -75,8 +75,6 @@ const ambientCanvas = document.getElementById('ambientCanvas');
 const ctx = ambientCanvas.getContext('2d', { alpha: false });
 
 function updateAmbientLight() {
-    // Если видео на паузе, мы всё равно хотим один раз отрисовать кадр (для старта)
-    // Но если оно играет, запускаем цикл анимации
     ctx.drawImage(video, 0, 0, ambientCanvas.width, ambientCanvas.height);
     
     if (!video.paused && !video.ended) {
