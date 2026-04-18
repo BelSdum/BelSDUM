@@ -1,5 +1,5 @@
 * {
-    /* Убирает синюю рамку/подсветку при нажатии в мобильных браузерах */
+
     -webkit-tap-highlight-color: transparent;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
@@ -325,7 +325,7 @@ h1 {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Скрываем в полноэкранном режиме, как и кнопку поделиться */
+
 #backBtn.hidden-fs {
     opacity: 0;
     pointer-events: none;
@@ -333,24 +333,24 @@ h1 {
 }
 
 ::-webkit-scrollbar {
-    width: 8px; /* Ширина полосы */
-    background-color: #050505; /* Цвет дорожки (совпадает с фоном сайта) */
+    width: 8px;
+    background-color: #050505; 
 }
 
-/* 2. Настройка ползунка (бегунка) */
+
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый */
-    border-radius: 100px; /* Полностью округлый */
-    border: 2px solid #050505; /* Отступ от краев за счет рамки цвета фона */
+    background: rgba(255, 255, 255, 0.1); 
+    border-radius: 100px; 
+    border: 2px solid #050505; 
     transition: all 0.3s ease;
 }
 
-/* 3. Эффект при наведении на ползунок */
+
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3); /* Становится ярче */
+    background: rgba(255, 255, 255, 0.3);
 }
 
-/* Для Firefox (у него меньше настроек, но базово можно изменить) */
+
 * {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) #050505;
@@ -370,7 +370,6 @@ h1 {
 }
 
 :root {
-    /* Переменные для удобной настройки «стекла» */
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-highlight: rgba(255, 255, 255, 0.15);
@@ -425,7 +424,7 @@ h1 {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Состояние для скрытия в полноэкранном режиме */
+
 #shareBtn.hidden-fs {
     opacity: 0;
     pointer-events: none;
@@ -456,7 +455,7 @@ h1 {
 
 .modal-content {
     position: absolute;
-    background: rgba(40, 40, 40, 0.85); /* Темный полупрозрачный фон */
+    background: rgba(40, 40, 40, 0.85); 
     backdrop-filter: blur(20px);
     border: 0.1rem solid rgba(255, 255, 255, 0.1);
     border-radius: 5rem;
