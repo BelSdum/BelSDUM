@@ -1,5 +1,5 @@
 * {
-    /* Убирает синюю рамку/подсветку при нажатии в мобильных браузерах */
+
     -webkit-tap-highlight-color: transparent;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
@@ -11,7 +11,7 @@ html {
     }
 
 
-/* Добавь это к картинкам и кнопкам */
+
 #overlayImage,  
 #Logo, 
 .icon, 
@@ -19,12 +19,12 @@ html {
 #skipBtn, 
 #shareBtn, 
 #backBtn {
-    /* Запрещает вызов контекстного меню (сохранение картинки) */
+
     -webkit-touch-callout: none;
-    /* Запрещает выделение */
+
     -webkit-user-select: none;
     user-select: none;
-    /* Убирает перетаскивание картинки пальцем */
+
     -webkit-user-drag: none;
 }
 
@@ -56,7 +56,7 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
-/* Состояние после загрузки */
+
 body.loaded {
     opacity: 1;
 }
@@ -65,12 +65,9 @@ body.loaded {
 
 #mainPlayer {
     position: relative;
-    /* Вместо процентов задаем ширину и высоту в rem */
-    /* При стандартном корне 16px, 80rem — это 1280px */
     width: 80rem; 
-    height: 45rem; /* Соотношение 16:9 (80 / 16 * 9 = 45) */
-    
-    /* Убираем max-width в процентах, чтобы он не сжимался */
+    height: 45rem;
+
     max-width: none; 
     
     background: #000;
@@ -201,7 +198,7 @@ input[type="range"] {
 }
 
 #progress:active::-webkit-slider-thumb {
-    transform: scale(1.2); /* Thumb немного растет при нажатии */
+    transform: scale(1.2); 
     
 }
 
@@ -301,7 +298,7 @@ input[type="range"] {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Состояние для скрытия в полноэкранном режиме */
+
 #shareBtn.hidden-fs {
     opacity: 0;
     pointer-events: none;
@@ -340,7 +337,7 @@ input[type="range"] {
 
 .modal-content {
     position: absolute;
-    background: rgba(40, 40, 40, 0.85); /* Темный полупрозрачный фон */
+    background: rgba(40, 40, 40, 0.85); 
     backdrop-filter: blur(20px);
     border: 0.1rem solid rgba(255, 255, 255, 0.1);
     border-radius: 5rem;
@@ -415,7 +412,7 @@ input[type="range"] {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Скрываем в полноэкранном режиме, как и кнопку поделиться */
+
 #backBtn.hidden-fs {
     opacity: 0;
     pointer-events: none;
@@ -424,49 +421,47 @@ input[type="range"] {
 
 
 .glow-ball {
-    position: absolute; /* Абсолютное позиционирование */
-    width: 600px; /* Ширина шара */
-    height: 600px; /* Высота шара */
-    border-radius: 50%; /* Круглая форма */
-    filter: blur(120px); /* Сильное размытие */
-    opacity: 0.15; /* Прозрачность шара */
+    position: absolute; 
+    width: 600px; 
+    height: 600px; 
+    border-radius: 50%; 
+    filter: blur(120px);
+    opacity: 0.15; 
 }
 
-/* Первый светящийся шар */
+
 .ball-1 {
-    background: #3a3a3a; /* Цвет фона шара */
-    top: -100px; /* Отступ сверху */
-    right: -100px; /* Отступ справа */
-    animation: move 20s infinite alternate; /* Анимация движения */
+    background: #3a3a3a; 
+    top: -100px; 
+    right: -100px; 
+    animation: move 20s infinite alternate;
 }
 
-/* Второй светящийся шар */
+
 .ball-2 {
-    background: #1a1a1a; /* Цвет фона шара */
-    bottom: -100px; /* Отступ снизу */
-    left: -100px; /* Отступ слева */
-    animation: move 25s infinite alternate-reverse; /* Анимация движения в обратную сторону */
+    background: #1a1a1a; 
+    bottom: -100px; 
+    left: -100px; 
+    animation: move 25s infinite alternate-reverse; 
 }
 
-/* АНИМАЦИИ */
-/* Анимация мерцания звезд (Новое) */
+
 @keyframes twinkle {
-    0%, 100% { opacity: 0.3; } /* Минимальная прозрачность */
-    50% { opacity: 0.8; } /* Максимальная прозрачность (звезда загорается) */
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; } 
 }
 
-/* Анимация движения туманностей */
 @keyframes move {
-    from { transform: translate(0, 0); } /* Начальное положение */
-    to { transform: translate(-100px, 100px); } /* Конечное положение */
+    from { transform: translate(0, 0); } 
+    to { transform: translate(-100px, 100px); }
 }
 
-/* --- СЛОЙ СО ЗВЕЗДАМИ --- */
+
 body::before,
 body::after {
     content: "";
     position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%; /* Увеличиваем размер для плавного движения */
+    top: -50%; left: -50%; width: 200%; height: 200%; 
     
     background-image: 
         radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
@@ -478,49 +473,46 @@ body::after {
     z-index: 1;
     opacity: 0.4;
     
-    /* Анимация медленного дрейфа */
+
     animation: starsMove 100s linear infinite; 
 }
 
-/* Второй слой звезд — он будет мигать и двигаться в другую сторону */
+
 body::after {
     background-size: 300px 300px, 200px 200px, 150px 150px;
     background-position: 110px 110px, 5px 15px, 220px 20px;
     
-    /* Совмещаем две анимации: дрейф и мерцание */
+
     animation: 
         starsMoveReverse 120s linear infinite, 
         twinkle 5s ease-in-out infinite;
     z-index: 2;
 }
 
-/* --- АНИМАЦИИ --- */
 
-/* Медленное движение звезд в одну сторону */
+
 @keyframes starsMove {
     from { transform: translate(0, 0); }
     to { transform: translate(10%, 10%); }
 }
 
-/* Медленное движение звезд в другую сторону */
+
 @keyframes starsMoveReverse {
     from { transform: translate(0, 0); }
     to { transform: translate(-10%, -10%); }
 }
 
-/* Эффект мерцания (мигания) */
+
 @keyframes twinkle {
     0%, 100% { opacity: 0.2; }
     50% { opacity: 0.7; }
 }
 
-/* Анимация туманностей (твоя старая анимация) */
 @keyframes move {
     from { transform: translate(0, 0); }
     to { transform: translate(-100px, 100px); }
 }
 
-/* Контейнер меню качества */
 .quality-menu {
     position: absolute;
     bottom: 9rem;
@@ -595,11 +587,7 @@ body::after {
     border-radius: 4rem;
     margin-left: 1rem;
 }
-/* --- КОСМИЧЕСКИЙ ЛОАДЕР --- */
-/* --- ЭФФЕКТ КОСМИЧЕСКОЙ ЗАГРУЗКИ --- */
-/* ============================================================
-   ФИНАЛЬНЫЙ КОСМИЧЕСКИЙ ЛОАДЕР "ЧЁРНАЯ ДЫРА" (ОБНОВЛЕННЫЙ)
-============================================================ */
+
 
 .cosmos-loader {
     position: absolute;
@@ -616,13 +604,12 @@ body::after {
     z-index: 12000;
 }
 
-/* Класс отображения (управляется JS) */
+
 .cosmos-loader:not(.hide) {
     display: flex;
     animation: fadeInLoader 0.5s ease forwards;
 }
 
-/* 1. ЯДРО ЧЁРНОЙ ДЫРЫ (СИНГУЛЯРНОСТЬ) */
 .black-hole {
     position: relative;
     width: 7rem;
@@ -630,57 +617,57 @@ body::after {
     background: #000; 
     border-radius: 50%;
     box-shadow: 
-        0 0 20px 2px rgba(255, 255, 255, 0.2), /* Внешний блик */
-        inset 0 0 30px 5px rgba(255, 255, 255, 0.1); /* Внутренняя глубина */
+        0 0 20px 2px rgba(255, 255, 255, 0.2),
+        inset 0 0 30px 5px rgba(255, 255, 255, 0.1); 
     z-index: 2;
     animation: pulseHoleCore 3s infinite ease-in-out;
 }
 
-/* 2. АККРЕЦИОННЫЙ ДИСК (ВРАЩАЮЩЕЕСЯ КОЛЬЦО МАТЕРИИ) */
+
 .orbit-ring {
     position: absolute;
     width: 18rem;
     height: 18rem;
     border-radius: 50%;
-    /* Создаем эффект огненного диска с помощью теней */
+
     box-shadow: 
-        0 0 10px #fff,               /* Яркий центр диска */
-        0 0 30px rgba(255,255,255,0.8), /* Основное свечение */
-        0 0 60px rgba(255,255,255,0.4); /* Внешнее рассеивание */
+        0 0 10px #fff,             
+        0 0 30px rgba(255,255,255,0.8), 
+        0 0 60px rgba(255,255,255,0.4); 
     
-    /* Делаем кольцо неоднородным, "рваным" */
+
     background: radial-gradient(circle, transparent 65%, #fff 70%, transparent 75%);
     
     opacity: 0.9;
     z-index: 1;
-    animation: rotateAccretionDisk 1s linear infinite; /* Очень быстрое вращение */
+    animation: rotateAccretionDisk 1s linear infinite; 
 }
 
-/* Быстрое вращение диска */
+
 @keyframes rotateAccretionDisk {
     from { transform: rotate(0deg) scaleY(0.8); }
     to { transform: rotate(360deg) scaleY(0.8); }
 }
 
-/* Медленная пульсация ядра (дыхание бездны) */
+
 @keyframes pulseHoleCore {
     0%, 100% { transform: scale(1); box-shadow: 0 0 20px 2px rgba(255, 255, 255, 0.2), inset 0 0 30px 5px rgba(255, 255, 255, 0.1); }
     50% { transform: scale(1.05); box-shadow: 0 0 40px 10px rgba(255, 255, 255, 0.3), inset 0 0 40px 10px rgba(255, 255, 255, 0.15); }
 }
 
-/* Пульсация искажения света */
+
 @keyframes lensFlarePulse {
     0%, 100% { transform: scale(1); opacity: 0.5; }
     50% { transform: scale(1.4); opacity: 1; }
 }
 
-/* Плавное появление лоадера */
+
 @keyframes fadeInLoader {
     from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
-/* Контейнер для эффекта свечения */
+
 .ambient-light {
     position: absolute;
     top: 50%;
@@ -698,10 +685,10 @@ body::after {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.2); /* Чуть больше плеера */
+    transform: translate(-50%, -50%) scale(1.2);
     width: 110%;
     height: 110%;
-    filter: blur(8rem) brightness(0.6); /* Глубокое мягкое размытие */
+    filter: blur(8rem) brightness(0.6);  
     opacity: 0.4;
     z-index: -1;
 }
@@ -886,12 +873,12 @@ body::after {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.5); /* Затемнение фона кадра */
+    background: rgba(0, 0, 0, 0.5); 
     z-index: 10;
     transition: opacity 0.3s ease;
 }
 
-/* Пульсирующая звезда */
+
 .star-pulse {
     width: 4px;
     height: 4px;
@@ -899,7 +886,7 @@ body::after {
     border-radius: 50%;
     box-shadow: 
         0 0 10px 2px rgba(255, 255, 255, 0.8),
-        0 0 30px 10px rgba(58, 58, 58, 0.3), /* Голубоватое свечение туманности */
+        0 0 30px 10px rgba(58, 58, 58, 0.3), 
         0 0 60px 20px rgba(32, 32, 32, 0.1);
     animation: pulsar 3s ease-in-out infinite;
 }
