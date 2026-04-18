@@ -9,11 +9,10 @@ const ICONS = {
 
 
 const preloadImages = (obj) => {
-    // Вытаскиваем все пути к картинкам из твоего объекта ICONS
+
     const urls = Object.values(obj);
     
-    // Добавляем сюда пути к логотипу и другим статичным картинкам, 
-    // если их нет в объекте ICONS
+
     urls.push('../Картинки/Logo.png');
     urls.push('../Картинки/SOUND OFF.png');
     urls.push('../Картинки/Pause.png');
@@ -21,12 +20,12 @@ const preloadImages = (obj) => {
     urls.forEach(url => {
         const img = new Image();
         img.src = url;
-        // Консоль для проверки (потом можно удалить)
+
         img.onload = () => console.log(`[Preload] Done: ${url}`);
     });
 };
 
-// Запускаем сразу при загрузке скрипта
+
 preloadImages(ICONS);
 
 const $ = (id) => document.getElementById(id);
@@ -50,20 +49,20 @@ const settingsBtn = $('settingsBtn'),
       FSqualityMenu = $('fullscreenBtn')
       qualityItems = document.querySelectorAll('.quality-item');
 
-// Логика открытия/закрытия
+
 settingsBtn.onclick = (e) => {
-    e.stopPropagation(); // Чтобы документ не поймал клик
+    e.stopPropagation();
     qualityMenu.classList.toggle('hide');
 };
 
 
 
-// Закрытие меню при клике в любое другое место плеера или экрана
+
 document.addEventListener('click', () => {
     qualityMenu.classList.add('hide');
 });
 
-// Обновите функцию showUI, чтобы меню скрывалось вместе с контроллерами
+
 
 
 const shareModal = $('shareModal');
@@ -150,7 +149,7 @@ const showUI = () => {
   }
 };
 
-// Синхронизация при ручной перемотке
+
 const syncMedia = () => { audio.currentTime = video.currentTime; };
 video.onseeking = syncMedia;
 video.onseeked = syncMedia;
@@ -159,18 +158,18 @@ video.ontimeupdate = () => {
   const cur = video.currentTime;
   const dur = video.duration;
   
-  // Обновление прогресс-бара
+
   const p = (cur / dur) * 100 || 0;
   progress.value = p;
   paint(progress, p);
   
-  // Текст времени
+
   curTimeText.innerText = formatTime(cur);
   
 
   localStorage.setItem('video_time_' + video.src, cur);
 
-  // синхронизация аудио
+
   if (Math.abs(audio.currentTime - cur) > 0.3) {
       audio.currentTime = cur;
   }
@@ -178,7 +177,6 @@ video.ontimeupdate = () => {
   if (cur >= SKIP_LIMIT) skipBtn.classList.remove('show');
 };
 
-// Инициализация метаданных
 const initMetadata = () => {
   if (video.duration) {
     durText.innerText = formatTime(video.duration);
@@ -197,7 +195,6 @@ const initMetadata = () => {
 };
 
 video.onloadedmetadata = initMetadata;
-// На случай если браузер уже загрузил видео до выполнения скрипта
 if (video.readyState >= 1) initMetadata();
 
 progress.oninput = () => {
@@ -213,7 +210,7 @@ volRange.oninput = () => {
   updateVolUI();
 };
 
-// Кнопки
+
 playBtn.onclick = togglePlay;
 video.onclick = (e) => { if(e.target === video) togglePlay(); };
 fsBtn.onclick = toggleFS;
@@ -227,7 +224,7 @@ skipBtn.onclick = () => {
 };
 player.onmousemove = showUI;
 
-// Горячие клавиши
+
 document.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase();
   if (key === ' ' || key === 'k' || key === 'л') { 
@@ -240,13 +237,13 @@ document.addEventListener('keydown', (e) => {
   if (key === 'arrowleft') { video.currentTime -= 10; showUI(); }
 });
 
-// Открыть меню
+
 shareBtn.onclick = () => {
   shareModal.classList.add('active');
   if (!video.paused) togglePlay();
 };
 
-// Закрыть при клике на задний план
+
 shareModal.onclick = (e) => {
   if (e.target === shareModal) {
       shareModal.classList.remove('active');
@@ -262,25 +259,24 @@ shareLink.onclick = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Плавное появление при загрузке
+
     setTimeout(() => {
         document.body.classList.add("loaded");
     }, 100);
 
-    // 2. Плавное исчезновение при клике на ссылки
+
     const links = document.querySelectorAll('a');
 
     links.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Игнорируем ссылки, открывающиеся в новом окне, и якоря (#)
+
             if (this.hostname === window.location.hostname && !this.hash && this.target !== "_blank") {
-                e.preventDefault(); // Останавливаем мгновенный переход
+                e.preventDefault(); 
                 const destination = this.href;
 
-                // Добавляем класс исчезновения
+
                 document.body.classList.add("fade-out");
 
-                // Ждем окончания анимации (600мс) и переходим
                 setTimeout(() => {
                     window.location.href = destination;
                 }, 600);
@@ -291,28 +287,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const loader = $('videoLoader');
 
-// Показываем лоадер при буферизации или перемотке
-// Показываем лоадер и ставим аудио на паузу при буферизации или перемотке
+
 video.addEventListener('waiting', () => {
     loader.classList.remove('hide');
-    audio.pause(); // Останавливаем звук, пока видео грузится
+    audio.pause();
 });
 video.addEventListener('seeking', () => {
     loader.classList.remove('hide');
-    audio.pause(); // Останавливаем звук при перемотке
+    audio.pause();
 });
 
-// Скрываем лоадер и продолжаем звук, когда видео готово к воспроизведению
+
 video.addEventListener('playing', () => {
     loader.classList.add('hide');
-    audio.currentTime = video.currentTime; // Финальная синхронизация перед стартом
-    audio.play(); // Запускаем звук только вместе с видео
+    audio.currentTime = video.currentTime;
+    audio.play();
 });
 video.addEventListener('canplay', () => {
     loader.classList.add('hide');
 });
 
-// Дополнительная страховка: если видео встало на паузу по любой причине, аудио тоже должно молчать
+
 video.addEventListener('pause', () => {
     audio.pause();
 });
@@ -321,21 +316,20 @@ video.ontimeupdate = () => {
   const cur = video.currentTime;
   const dur = video.duration;
   
-  // Обновление прогресс-бара
+
   const p = (cur / dur) * 100 || 0;
   progress.value = p;
   paint(progress, p);
   
-  // Текст времени
+
   curTimeText.innerText = formatTime(cur);
   localStorage.setItem('video_time_' + video.src, cur);
 
-  // Синхронизация аудио
+
   if (Math.abs(audio.currentTime - cur) > 0.3) {
       audio.currentTime = cur;
   }
-  
-  // Управление кнопкой пропуска
+
   if (cur >= SKIP_LIMIT) skipBtn.classList.remove('show');
 };
 
@@ -353,8 +347,6 @@ const ambientCanvas = document.getElementById('ambientCanvas');
 const ctx = ambientCanvas.getContext('2d', { alpha: false });
 
 function updateAmbientLight() {
-    // Если видео на паузе, мы всё равно хотим один раз отрисовать кадр (для старта)
-    // Но если оно играет, запускаем цикл анимации
     ctx.drawImage(video, 0, 0, ambientCanvas.width, ambientCanvas.height);
     
     if (!video.paused && !video.ended) {
@@ -362,19 +354,19 @@ function updateAmbientLight() {
     }
 }
 
-// 1. Настройка размеров и первая отрисовка, когда видео готово
+
 video.addEventListener('loadeddata', () => {
     ambientCanvas.width = 160; 
     ambientCanvas.height = 90;
-    updateAmbientLight(); // Рисуем первый кадр сразу
+    updateAmbientLight(); 
 });
 
-// 2. Запуск цикла при нажатии Play
+
 video.addEventListener('play', () => {
     updateAmbientLight();
 });
 
-// 3. Чтобы при ручной перемотке (seek) подсветка тоже менялась сразу:
+
 video.addEventListener('seeked', () => {
     updateAmbientLight();
 });
@@ -385,9 +377,9 @@ const previewContainer = document.getElementById('preview-container');
 const previewVideo = document.getElementById('preview-video');
 const previewTime = document.getElementById('preview-time');
 const progressBar = document.getElementById('progress');
-const controlsPanel = document.getElementById('controlsPanel'); // Дадалі панэль кіравання
+const controlsPanel = document.getElementById('controlsPanel');
 
-// Загружаем відэа для прэв'ю
+
 previewVideo.preload = "auto";
 previewVideo.src = video.src;
 
@@ -395,31 +387,31 @@ progressBar.addEventListener('mousemove', (e) => {
     previewContainer.style.display = 'flex';
     previewContainer.style.opacity = '1';
 
-    // 1. Бяром геаметрыю прагрэс-бара і самой панэлі
+
     const barRect = progressBar.getBoundingClientRect();
     const controlsRect = controlsPanel.getBoundingClientRect();
 
-    // 2. Лічым час для відэа (толькі ўнутры прагрэс-бара)
+
     let xInsideBar = e.clientX - barRect.left;
     let pos = Math.max(0, Math.min(xInsideBar / barRect.width, 1));
     const time = pos * video.duration;
 
-    // 3. Лічым пазіцыю прэв'ю адносна ПАНЭЛІ controlsPanel
+
     let mouseXInControls = e.clientX - controlsRect.left;
     let previewWidth = previewContainer.offsetWidth;
     
-    // Цэнтруем акенца строга над мышкай
+
     let previewX = mouseXInControls - (previewWidth / 2);
 
-    // 4. ЖОСТКАЕ АБМЕЖАВАННЕ: каб не вылазіла за controlsPanel
-    const minX = 0; // Левы край панэлі
-    const maxX = controlsRect.width - previewWidth; // Правы край панэлі
+
+    const minX = 0; 
+    const maxX = controlsRect.width - previewWidth; 
     previewX = Math.max(minX, Math.min(previewX, maxX));
 
-    // Ужываем каардынаты
+
     previewContainer.style.left = `${previewX}px`;
 
-    // 5. Абнаўляем кадр і час
+
     if (isFinite(time)) {
         previewVideo.currentTime = time;
         const mins = Math.floor(time / 60);
@@ -434,31 +426,26 @@ progressBar.addEventListener('mouseleave', () => {
         if (previewContainer.style.opacity === '0') {
             previewContainer.style.display = 'none';
         }
-    }, 150); // Хуткае і плыўнае знікненне
+    }, 150);
 });
 
-// Когда видео начинает искать новый кадр — показываем загрузку
 previewVideo.addEventListener('seeking', () => {
     previewContainer.classList.remove('loaded');
 });
 
-// Когда кадр успешно загружен — скрываем загрузку
+
 previewVideo.addEventListener('seeked', () => {
     previewContainer.classList.add('loaded');
 });
 
-// Добавь это в обработчик mousemove прогресс-бара, 
-// чтобы при первом наведении тоже была проверка
+
 progressBar.addEventListener('mousemove', (e) => {
-    // ... твой старый код позиционирования ...
-    
-    // Если кадр уже готов (видео не в состоянии поиска)
+
     if (previewVideo.readyState >= 3) {
         previewContainer.classList.add('loaded');
     }
 });
 
-// Выбор качества
 qualityItems.forEach(item => {
     item.onclick = (e) => {
         e.stopPropagation();
@@ -466,36 +453,29 @@ qualityItems.forEach(item => {
         const newSrc = item.dataset.src;
         const currentQuality = item.dataset.quality;
 
-        // Если ссылка пустая или это то же самое видео — ничего не делаем
+
         if (!newSrc || newSrc === video.src) {
             qualityMenu.classList.add('hide');
             return;
         }
 
-        // 1. Запоминаем текущее время и состояние (играло или нет)
+    
         const currentTime = video.currentTime;
         const isPaused = video.paused;
 
-        // 2. Визуальное переключение активного пункта
         qualityItems.forEach(el => el.classList.remove('active'));
         item.classList.add('active');
 
-        // 3. Меняем источник
-        video.src = newSrc;
-        // previewVideo.src = newSrc; // Если хочешь, чтобы превью тоже обновилось
 
-        // 4. Возвращаем видео на нужный момент после загрузки метаданных
+        video.src = newSrc;
         video.onloadedmetadata = () => {
             video.currentTime = currentTime;
             if (!isPaused) {
                 video.play();
                 audio.play();
             }
-            // Удаляем временный обработчик, чтобы он не срабатывал постоянно
             video.onloadedmetadata = initMetadata; 
         };
-        
-        // Закрываем меню
         qualityMenu.classList.add('hide');
         showUI();
     };
@@ -525,7 +505,7 @@ function saveProgress() {
         data[movieId] = {
             time: video.currentTime,
             duration: video.duration,
-            // Сохраняем полный путь к текущей странице плеера
+
             path: window.location.href 
         };
         
@@ -533,5 +513,4 @@ function saveProgress() {
     }
 }
 
-// Сохраняем при каждом обновлении времени
 video.addEventListener('timeupdate', saveProgress);
