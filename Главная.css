@@ -216,10 +216,10 @@ body.loaded {
     box-shadow: 0 2rem 4rem rgba(0,0,0,0.6);
 }
 
-/* 1. Настройка всей полосы прокрутки */
+
 ::-webkit-scrollbar {
-    width: 8px; /* Ширина полосы */
-    background-color: #050505; /* Цвет дорожки (совпадает с фоном сайта) */
+    width: 8px; 
+    background-color: #050505;
 }
 
 ::-webkit-scrollbar-thumb {
