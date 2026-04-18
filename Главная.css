@@ -1,26 +1,23 @@
 * {
-    /* Убирает синюю рамку/подсветку при нажатии в мобильных браузерах */
     -webkit-tap-highlight-color: transparent;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 * {
-    -webkit-user-select: none;  /* Safari */
-    -ms-user-select: none;      /* IE/Edge */
-    user-select: none;          /* Стандарт */
-    
-    /* Убираем контур (outline) при фокусе на кнопках и ссылках */
+    -webkit-user-select: none;
+    -ms-user-select: none;    
+    user-select: none;    
+   
     outline: none;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Разрешаем выделение ТОЛЬКО в поле поиска, иначе нельзя будет печатать */
+
 #searchInput {
     -webkit-user-select: text;
     user-select: text;
 }
 
-/* Запрещаем перетаскивание картинок (чтобы не тянулись за мышкой) */
 img {
     -webkit-user-drag: none;
     user-drag: none;
@@ -225,17 +222,16 @@ body.loaded {
     background-color: #050505; /* Цвет дорожки (совпадает с фоном сайта) */
 }
 
-/* 2. Настройка ползунка (бегунка) */
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый */
-    border-radius: 100px; /* Полностью округлый */
-    border: 2px solid #050505; /* Отступ от краев за счет рамки цвета фона */
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    border: 2px solid #050505;
     transition: all 0.3s ease;
 }
 
-/* 3. Эффект при наведении на ползунок */
+
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3); /* Становится ярче */
+    background: rgba(255, 255, 255, 0.3); 
 }
 
 
@@ -244,7 +240,7 @@ body.loaded {
     scrollbar-color: rgba(255, 255, 255, 0.1) #00000000;
 }
 
-/* Стили для подвала (Footer) */
+
 .site-footer {
     background: rgb(5, 5, 5);
     margin-top: 3rem;
@@ -425,49 +421,47 @@ body.loaded {
 }
 
 .glow-ball {
-    position: absolute; /* Абсолютное позиционирование */
-    width: 600px; /* Ширина шара */
-    height: 600px; /* Высота шара */
-    border-radius: 50%; /* Круглая форма */
-    filter: blur(120px); /* Сильное размытие */
-    opacity: 0.15; /* Прозрачность шара */
+    position: absolute; 
+    width: 600px; 
+    height: 600px; 
+    border-radius: 50%; 
+    filter: blur(120px); 
+    opacity: 0.15; 
 }
 
-/* Первый светящийся шар */
+
 .ball-1 {
-    background: #3a3a3a; /* Цвет фона шара */
-    top: -100px; /* Отступ сверху */
-    right: -100px; /* Отступ справа */
-    animation: move 20s infinite alternate; /* Анимация движения */
+    background: #3a3a3a; 
+    top: -100px;
+    right: -100px; 
+    animation: move 20s infinite alternate;
 }
 
-/* Второй светящийся шар */
+
 .ball-2 {
-    background: #1a1a1a; /* Цвет фона шара */
-    bottom: -100px; /* Отступ снизу */
-    left: -100px; /* Отступ слева */
-    animation: move 25s infinite alternate-reverse; /* Анимация движения в обратную сторону */
+    background: #1a1a1a; 
+    bottom: -100px; 
+    left: -100px; 
+    animation: move 25s infinite alternate-reverse; 
 }
 
-/* АНИМАЦИИ */
-/* Анимация мерцания звезд (Новое) */
+
 @keyframes twinkle {
-    0%, 100% { opacity: 0.3; } /* Минимальная прозрачность */
-    50% { opacity: 0.8; } /* Максимальная прозрачность (звезда загорается) */
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
 }
 
-/* Анимация движения туманностей */
+
 @keyframes move {
-    from { transform: translate(0, 0); } /* Начальное положение */
-    to { transform: translate(-100px, 100px); } /* Конечное положение */
+    from { transform: translate(0, 0); } 
+    to { transform: translate(-100px, 100px); } 
 }
 
-/* --- СЛОЙ СО ЗВЕЗДАМИ --- */
 body::before,
 body::after {
     content: "";
     position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%; /* Увеличиваем размер для плавного движения */
+    top: -50%; left: -50%; width: 200%; height: 200%; 
     
     background-image: 
         radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
@@ -479,49 +473,47 @@ body::after {
     z-index: 1;
     opacity: 0.4;
     
-    /* Анимация медленного дрейфа */
+
     animation: starsMove 100s linear infinite; 
 }
 
-/* Второй слой звезд — он будет мигать и двигаться в другую сторону */
 body::after {
     background-size: 300px 300px, 200px 200px, 150px 150px;
     background-position: 110px 110px, 5px 15px, 220px 20px;
     
-    /* Совмещаем две анимации: дрейф и мерцание */
+
     animation: 
         starsMoveReverse 120s linear infinite, 
         twinkle 5s ease-in-out infinite;
     z-index: 2;
 }
 
-/* --- АНИМАЦИИ --- */
 
-/* Медленное движение звезд в одну сторону */
+
+
 @keyframes starsMove {
     from { transform: translate(0, 0); }
     to { transform: translate(10%, 10%); }
 }
 
-/* Медленное движение звезд в другую сторону */
+
 @keyframes starsMoveReverse {
     from { transform: translate(0, 0); }
     to { transform: translate(-10%, -10%); }
 }
 
-/* Эффект мерцания (мигания) */
+
 @keyframes twinkle {
     0%, 100% { opacity: 0.2; }
     50% { opacity: 0.7; }
 }
 
-/* Анимация туманностей (твоя старая анимация) */
+
 @keyframes move {
     from { transform: translate(0, 0); }
     to { transform: translate(-100px, 100px); }
 }
 
-/* Контейнер для информации внутри карточки */
 .movie-info {
     align-items: center;
     justify-content: center;
