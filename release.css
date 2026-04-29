@@ -1,0 +1,510 @@
+* {
+    /* Убирает синюю рамку/подсветку при нажатии в мобильных браузерах */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+html {
+        --zero-vw: 0vw;
+        font-size: calc(.694444vw - 1.666592px);
+        -webkit-marquee-increment: var(--zero-vw);
+    }
+
+
+
+body {
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+::-webkit-scrollbar {
+    width: 8px; 
+    background-color: #050505; 
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1); 
+    border-radius: 100px;
+    border: 2px solid #050505; 
+    transition: all 0.3s ease;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3); 
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) #050505;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+
+.vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 20%, rgba(0, 0, 0, 0.753) 60%, rgba(0, 0, 0, 0.95) 100%);    
+    pointer-events: none; 
+    z-index: 2999; 
+}
+
+
+
+.info-card {
+    background: rgba(20, 20, 20, 0.4) !important; 
+    backdrop-filter: blur(20px);
+}
+
+.main-logo {
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    height: 5%;
+    width: auto;
+}
+
+.content-container {
+    width: 85rem;
+    margin-top: 8rem;
+}
+
+.top-section {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+
+.poster-container {
+    flex: 0 0 20rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    perspective: 70rem;
+}
+
+.poster-container img {
+    width: 100%;
+    border-radius: 2rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    transition: transform 0.1s ease-out, box-shadow 0.3s ease; 
+    will-change: transform;
+    transform-style: preserve-3d;
+}
+
+.poster-container .play-btn {
+    width: 100%;
+    box-sizing: border-box;
+
+    position: relative; 
+    z-index: 5;
+}
+
+:root {
+    --panel-bg: rgba(20, 20, 20, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent-glow: rgba(255, 255, 255, 0.2);
+}
+
+.play-btn, .action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 2rem;
+    background: #fff;
+    border: 2px solid var(--glass-border);
+    border-radius: 10000rem;
+    color: black;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.play-btn:hover, .action-btn:hover {
+
+    transform: scale(1.05);
+    box-shadow: 0 0 1rem var(--accent-glow);
+    box-shadow: 0 0 2rem rgba(255, 255, 255, 0.342);
+    border-color: rgb(255, 255, 255);
+
+}
+
+.info-card {
+    flex: 1;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border-radius: 4rem;
+    padding: 2rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 4rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.age-rating {
+    font-size: 1rem; 
+    font-weight: 700; 
+    color: rgba(255, 255, 255, 0.9); 
+    margin-top: 1rem;
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1000rem;
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease; 
+}
+
+.age-rating:hover {
+    background: rgba(255, 255, 255, 0.253);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.sub-title {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0.5rem 0 0 0;
+    font-weight: 400;
+}
+
+.rating-group {
+    text-align: right;
+}
+
+.rating-value {
+    font-size: 5rem;
+    color: #00ff08;
+    font-weight: 700;
+    line-height: 1;
+    filter: drop-shadow(0 0 8px rgba(176, 255, 209, 0.5));
+}
+
+.duration {
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.7rem;
+}
+
+.meta-info {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.description {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 400;
+}
+
+.description p {
+    margin-bottom: 2rem;
+}
+
+
+.trailer-wrapper {
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+
+.trailer-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 4rem;
+    overflow: hidden;
+    background: #000;
+    cursor: pointer;
+    position: relative;
+    z-index: 100;
+}
+
+.trailer-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.play-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 3rem; font-weight: 700;
+    color: white;
+}
+
+.trailer-container:hover .play-overlay { 
+    opacity: 1; 
+}
+
+
+
+.site-footer {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+
+
+#backBtn {
+    width: 10%; 
+    text-decoration: none;
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 0.1rem solid var(--glass-border);
+    border-radius: 800000px;
+    color: white;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 7%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    font-size: 2rem; 
+    font-weight: 700;
+}
+
+#backBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Скрываем в полноэкранном режиме, как и кнопку поделиться */
+#backBtn.hidden-fs {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px);
+}
+
+::-webkit-scrollbar {
+    width: 8px; /* Ширина полосы */
+    background-color: #050505; /* Цвет дорожки (совпадает с фоном сайта) */
+}
+
+/* 2. Настройка ползунка (бегунка) */
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый */
+    border-radius: 100px; /* Полностью округлый */
+    border: 2px solid #050505; /* Отступ от краев за счет рамки цвета фона */
+    transition: all 0.3s ease;
+}
+
+/* 3. Эффект при наведении на ползунок */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3); /* Становится ярче */
+}
+
+/* Для Firefox (у него меньше настроек, но базово можно изменить) */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) #050505;
+}
+
+.ambient-light {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-99%, -99%);
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    filter: blur(150px) opacity(0.6);
+}
+
+:root {
+    /* Переменные для удобной настройки «стекла» */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.15);
+    --blur-strength: 25px;
+}
+
+.info-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(var(--blur-strength)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(150%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+#shareBtn {
+    display: flex;      
+    justify-content: center;  
+    align-items: center;      
+    text-align: center; 
+    width: 5%;
+    height: 7%;
+    position: fixed;
+    bottom: 2%;
+    right: 13%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 0.1rem solid var(--glass-border);
+    border-radius: 44px;
+    color: white;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+    border-radius: 1000000PX;
+}
+
+
+
+
+.shareImg{
+    width: 40%;
+}
+
+
+
+#shareBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Состояние для скрытия в полноэкранном режиме */
+#shareBtn.hidden-fs {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(10px);    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    position: absolute;
+    background: rgba(40, 40, 40, 0.85); /* Темный полупрозрачный фон */
+    backdrop-filter: blur(20px);
+    border: 0.1rem solid rgba(255, 255, 255, 0.1);
+    border-radius: 5rem;
+    padding: 2rem;
+    width: 55rem;
+    height: 23rem;
+    text-align: center;
+    justify-content: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(var(--blur-strength)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(150%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+
+.modal-header {
+    padding-bottom: 1rem;
+    color: white;
+    font-size: 4rem;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-link-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem 3rem;
+    border-radius: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50rem;
+    height: 12rem;
+    cursor: pointer;
+}
+
+#shareLink {
+    color: white;
+    font-size: 2rem;
+    font-weight: 600;
+    word-break: break-all;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+

@@ -1,0 +1,923 @@
+* {
+    /* Убирает синюю рамку/подсветку при нажатии в мобильных браузерах */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+* {
+    -webkit-user-select: none;  /* Safari */
+    -ms-user-select: none;      /* IE/Edge */
+    user-select: none;          /* Стандарт */
+    
+    /* Убираем контур (outline) при фокусе на кнопках и ссылках */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Разрешаем выделение ТОЛЬКО в поле поиска, иначе нельзя будет печатать */
+#searchInput {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+/* Запрещаем перетаскивание картинок (чтобы не тянулись за мышкой) */
+img {
+    -webkit-user-drag: none;
+    user-drag: none;
+}
+
+html {
+        --zero-vw: 0vw;
+        font-size: calc(.694444vw - 1.666592px);
+        -webkit-marquee-increment: var(--zero-vw);
+    }
+
+
+body {
+    background-color: #050505;
+    color: white;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+.fade-out {
+    opacity: 0 !important;
+}
+
+.container {
+    width: 100%;
+
+}
+
+
+
+
+.hero-section {
+    position: relative;
+    width: 100vw;  
+    height: 85vh;
+    overflow: hidden;
+    margin-bottom: 3rem;
+
+    border-bottom-left-radius: 4rem;
+    border-bottom-right-radius: 4rem;
+
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-video-wrapper {
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-video {
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.hero-content {
+    position: relative;
+    z-index: 999;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; 
+    padding: 0 0 4rem 4rem; 
+    box-sizing: border-box;
+}
+
+.movies-grid {
+    padding: 0 4rem; 
+    margin-bottom: 3rem;
+}
+
+
+
+.main-logo {
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    height: 5%;
+    width: auto;
+    z-index: 19999;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.8) 10%, transparent 60%),
+                linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 40%);
+}
+
+
+.movie-title {
+    font-size: 6rem;
+    font-weight: 800;
+    margin: 0 0 -1rem 0;
+}
+
+.movie-description {
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1rem;
+}
+
+.age-rating {
+    font-size: 1rem; 
+    font-weight: 700; 
+    color: rgba(255,255,255,0.5); 
+    margin-top: 1rem;
+    border: 0.15rem solid rgb(255,255,255,0.5);
+    border-radius: 1000rem;
+    padding: 0.4rem 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+}
+
+.btn-primary {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    background: #fff;
+    border: 2px solid var(--glass-border);
+    border-radius: 10000rem;
+    color: black;
+    font-weight: 800;
+    font-size: 2rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    left: 52rem;
+    bottom: 6rem;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+}
+
+.section-title {
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    font-weight: 700;
+    opacity: 0.9;
+    margin-top: 1rem;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 2rem;
+    padding-bottom: 3rem;
+    
+}
+
+.movie-card {
+    position: relative;
+    aspect-ratio: 2/3;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4rem;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.4s ease;
+    display: block; 
+    z-index: 1999;
+}
+
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-1.5rem);
+    border-color: rgba(255,255,255,0.3);
+    box-shadow: 0 2rem 4rem rgba(0,0,0,0.6);
+}
+
+/* 1. Настройка всей полосы прокрутки */
+::-webkit-scrollbar {
+    width: 8px; /* Ширина полосы */
+    background-color: #050505; /* Цвет дорожки (совпадает с фоном сайта) */
+}
+
+/* 2. Настройка ползунка (бегунка) */
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый */
+    border-radius: 100px; /* Полностью округлый */
+    border: 2px solid #050505; /* Отступ от краев за счет рамки цвета фона */
+    transition: all 0.3s ease;
+}
+
+/* 3. Эффект при наведении на ползунок */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3); /* Становится ярче */
+}
+
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) #00000000;
+}
+
+/* Стили для подвала (Footer) */
+.site-footer {
+    background: rgb(5, 5, 5);
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-project {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.sdum-accent {
+    color: white;
+    font-weight: 900;
+}
+
+
+
+.contact-mail:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                0 0 20px rgba(255, 255, 255, 0.05);
+   
+}
+
+.mail-icon {
+    width: 2rem;
+    height: 2rem;
+    transition: transform 0.4s ease;
+}
+
+.contact-mail:hover .mail-icon {
+    transform: scale(1.1)
+}
+
+.site-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    gap: 1rem;
+}
+
+.modal-overlay {
+    font-weight: 400;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-container {
+    align-items: center;
+    justify-content: center;
+    background: rgba(25, 25, 25, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 40rem;
+    height: 50rem;
+    border-radius: 4rem;
+    padding: 3rem;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .modal-container {
+    transform: scale(1);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-scroll-text {
+    overflow-y: auto;
+    height: 45rem;
+    padding-right: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+
+.modal-scroll-text::-webkit-scrollbar {
+    width: 4px;
+}
+.modal-scroll-text::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 1000px;
+}
+
+.contact-mail {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1000rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.legal-premium-btn {
+    font-weight: 4000;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1000rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.legal-premium-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.legal-icon {
+    width: 2rem;
+    height: 2rem;
+    stroke: rgba(255, 255, 255, 0.4);
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.legal-premium-btn:hover .legal-icon {
+    stroke: #fff;
+    transform: scale(1.1)
+}
+
+.glow-ball {
+    position: absolute; /* Абсолютное позиционирование */
+    width: 600px; /* Ширина шара */
+    height: 600px; /* Высота шара */
+    border-radius: 50%; /* Круглая форма */
+    filter: blur(120px); /* Сильное размытие */
+    opacity: 0.15; /* Прозрачность шара */
+}
+
+/* Первый светящийся шар */
+.ball-1 {
+    background: #3a3a3a; /* Цвет фона шара */
+    top: -100px; /* Отступ сверху */
+    right: -100px; /* Отступ справа */
+    animation: move 20s infinite alternate; /* Анимация движения */
+}
+
+/* Второй светящийся шар */
+.ball-2 {
+    background: #1a1a1a; /* Цвет фона шара */
+    bottom: -100px; /* Отступ снизу */
+    left: -100px; /* Отступ слева */
+    animation: move 25s infinite alternate-reverse; /* Анимация движения в обратную сторону */
+}
+
+/* АНИМАЦИИ */
+/* Анимация мерцания звезд (Новое) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; } /* Минимальная прозрачность */
+    50% { opacity: 0.8; } /* Максимальная прозрачность (звезда загорается) */
+}
+
+/* Анимация движения туманностей */
+@keyframes move {
+    from { transform: translate(0, 0); } /* Начальное положение */
+    to { transform: translate(-100px, 100px); } /* Конечное положение */
+}
+
+/* --- СЛОЙ СО ЗВЕЗДАМИ --- */
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%; /* Увеличиваем размер для плавного движения */
+    
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+    
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    z-index: 1;
+    opacity: 0.4;
+    animation: starsMove 100s linear infinite; 
+}
+
+/* Второй слой звезд — он будет мигать и двигаться в другую сторону */
+body::after {
+    background-size: 300px 300px, 200px 200px, 150px 150px;
+    background-position: 110px 110px, 5px 15px, 220px 20px;
+    
+    /* Совмещаем две анимации: дрейф и мерцание */
+    animation: 
+        starsMoveReverse 120s linear infinite, 
+        twinkle 5s ease-in-out infinite;
+    z-index: 2;
+}
+
+/* --- АНИМАЦИИ --- */
+
+/* Медленное движение звезд в одну сторону */
+@keyframes starsMove {
+    from { transform: translate(0, 0); }
+    to { transform: translate(10%, 10%); }
+}
+
+/* Медленное движение звезд в другую сторону */
+@keyframes starsMoveReverse {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-10%, -10%); }
+}
+
+/* Эффект мерцания (мигания) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.7; }
+}
+
+/* Анимация туманностей (твоя старая анимация) */
+@keyframes move {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-100px, 100px); }
+}
+
+/* Контейнер для информации внутри карточки */
+.movie-info {
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(80, 80, 80, 0.25); 
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.4s ease; 
+    text-align: left;
+    z-index: 2;
+}
+
+.movie-card:hover .movie-info {
+    opacity: 1;
+}
+
+.info-title {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+}
+
+.info-desc {
+    font-size: 1rem;
+    color: rgb(255, 255, 255);
+    transform: translateY(20px);
+    transition: transform 0.4s ease 0.1s; 
+}
+
+
+.movie-card:hover .info-title,
+.movie-card:hover .info-desc {
+    transform: translateY(0);
+}
+
+
+
+
+
+
+
+.search-trigger-btn {
+    position: absolute;
+    top: 2rem;
+    right: 4rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-trigger-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.search-trigger-btn svg { width: 1.8rem; height: 1.8rem; }
+
+
+.search-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    padding-top: 10vh;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.search-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.search-container {
+    width: 80rem;
+    width: 50rem;
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 99999999999999999999999999999;
+}
+
+.search-overlay.active .search-container {
+    transform: translateY(0);
+}
+
+.search-input-box {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10000rem;
+    padding: 1.2rem 1.5rem;
+    gap: 1rem;
+}
+
+.search-icon-inner {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+#searchInput {
+    background: none;
+    border: none;
+    outline: none;
+    color: rgb(255, 255, 255);
+    font-size: 1.4rem;
+    font-family: inherit;
+    width: 100%;
+}
+
+#searchInput::placeholder { color: rgba(255, 255, 255, 0.2); }
+
+.search-results-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 1.5rem;
+    max-height: 600vh;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.search-result-card {
+    aspect-ratio: 2/3;
+    border-radius: 4rem;
+    text-decoration: none;
+    transition: all 0.4s ease;
+}
+
+
+.result-poster {
+    margin-top: 1.2rem;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.03);
+    border-radius: 4rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.4s ease;
+    z-index: 1000000000000000;
+}
+
+.result-poster:hover {
+    transform: translateY(-1.1rem);
+    border-color: rgba(255,255,255,0.3);
+}
+
+
+
+
+
+
+
+
+
+.movie-container {
+    border: 1px solid rgba(255,255,255,0.05);
+    border-color: rgba(255, 255, 255, 0);
+    position: relative;
+    width: 25rem;
+    aspect-ratio: 16 / 9;
+    border-radius: 4rem;
+    background-color: var(--apple-bg);
+    overflow: hidden; 
+    box-shadow: 0 0 1.5rem rgba(255, 255, 255, 0.3);
+    transition: 
+        transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), 
+        box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    left: 4rem;
+    top: -2rem;
+
+}
+
+.movie-container:hover {
+    box-shadow: 0 0 3rem rgba(255, 255, 255, 0.4);
+}
+
+.poster-frame {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 2;
+}
+
+.click-shield {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: block;
+}
+
+.progress-container {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 3rem;
+    right: 3rem;
+    height: 0.3rem;
+    background: #47474781;
+    backdrop-filter: blur(5px);
+    border-radius: 1rem;
+    overflow: hidden;
+    z-index: 3;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #ffffff; 
+    border-radius: 1000rem;
+    box-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.5);
+}
+
+.h2Pr{
+    position: relative;
+    left: 4rem;
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.finished-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 3rem;
+    background: #ffffff;
+    color: #000;
+    padding: 0.7rem 0.8rem;
+    border-radius: 1000rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    z-index: 4;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Кнопка удаления из истории */
+.delete-history-btn {
+    position: absolute;
+    top: 1.5rem;
+    left: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; 
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.movie-container:hover .delete-history-btn {
+    opacity: 1; 
+}
+
+.delete-history-btn:hover {
+    scale: 1.1;
+}
+
+@keyframes goldPulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+    100% { opacity: 0.3; }
+}
+
+
+
+/* Пустая карточка-копия */
+.empty-card-apple {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.02) !important; /* Почти прозрачный фон */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important; /* Убираем свечение, пока она пустая */
+    cursor: default;
+}
+
+.empty-placeholder-text {
+    font-size: 2rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.15); 
+    font-family: 'Inter', sans-serif;
+}
+
+.empty-card-apple:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+
+
+
+
+.space-emergency-line {
+    position: relative;
+    padding: 2rem 4rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    height: 5rem;
+}
+
+.emergency-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.emergency-message {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 800;
+}
+
+.emergency-signal {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem ;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.emergency-signal:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    scale: 1.1;
+}
+
+.emergency-orbit {
+    position: absolute;
+    font-size: 0.85rem;
+    color: #c2c2c2;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    left: 67.5rem;
+    bottom: 1.9rem;
+}
+
+.emergency-orbit:hover {
+    color: #ffffff;
+    opacity: 1;
+}
+
+.emergency-message2 {
+    bottom: 4rem;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.02em;
+    font-weight: 800;
+    left: 13.5rem;
+}

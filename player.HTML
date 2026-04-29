@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="be">
+<head>
+  <meta charset="UTF-8">
+  <title id="page-title">BelSDUM | Загрузка...</title>
+  <link rel="icon" type="image/png" href="LogoBelSDUMPNG.png">
+  <link rel="stylesheet" href="player.css">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+<div class="logo-wrapper">
+    <img id="Logo" src="icon/Logo.png" alt="Logo" draggable="false">
+    <div class="Ver">Pre-Alpha</div>
+</div>
+
+<canvas id="ambientCanvas" class="ambient-light"></canvas>
+<div class="space-stars-back"></div>
+<div class="space-stars-front"></div>
+
+<div class="player" id="mainPlayer" tabindex="0">
+  
+  <div class="video-header" id="videoHeader">
+    <h1 class="main-title">Загрузка</h1>
+    <h2 class="sub-title">Загрузка</h2>
+  </div>
+
+  <img id="playerCornerLogo" src="icon/Logo.png" alt="Logo" draggable="false">
+  
+  <video id="video" src=""></video>
+  <audio id="externalAudio" src=""></audio>
+
+<div id="videoLoader" class="cosmos-loader hide">
+  <div class="black-hole"></div>
+  <div class="orbit-ring"></div>
+</div>
+
+
+  <img id="overlayImage" src="icon/warning.png" alt="Overlay">
+  
+
+<div class="controls hide" id="controlsPanel">
+  
+  <div id="preview-container" class="preview-box">
+  <div class="nebula-loader">
+    <div class="star-pulse"></div>
+  </div>
+
+  <video id="preview-video" muted preload="auto"></video>
+  </div>
+  <div id="skipBtn">Прапусціць</div>
+  <div class="quality-menu hide" id="qualityMenu">
+    <div class="quality-header">Якасць</div>
+    <div class="quality-item active" 
+       data-quality="1080p" 
+       data-src="">
+       1080p <span class="badge">FHD</span>
+    </div>
+  
+    <div class="quality-item" 
+       data-quality="720p" 
+       data-src="">
+       720p <span class="badge">HD</span>
+    </div>
+  
+    <div class="quality-item" 
+       data-quality="360p" 
+       data-src="">
+       360p
+    </div>
+  </div>
+    <div class="top-row">
+      <div class="group left">
+        <img id="volumeBtn" src="icon/SOUND ON.png" class="icon">
+        <input type="range" id="volumeRange" min="0" max="1" step="0.01" value="1">
+      </div>
+      <div class="group center">
+        <img id="playBtn" src="icon/PLAY.png" class="play-icon">
+      </div>
+      <div class="group right">
+        
+        <img id="fullscreenBtn" src="icon/Union.png" class="icon">
+        <img id="settingsBtn" src="icon/kropka kropka kropka.png" class="icon">
+      </div>
+    </div>
+    <div class="bottom-row">
+      <span id="currentTime">00:00</span>
+      <input type="range" id="progress" min="0" max="100" step="0.01" value="0">
+      <span id="duration">00:00</span>
+    </div>
+  </div>
+</div>
+
+<div id="shareBtn">
+  <img id="shareBtnImg" src="icon/SHARE.png" class="shareImg" >
+</div>
+<a id="backBtn" href="release.HTML">Назад</a>
+
+<div id="shareModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">Падзяліцца</div>
+    <div class="modal-link-box">
+    <span id="shareLink"></span>
+    </div>
+  </div>
+</div>
+
+
+<script src="database.js"></script>
+<script src="player.js"></script>
+
+
+
+</body>
