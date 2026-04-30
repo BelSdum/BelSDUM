@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="be">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BelSDUM | Галоўная</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="LogoBelSDUMPNG.png">
+    <link rel="stylesheet" href="MГлавгая.css">
+</head>
+<body>
+
+    <header class="main-header">
+    <img src="../icon/Logo.png" alt="Logo" draggable="false" class="main-logo">
+    <button id="openSearch" class="search-trigger-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+    </button>
+    </header>
+
+
+    <main class="container">
+        
+        <section class="hero-section">
+            <div class="hero-video-wrapper">
+                <img src="../poster/FCHOME.jpg" class="movie-home"></img>
+                <div class="hero-overlay"></div>
+            </div>
+            
+            <div class="hero-content">
+                <img src="../poster/FCHOME.png" class="movie-title"></img>
+                <p class="movie-description">Фільм • Драма <span class="age-rating">18+</span></p>
+                
+                <div class="hero-buttons">
+                    <a href="../release.html?id=fight_club" class="btn-primary">Глядзець зараз</a>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+        <h2 class="h2Pr">Працягнуць прагляд</h2>
+        <div id="continue-watching-container" style="display: flex; gap: 10rem;">
+        </div>
+        </section>
+
+        <section class="movies-grid">
+            <h2 class="section-title">Калекцыя</h2>
+            <div class="grid-container" id="movieGrid">
+        </section>
+
+
+<footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-project">
+                Праект ад <span class="sdum-accent">SDUM</span>
+            </div>
+            
+            <div class="footer-actions">
+                <button id="openLegal" class="legal-premium-btn">
+                    <svg class="legal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    Пагадненне карыстальніка
+                </button>
+
+                <a href="mailto:belsdum@gmail.com" class="contact-mail">
+                    <svg class="mail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 7l8 5 8-5M5 18h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2z"/>
+                    </svg>
+                    belsdum@gmail.com
+                </a>
+            </div>
+        </div>
+
+
+    </footer>
+
+    <div id="legalModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-content">
+            <h2>Карыстальніцкае пагадненне (Публічная аферта)</h2>
+            <div class="modal-scroll-text">
+                <p><strong>1. Агульныя палажэнні</strong><br>
+                1.1. Дадзенае Пагадненне вызначае ўмовы выкарыстання матэрыялаў і сэрвісаў сайта BelSDUM.<br>
+                1.2. Сайт з'яўляецца некамерцыйным праектам, створаным у азнаямляльных і культурна-асветніцкіх мэтах.<br>
+                1.3. Выкарыстоўваючы Сайт, Карыстальнік пагаджаецца з умовамі дадзенага Пагаднення.</p>
+                
+                <p><strong>2. Інтэлектуальная ўласнасць</strong><br>
+                2.1. Усе відэаматэрыялы (фільмы, трэйлеры), прадстаўленыя на Сайце, належаць іх законным праваўладальнікам.<br>
+                2.2. Сайт прадастаўляе доступ да кантэнту толькі для асабістага некамэрцыйнага прагляду. Карыстальнік не мае права тыражаваць або распаўсюджваць кантэнт у камерцыйных мэтах.<br>
+                2.3. Дызайн, лагатып і праграмны код Сайта з'яўляюцца інтэлектуальнай уласнасцю аўтараў праекта SDUM.</p>
+                
+                <p><strong>3. Канфідэнцыяльнасць і персанальныя даныя</strong><br>
+                3.1. Сайт не ажыццяўляе збор, сістэматызацыю і захаванне персанальных даных Карыстальнікаў (імёны, тэлефоны, адрасы).<br>
+                3.2. Для зручнасці выкарыстання Сайт выкарыстоўвае тэхналогію LocalStorage (мясцовае сховішча браўзера) для захавання налад (напрыклад, узровень гучнасці ці прагрэс прагляду). Гэтыя даныя захоўваюцца лакальна на прыладзе Карыстальніка і не перадаюцца трэцім асобам.<br>
+                3.3. Сайт можа выкарыстоўваць тэхнічныя файлы cookie для забеспячэння стабільнай працы інтэрфейсу ў адпаведнасці з Законам РБ «Аб абароне персанальных даных».</p>
+                
+                <p><strong>4. Адмова ад адказнасці</strong><br>
+                4.1. Кантэнт прадастаўляецца па прынцыпе «як ёсць». Адміністрацыя не нясе адказнасці за часовыя збоі ў працы плэера або недаступнасць відэафайлаў.<br>
+                4.2. Адміністрацыя не нясе адказнасці за змест рэкламных матэрыялаў, калі яны будуць транслявацца з вонкавых відэахостынгаў.</p>
+
+                 <p><strong>5. Заключныя палажэнні</strong><br>
+                5.1. Адміністрацыя мае права змяняць дадзенае Пагадненне без папярэдняга паведамлення.<br>
+                5.2. Усе спрэчкі вырашаюцца шляхам перамоў або ў адпаведнасці з дзеючым заканадаўствам Рэспублікі Беларусь.</p>
+                
+                <p><em>Праект SDUM, 2026. Усе правы ахоўваюцца заканадаўствам РБ.</em></p>
+            </div>
+        </div>
+    </div>
+
+    </main>
+
+    <script src="../database.js"></script>
+    <script src="MГлавная.js"></script>
+
+
+</body>
