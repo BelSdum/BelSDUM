@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="be">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BelSDUM | Профіль</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="LogoBelSDUMPNG.png">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+
+    <img src="icon/Logo.png" alt="Logo" draggable="false" class="main-logo">
+
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <main class="profile-page-container">
+
+        <div class="avatar-picker-section">
+        <div id="currentAvatar" class="current-avatar-preview">
+        <!-- Колесико загрузки -->
+        <div class="avatar-spinner"></div>
+        </div>
+
+        <label for="avatarUpload" class="custom-upload-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        Загрузіць сваё фота
+        </label>
+        <input type="file" id="avatarUpload" accept="image/png, image/jpeg, image/webp" hidden>
+        </div>
+
+        <form id="profileForm">
+
+            <div class="profile-field-group">
+                <label for="profileNick">Ваш нікнэйм</label>
+                <input type="text" id="profileNick" class="profile-input" required autocomplete="off">
+                <p id="profileError" class="profile-error-text"></p>
+            </div>
+
+            <div class="profile-field-group">
+                <label for="profilePass">Ваш пароль</label>
+                <input type="password" id="profilePass" class="profile-input disabled-input" value="********" disabled>
+                <p class="field-note">Пароль нельга змяніць у мэтах бяспекі</p>
+            </div>
+
+            <div class="profile-actions">
+                <button type="button" id="profileLogout" class="profile-btn btn-logout">Выйсці з акаўнта</button>
+                <button type="submit" class="profile-btn btn-save">Захаваць змены</button>
+            </div>
+            
+        </form>
+
+    </main>
+    
+    <a id="backBtn" href="index.html">Назад</a>
+    
+    <button type="button" id="openFavoritesBtn" class="favorites-toggle-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+        Мае
+    </button>
+    
+    <div id="favoritesOverlay" class="favorites-overlay">
+        <div class="favorites-menu">
+            <div class="favorites-header">
+                <h3>Буду глядзець</h3>
+            </div>
+            <div class="favorites-list" id="favoritesList">
+                <p class="empty-msg">Тут пакуль пуста. ദ്ദി/ᐠ - ⩊ -マ.ᐟ</p>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="profile.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

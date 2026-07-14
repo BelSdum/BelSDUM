@@ -1,0 +1,629 @@
+
+
+
+* {
+    /* Убирает синюю рамку/подсветку при нажатии в мобильных браузерах */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+html {
+        --zero-vw: 0vw;
+        font-size: calc(.694444vw - 1.666592px);
+        -webkit-marquee-increment: var(--zero-vw);
+    }
+
+body {
+    background-color: #050505;
+    color: #ffffff;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+:root {
+    --panel-bg: rgba(20, 20, 20, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent-glow: rgba(255, 255, 255, 0.2);
+}
+
+
+.profile-page-container {
+    z-index:99999999;
+    width: 100%;
+    max-width: 45rem;
+    padding: 3.5rem;
+    border-radius: 5rem;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+    background: var(--panel-bg);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 0.1rem solid var(--glass-border);
+    box-shadow: 0 0 20px rgba(36, 36, 36, 0.925);
+}
+
+.back-btn {
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 3rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.back-btn:hover {
+    color: #fff;
+    transform: translateX(-5px);
+}
+
+/* Секцыя Аватара */
+.avatar-picker-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.current-avatar-preview {
+    width: 11rem;
+    height: 11rem;
+    border-radius: 1000rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 0.2rem solid #34c759;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 15px 35px rgba(52, 199, 89, 0.2);
+    overflow: hidden;
+}
+
+.custom-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatars-grid {
+    display: flex;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1rem 1.5rem;
+    border-radius: 100rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.avatar-option {
+    font-size: 2.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.avatar-option:hover {
+    transform: scale(1.2);
+}
+
+.avatar-option.selected {
+    background: rgba(52, 199, 89, 0.2);
+    box-shadow: 0 0 0 2px #34c759;
+}
+
+
+.custom-upload-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 0.1rem solid rgba(255, 255, 255, 0.1);
+    border-radius: 100rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.custom-upload-btn svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.custom-upload-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+
+.profile-field-group {
+    margin-bottom: 2.5rem;
+}
+
+.profile-field-group label {
+    display: block;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.8rem;
+    padding-left: 1rem;
+}
+
+.profile-input {
+    width: 80%;
+    height: 6rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 0.1rem solid rgba(255, 255, 255, 0.1);
+    border-radius: 20rem;
+    padding: 0 4rem;
+    color: white;
+    font-size: 1.5rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-input:focus {
+    border-color: #34c759;
+    box-shadow: 0 0 15px rgba(52, 199, 89, 0.15);
+}
+
+.disabled-input {
+    background: rgba(255, 255, 255, 0.01) !important;
+    border-color: rgba(255, 255, 255, 0.03) !important;
+    color: rgba(255, 255, 255, 0.2) !important;
+    cursor: not-allowed;
+}
+
+.field-note {
+    font-size: 0.95rem;
+    color: rgba(255, 69, 58, 0.8);
+    margin-top: 0.6rem;
+    padding-left: 1rem;
+}
+
+.profile-error-text {
+    color: #ff453a;
+    margin-top: 0.6rem;
+    font-size: 1.1rem;
+    padding-left: 1rem;
+}
+
+/* Кнопкі кіравання */
+.profile-actions {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+}
+
+.profile-btn {
+    flex: 1;
+    height: 5.4rem;
+    border-radius: 70rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid var(--glass-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+
+
+
+.main-logo {
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    height: 5%;
+    width: auto;
+    z-index: 19999;
+}
+
+
+.profile-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-save {
+    background: #ffffff;
+    border: 1px solid rgba(190, 190, 190, 0.2);
+    color: rgb(0, 0, 0);
+}
+
+.btn-save:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+}
+
+.btn-logout {
+    background: rgba(255, 69, 58, 0.1);
+    border: 1px solid rgba(255, 69, 58, 0.2);
+    color: #ff453a;
+}
+
+.btn-logout:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(97, 1, 1, 0.2);
+}
+
+/* Усплывальныя тосты (Apple-style) */
+.toast-container {
+    position: fixed;
+    top: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    pointer-events: none;
+}
+
+.apple-toast {
+    background: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.2rem 2.5rem;
+    border-radius: 100rem;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+
+
+
+
+
+
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%; /* Увеличиваем размер для плавного движения */
+    
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+    
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    z-index: 1;
+    opacity: 0.4;
+    
+    /* Анимация медленного дрейфа */
+    animation: starsMove 100s linear infinite; 
+}
+
+/* Второй слой звезд — он будет мигать и двигаться в другую сторону */
+body::after {
+    background-size: 300px 300px, 200px 200px, 150px 150px;
+    background-position: 110px 110px, 5px 15px, 220px 20px;
+    
+    /* Совмещаем две анимации: дрейф и мерцание */
+    animation: 
+        starsMoveReverse 120s linear infinite, 
+        twinkle 5s ease-in-out infinite;
+    z-index: 2;
+}
+
+/* --- АНИМАЦИИ --- */
+
+/* Медленное движение звезд в одну сторону */
+@keyframes starsMove {
+    from { transform: translate(0, 0); }
+    to { transform: translate(10%, 10%); }
+}
+
+/* Медленное движение звезд в другую сторону */
+@keyframes starsMoveReverse {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-10%, -10%); }
+}
+
+/* Эффект мерцания (мигания) */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.7; }
+}
+
+/* Анимация туманностей (твоя старая анимация) */
+@keyframes move {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-100px, 100px); }
+}
+
+
+#backBtn {
+    width: 10%; 
+    text-decoration: none;
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 0.1rem solid var(--glass-border);
+    border-radius: 800000px;
+    color: white;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 7%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    font-size: 2rem; 
+    font-weight: 700;
+}
+
+#backBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+#backBtn.hidden-fs {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.avatar-spinner {
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #ffffff; 
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+
+
+.favorites-toggle-btn {
+    width: 10%; 
+    text-decoration: none;
+    position: fixed;
+    bottom: 11%;
+    right: 2%;
+    gap: 0.5rem;
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 0.1rem solid var(--glass-border);
+    border-radius: 800000px;
+    color: white;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 7%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    font-size: 2rem; 
+    font-weight: 700;
+}
+
+.favorites-toggle-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.favorites-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+}
+
+
+
+
+
+.favorites-menu {
+    position: absolute;
+    
+    transform: scale(0.95);
+    width: 40rem;
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5rem;
+    padding: 2.5rem;
+    z-index: 10000000000000000000000000000000000000;
+    opacity: 1;
+
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+}
+
+.favorites-menu.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+.favorites-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1.5rem;
+}
+
+.favorites-header h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+
+
+.close-btn:hover {
+    color: #ff453a;
+}
+
+.empty-msg {
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 3rem 0;
+}
+
+
+
+
+
+
+
+
+
+.favorites-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000000000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+                visibility 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+
+}
+
+
+.favorites-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+
+
+.favorites-overlay.show .favorites-menu {
+    transform: scale(1);
+}
+
+.remove-fav-btn:hover{
+    transform: scale(1.05);
+}
+
+
+/* Зона спасылкі з эфектам падложкі пры навядзенні */
+.fav-link-area {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0.8rem; /* Дадаём водступ, каб падложка выглядала гарманічна */
+    margin: -0.8rem 0 -0.8rem -0.8rem; /* Кампенсуем водступ, каб не ламаць адлегласці ў картцы */
+    border-radius: 1.2rem;
+    transition: background 0.2s ease;
+}
+
+/* Сама падложка, якая паказвае клікабельнасць */
+.fav-link-area:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.fav-poster-wrapper {
+    width: 5.5rem; 
+    height: 8rem; 
+    border-radius: 0.8rem; /* Трохі меншае акругленне пад стары стыль */
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.fav-poster-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.fav-item-remove {
+    background: transparent;
+    border: 0.1rem solid rgba(255, 69, 58, 0.4);
+    color: rgba(255, 69, 58, 0.8);
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.6rem 17rem;
+    border-radius: 10000rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin:2rem 0 2rem 0;
+}
+
+.fav-item-remove:hover {
+    background: rgba(255, 69, 58, 0.12);
+    color: #ff453a;
+}
+
+
+
+
+
+
+
+
+

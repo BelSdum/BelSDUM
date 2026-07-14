@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="be">
+<head>
+    <meta charset="UTF-8">
+    <title id="page-title">BelSDUM | Загрузка...</title>
+    <link rel="icon" type="image/png" href="LogoBelSDUMPNG.png">
+    <link rel="stylesheet" href="player.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+    <div class="logo-wrapper">
+        <img id="Logo" src="icon/Logo.png" alt="Logo" draggable="false">
+        <div class="Ver">Alpha 1.1 P</div>
+    </div>
+    <canvas id="ambientCanvas" class="ambient-light"></canvas>
+    <div class="space-stars-back"></div>
+    <div class="space-stars-front"></div>
+
+    <div class="player" id="mainPlayer" tabindex="0">
+
+        <div id="musicBanner" class="music-banner hide">
+            <div class="music-banner-content">
+                <img id="bannerTrackCover" src="" class="music-cover-mini" alt="Cover">
+                <div class="music-info">
+                    <span id="bannerTrackTitle" class="music-title">Назва</span>
+                    <span class="music-divider">•</span>
+                    <span id="bannerTrackArtist" class="music-artist">Выканаўца</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-header" id="videoHeader">
+            <h1 class="main-title">Загрузка</h1>
+            <h2 class="sub-title">Загрузка</h2>
+        </div>
+
+        <img id="playerCornerLogo" src="icon/Logo.png" alt="Logo" draggable="false">
+        
+        <video id="video" src="" muted></video>
+        <audio id="externalAudio" src=""></audio>
+
+        <div id="videoLoader" class="cosmos-loader hide">
+            <div class="black-hole"></div>
+            <div class="orbit-ring"></div>
+        </div>
+
+        <img id="overlayImage" src="icon/warning.png" alt="Overlay">
+
+        <div class="controls hide" id="controlsPanel">
+            <div id="preview-container" class="preview-box">
+                <div class="nebula-loader">
+                    <div class="star-pulse"></div>
+                </div>
+                <video id="preview-video" muted preload="auto"></video>
+            </div>
+            
+            <div id="skipBtn">Прапусціць</div>
+            
+            <div class="quality-menu hide" id="qualityMenu">
+                <div class="quality-header">Якасць</div>
+                <div class="quality-item active" data-quality="1080p" data-src="">
+                    1080p <span class="badge">FHD</span>
+                </div>
+                <div class="quality-item" data-quality="720p" data-src="">
+                    720p <span class="badge">HD</span>
+                </div>
+                <div class="quality-item" data-quality="360p" data-src="">
+                    360p
+                </div>
+            </div>
+
+            <div class="top-row">
+                <div class="group left">
+                    <img id="volumeBtn" src="icon/SOUND ON.png" class="icon">
+                    <input type="range" id="volumeRange" min="0" max="1" step="0.01" value="1">
+                </div>
+                <div class="group center">
+                    <img id="playBtn" src="icon/PLAY.png" class="play-icon">
+                </div>
+                <div class="group right">
+                    <img id="pipBtn" src="icon/Pip.png" class="icon" alt="PiP">
+                    <img id="fullscreenBtn" src="icon/Union.png" class="icon">
+                    <img id="settingsBtn" src="icon/kropka kropka kropka.png" class="icon">
+                </div>
+            </div>
+            <div class="bottom-row">
+                <span id="currentTime">00:00</span>
+                <input type="range" id="progress" min="0" max="100" step="0.01" value="0">
+                <span id="duration">00:00</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="shareBtn">
+        <img id="shareBtnImg" src="icon/SHARE.png" class="shareImg">
+    </div>
+    <a id="backBtn" href="release.html">Назад</a>
+
+    <div id="shareModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="modal-header">Падзяліцца</h3>
+            <div class="share-socials-row">
+                <a href="#" id="shareTG" class="social-btn tg-btn" target="_blank">
+                    <span>Telegram</span>
+                </a>
+            </div>
+            <div class="modal-input-wrapper">
+                <input type="text" id="shareInputLink" readonly>
+                <button type="button" id="copyLinkBtn" class="modal-copy-btn">
+                    <svg id="copyIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span id="copyBtnText">Капіяваць</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+        <section class="support-section" id="mainSupport">
+        <div class="support-container">
+        <button class="close-support" onclick="document.getElementById('mainSupport').style.display='none'">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none">
+                <path d="M18 6L6 18M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <div class="support-content">
+            <h2 class="support-title">Падтрымаць праект</h2>
+            <p class="support-desc">Ваша падтрымка дапамагае нам заставацца на арбіце: паляпшаць платформу і дадаваць новыя фільмы на роднай мове.</p>
+        </div>
+        <a href="https://boosty.to/belsdum_by/donate" target="_blank" class="support-btn">
+            <svg class="boosty-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            Падтрымаць на Boosty
+        </a>
+    </div>
+    </section>
+
+    <div id="musicModal" class="modal-overlay">
+        <div class="modal-content music-modal-content">
+            <div class="music-modal-body">
+                <img id="modalTrackCover" src="" class="music-modal-cover" alt="Cover">
+                <div class="music-modal-info">
+                    <h2 id="modalTrackTitle" class="modal-title-text">Назва трэка</h2>
+                    <h3 id="modalTrackArtist" class="modal-artist-text">Выканаўца</h3>
+                    <a id="modalTrackLink" href="#" target="_blank" class="listen-btn">на Яндэкс Музыцы</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="playerToastContainer" class="toast-container"></div>
+
+    <script src="database.js"></script>
+    <script src="player.js"></script>
+</body>
+</html>
