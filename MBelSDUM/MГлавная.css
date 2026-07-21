@@ -618,11 +618,11 @@ body {
 
     .m-movie-card, 
     .m-card {
-        flex: 0 0 calc((100vw - 88px) / 3.5);
+        flex: 0 0 calc((100vw - 88px) / 4.5);
     }
 
     .m-card-empty {
-        flex: 0 0 calc((100vw - 88px) / 3.5); 
+        flex: 0 0 calc((100vw - 88px) / 4.5); 
         height: auto;
         aspect-ratio: 44/60; 
     }
