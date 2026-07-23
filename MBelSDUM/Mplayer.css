@@ -1,0 +1,790 @@
+/* ==========================================================================
+   1. БАЗОВЫЕ НАСТРОЙКИ СТРАНИЦЫ
+   ========================================================================== */
+* {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    background: #000000;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, sans-serif;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* Принудительный альбомный режим при вертикальном положении телефона */
+@media (orientation: portrait) {
+    body {
+        width: 100vh;
+        height: 100vw;
+        transform: rotate(90deg);
+        transform-origin: top left;
+        position: absolute;
+        top: 0;
+        left: 100vw;
+    }
+}
+
+img, button, a {
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+}
+
+/* ==========================================================================
+   2. КОНТЕЙНЕР ПЛЕЕРА И ВИДЕО
+   ========================================================================== */
+.player {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+
+/* ==========================================================================
+   4. ИНТЕРФЕЙС И ПАНЕЛЬ УПРАВЛЕНИЯ
+   ========================================================================== */
+.controls {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 20%, transparent 75%, rgba(0,0,0,0.85) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: opacity 0.4s ease;
+}
+
+.controls.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Кнопка "Назад" */
+#backBtn {
+    position: absolute;
+    bottom: 100px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.6); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+}
+
+#backBtn svg {
+    width: 22px;
+    height: 22px;
+}
+
+#backBtn:active {
+    transform: scale(0.9);
+}
+
+/* Возрастная плашка 18+ */
+#overlayImage {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 200px; /* Компактный и гармоничный размер знака */
+    height: auto;
+    z-index: 110;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+    pointer-events: none;
+}
+
+#overlayImage.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* Заголовки фильма */
+.video-header {
+    padding-left: 80px;
+    padding-top: 268px;
+}
+
+.main-title {
+    position: absolute;
+    color: white;
+    font-size: 25px;
+    font-weight: 800;
+    bottom: 100px;
+    left: 80px;
+}
+
+.sub-title {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    font-weight: 300;
+    bottom: 90px;
+    left: 80px;
+}
+
+/* ==========================================================================
+   5. ЦЕНТРАЛЬНЫЕ КНОПКИ (APPLE TV СТИЛЬ)
+   ========================================================================== */
+.m-center-controls {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+
+
+    
+
+.m-play-trigger {
+    width: 72px;
+    height: 72px;
+    background: rgba(0, 0, 0, 0.6); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background 0.2s;
+}
+
+.m-play-trigger:active {
+    transform: scale(0.92);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.play-icon {
+    width: 30px;
+    height: 30px;
+    margin-left: 1px;
+    object-fit: contain;
+}
+
+.m-skip-time-btn {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.6); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.m-skip-time-btn:active {
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.m-skip-time-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.skip-text {
+    position: absolute;
+    font-size: 9px;
+    font-weight: 800;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+}
+
+/* ==========================================================================
+   6. НИЖНЯЯ ПАНЕЛЬ И ПРОГРЕСС-БАР
+   ========================================================================== */
+.bottom-bar {
+    padding: 0 24px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.bottom-row span {
+    font-weight: 700;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+input[type="range"]#progress {
+    -webkit-appearance: none;
+    flex: 1;
+    height: 6px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="range"]#progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.actions-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 4px;
+}
+
+.right-actions {
+    display: flex;
+    gap: 16px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    padding: 4px;
+}
+
+.icon-btn img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.icon-btn:active img {
+    transform: scale(0.85);
+}
+
+#skipBtn {
+    position: absolute;
+    bottom: 100px;
+    right: 24px;
+    padding: 12px 25px;
+    border-radius: 100px;
+    color: #ffffffbd;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.6); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+#skipBtn.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   7. МЕНЮ КАЧЕСТВА И ЛОАДЕР
+   ========================================================================== */
+.quality-menu {
+    position: absolute;
+    bottom: 60px;
+    border-radius: 40px;
+    right: 20px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.6); 
+    backdrop-filter: blur(30px);
+    z-index: 100;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(36, 36, 36, 0.7);
+    padding: 10px;
+    transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.quality-menu.hide {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.quality-header {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
+    font-weight: 700;
+    padding: 15px 20px 5px 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
+.quality-item {
+    padding: 10px 20px;
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 30px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+
+.quality-item.active::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+}
+
+.badge {
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 5px;
+    border-radius: 40px;
+    font-weight: 600;
+}
+
+.player-logo {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    z-index: 90;
+    pointer-events: none; /* Засцерагае ад выпадковых клікаў */
+    opacity: 0.45; /* Эфектнай напаўпразрыстасці */
+    transition: opacity 0.4s ease;
+}
+
+.player-logo img {
+    height: 30px; /* Акуратны памер на мабільных */
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.55)); /* Лёгкі цень для бачнасці на светлых кадрах */
+}
+
+
+
+
+.cosmos-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 12000;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.cosmos-loader.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.black-hole {
+    width: 70px;
+    height: 70px;
+    background: #000;
+    border-radius: 50%;
+    box-shadow: 0 0 25px 4px rgba(255, 255, 255, 0.2), inset 0 0 30px 8px rgba(255, 255, 255, 0.1);
+    z-index: 2;
+    animation: pulseHoleCore 3s infinite ease-in-out;
+}
+
+.orbit-ring {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff, 0 0 30px rgba(255,255,255,0.8);
+    background: radial-gradient(circle, transparent 65%, #fff 70%, transparent 75%);
+    opacity: 0.9;
+    z-index: 1;
+    animation: rotateAccretionDisk 1s linear infinite;
+}
+
+@keyframes rotateAccretionDisk {
+    from { transform: rotate(0deg) scaleY(0.8); }
+    to { transform: rotate(360deg) scaleY(0.8); }
+}
+
+@keyframes pulseHoleCore {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ==========================================================================
+   8. МУЗЫКАЛЬНЫЙ БАННЕР И МОДАЛКИ
+   ========================================================================== */
+.music-divider{
+    color: rgba(255,255,255,0.3);
+    font-size: 10px;
+}
+
+.music-banner {
+    background: rgba(0, 0, 0, 0.6); 
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 8px 16px 8px 8px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-15px);
+}
+
+.music-banner:not(.hide) {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.music-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.music-cover-mini {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.music-title {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.music-artist {
+    color: #D9D9D9;
+    font-size: 11px;
+}
+
+
+
+
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: rgba(30, 30, 30, 0.103);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 60px;
+    padding: 24px 80px;
+    text-align: center;
+}
+
+.modal-header {
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.music-modal-cover {
+    width: 140px;
+    height: 140px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    object-fit: cover;
+}
+
+.modal-title-text {
+    color: white;
+    font-size: 25px;
+    font-weight: 800;
+    margin: 0;
+}
+
+.modal-artist-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    font-weight: 500;
+    margin: 6px 0 16px 0;
+}
+
+.listen-btn {
+    background: white;
+    color: black;
+    text-decoration: none;
+    padding: 24px 24px;
+    border-radius: 300px;
+    font-size: 16px;
+    font-weight: 800;
+    display: inline-block;
+}
+
+.share-socials-row {
+    margin-bottom: 16px;
+}
+
+.social-btn {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.modal-input-wrapper {
+    display: flex;
+    background: rgba(0,0,0,0.5);
+    border-radius: 20px;
+    padding: 4px;
+}
+
+.modal-input-wrapper input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 0 12px;
+    font-size: 13px;
+    outline: none;
+}
+
+.modal-copy-btn {
+    background: white;
+    color: black;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.modal-copy-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.controls, #backBtn, .m-play-trigger, .m-skip-time-btn, #skipBtn, .quality-menu, .music-banner {
+    transition: opacity 0.4s ease, transform 0.4s ease, backdrop-filter 0.4s ease, background 0.4s ease;
+}
+
+.m-skip-time-btn img.skip-icon {
+    width: 25Px;
+    height: 25px;
+    object-fit: contain;
+    margin-bottom: 1px;
+}
+
+/* Правила для полноэкранного режима */
+#mainPlayer:fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+}
+
+#video:fullscreen {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+
+
+
+
+/* ==========================================================================
+   СТАРТОВЫЙ ОВЕРЛЕЙ (Full Screen Prompt) - Apple Style
+   ========================================================================== */
+.start-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: rgba(0, 0, 0, 0.6); 
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    opacity: 1;
+    transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.5s;
+}
+
+.start-overlay.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.start-card {
+    background: rgba(30, 30, 30, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 40px; /* Глубокое скругление, как в модалке Share */
+    padding: 40px 32px;
+    text-align: center;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: scale(1);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Анимация отдаления при скрытии */
+.start-overlay.hide .start-card {
+    transform: scale(0.9);
+}
+
+.start-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.start-icon svg {
+    width: 32px;
+    height: 32px;
+    color: #ffffff;
+}
+
+.start-card h2 {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.5px;
+}
+
+.start-card p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 15px;
+    line-height: 1.4;
+    margin: 0 0 15px 0;
+    font-weight: 400;
+}
+
+.start-btn {
+    width: 100%;
+    padding: 20px;
+    background: rgba(255, 255, 255, 1);
+    color: #000000;
+    border: none;
+    border-radius: 100px; /* Кнопка-пилюля */
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s;
+}
+
+.start-btn:active {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* Анимация "дыхания" для иконки */
+@keyframes subtlePulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+.start-icon svg {
+    width: 32px;
+    height: 32px;
+    color: #ffffff;
+    /* Применяем анимацию: 2 секунды, бесконечно, плавно */
+    animation: subtlePulse 2s infinite ease-in-out; 
+}
